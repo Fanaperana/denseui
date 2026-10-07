@@ -1,0 +1,78 @@
+# denseui
+
+> Ultra-dense, modern UI components for React, built on Tailwind CSS v4 and Ark UI. Components are copied into the project with `npx denseui@latest add <name>` and imported from `@/components/ui/<name>`. 24px controls, 13px body text, semantic color tokens, light/dark via the `.dark` class.
+
+Read the design guidelines before generating UI. An MCP server is available: `npx denseui@latest mcp`.
+
+## Docs
+
+- [Design guidelines](guidelines.md): density, color tokens, component choice and rules
+- [Theme tokens](tokens.css): every CSS variable and Tailwind theme value
+- [Full docs](llms-full.txt): guidelines plus every component with example and source
+
+## Inputs
+
+- [Button](react/button.md): 24px button with default, outline, ghost, subtle, destructive and link variants
+- [Button Group](react/button-group.md): Joins related buttons into one control
+- [Input](react/input.md): Compact text input
+- [Input Group](react/input-group.md): Input with icons, text or buttons attached
+- [Input OTP](react/input-otp.md): One-time password input
+- [Textarea](react/textarea.md): Auto-growing textarea
+- [Label](react/label.md): Muted form label
+- [Field](react/field.md): Form field layout with label, description and error
+- [Checkbox](react/checkbox.md): 14px checkbox with indeterminate state
+- [Radio Group](react/radio-group.md): Radio group
+- [Switch](react/switch.md): Small toggle switch
+- [Select](react/select.md): Custom select with groups and check indicator
+- [Native Select](react/native-select.md): Styled native select element
+- [Combobox](react/combobox.md): Searchable input with a list of suggestions
+- [Slider](react/slider.md): Range slider with one or more thumbs
+- [Toggle](react/toggle.md): Two-state button
+- [Toggle Group](react/toggle-group.md): Set of toggles, single or multiple selection
+- [Calendar](react/calendar.md): Inline date grid with day, month and year views
+- [Date Picker](react/date-picker.md): Date input with a calendar popover
+
+## Overlays
+
+- [Dialog](react/dialog.md): Modal dialog
+- [Alert Dialog](react/alert-dialog.md): Modal that interrupts the user and expects a response
+- [Sheet](react/sheet.md): Side panel that slides in from any edge
+- [Drawer](react/drawer.md): Panel that slides up from the bottom
+- [Popover](react/popover.md): Floating panel
+- [Hover Card](react/hover-card.md): Preview content when hovering a link
+- [Tooltip](react/tooltip.md): Dark compact tooltip
+- [Dropdown Menu](react/dropdown-menu.md): Dropdown and context menu with submenus, checkbox and radio items
+- [Context Menu](react/context-menu.md): Menu opened by right-click
+- [Menubar](react/menubar.md): Desktop-style horizontal menu bar
+- [Command](react/command.md): Keyboard-first command menu, inline or as a ⌘K dialog
+- [Toast](react/toast.md): Stacked notifications with types and actions
+
+## Layout
+
+- [Sidebar](react/sidebar.md): Collapsible app sidebar with groups, menus and sub-menus
+- [Navigation Menu](react/navigation-menu.md): Site navigation with dropdown panels
+- [Breadcrumb](react/breadcrumb.md): Path to the current page in a hierarchy
+- [Tabs](react/tabs.md): Underlined tabs
+- [Accordion](react/accordion.md): Vertically stacked headings that reveal sections of content
+- [Collapsible](react/collapsible.md): Expands and collapses a panel
+- [Resizable](react/resizable.md): Resizable panel groups
+- [Scroll Area](react/scroll-area.md): Custom overlay scrollbars
+- [Card](react/card.md): Container with header, content and footer
+- [Item](react/item.md): Flexible row with media, content and actions
+- [Separator](react/separator.md): Hairline divider
+- [Aspect Ratio](react/aspect-ratio.md): Keeps content at a fixed ratio
+- [Pagination](react/pagination.md): Page navigation with ellipsis
+
+## Data
+
+- [Data Table](react/data-table.md): Full-featured table: search, faceted filters, sorting, column visibility, selection and pagination
+- [Table](react/table.md): Dense data table with 28px rows
+- [Badge](react/badge.md): Colored tag using the 10-color palette
+- [Kbd](react/kbd.md): Keyboard shortcut hint
+- [Avatar](react/avatar.md): 20px avatar with fallback
+- [Alert](react/alert.md): Callout for important information, with info, success, warning and destructive variants
+- [Empty](react/empty.md): Empty state with icon, title and actions
+- [Progress](react/progress.md): Thin progress bar
+- [Spinner](react/spinner.md): Loading spinner
+- [Skeleton](react/skeleton.md): Loading placeholder
+- [Carousel](react/carousel.md): Swipeable slides with controls and indicators

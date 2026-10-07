@@ -15,5 +15,20 @@
       "type": "registry:ui",
       "content": "import * as React from 'react'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Empty({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div\r\n      data-slot=\"empty\"\r\n      className={cn(\r\n        'flex min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-lg border-dashed px-8 py-6 text-center text-balance',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction EmptyHeader({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"empty-header\" className={cn('flex max-w-sm flex-col items-center gap-1', className)} {...props} />\r\n}\r\n\r\nconst emptyMediaVariants = cva('mb-1 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0', {\r\n  variants: {\r\n    variant: {\r\n      default: 'bg-transparent',\r\n      icon: \"size-8 rounded-md border border-border bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4\",\r\n    },\r\n  },\r\n  defaultVariants: { variant: 'default' },\r\n})\r\n\r\nfunction EmptyMedia({\r\n  className,\r\n  variant,\r\n  ...props\r\n}: React.ComponentProps<'div'> & VariantProps<typeof emptyMediaVariants>) {\r\n  return <div data-slot=\"empty-media\" className={cn(emptyMediaVariants({ variant }), className)} {...props} />\r\n}\r\n\r\nfunction EmptyTitle({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"empty-title\" className={cn('text-lg font-medium', className)} {...props} />\r\n}\r\n\r\nfunction EmptyDescription({ className, ...props }: React.ComponentProps<'p'>) {\r\n  return <p data-slot=\"empty-description\" className={cn('text-sm text-muted-foreground', className)} {...props} />\r\n}\r\n\r\nfunction EmptyContent({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div data-slot=\"empty-content\" className={cn('flex flex-col items-center gap-2 text-sm', className)} {...props} />\r\n  )\r\n}\r\n\r\nexport { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent }\r\n"
     }
-  ]
+  ],
+  "title": "Empty",
+  "categories": [
+    "data"
+  ],
+  "docs": "# Empty\n\nEmpty state with icon, title and actions\n\n## Install\n\n```bash\nnpx denseui@latest add empty\n```\n\nnpm dependencies: `class-variance-authority`\n\n## Usage\n\n```tsx\nimport { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from \"@/components/ui/empty\"\n```\n\n## Example\n\n```tsx\nimport { FolderOpenIcon, PlusIcon } from 'lucide-react'\r\nimport { Button } from '@/components/ui/button'\r\nimport { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'\r\n\r\nexport default function EmptyDemo() {\r\n  return (\r\n    <Empty className=\"w-96 border\">\r\n      <EmptyHeader>\r\n        <EmptyMedia variant=\"icon\">\r\n          <FolderOpenIcon />\r\n        </EmptyMedia>\r\n        <EmptyTitle>No projects yet</EmptyTitle>\r\n        <EmptyDescription>Get started by creating your first project.</EmptyDescription>\r\n      </EmptyHeader>\r\n      <EmptyContent>\r\n        <div className=\"flex gap-1.5\">\r\n          <Button>\r\n            <PlusIcon /> New project\r\n          </Button>\r\n          <Button variant=\"outline\">Import</Button>\r\n        </div>\r\n      </EmptyContent>\r\n    </Empty>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Empty",
+      "EmptyHeader",
+      "EmptyMedia",
+      "EmptyTitle",
+      "EmptyDescription",
+      "EmptyContent"
+    ]
+  }
 }

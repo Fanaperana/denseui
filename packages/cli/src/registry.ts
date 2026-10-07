@@ -11,13 +11,17 @@ export interface RegistryFile {
 export interface RegistryItemMeta {
   name: string
   type: string
+  title?: string
   description?: string
+  categories?: string[]
+  exports?: string[]
   dependencies?: string[]
   devDependencies?: string[]
   registryDependencies?: string[]
 }
 
 export interface RegistryItem extends RegistryItemMeta {
+  docs?: string
   files: RegistryFile[]
 }
 
@@ -29,7 +33,7 @@ export function resolveRegistrySource(flag?: string, configured?: string): strin
   return flag ?? process.env.DENSEUI_REGISTRY ?? configured ?? BUNDLED_REGISTRY
 }
 
-async function readFromSource(source: string, relative: string): Promise<string> {
+export async function readFromSource(source: string, relative: string): Promise<string> {
   if (isUrl(source)) {
     const url = new URL(relative, source.endsWith('/') ? source : `${source}/`)
     const res = await fetch(url)

@@ -6,6 +6,13 @@
     "dependencies": [
       "clsx",
       "tailwind-merge"
+    ],
+    "title": "Utils",
+    "categories": [
+      "lib"
+    ],
+    "exports": [
+      "cn"
     ]
   },
   {
@@ -18,6 +25,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Button",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Button",
+      "buttonVariants"
     ]
   },
   {
@@ -29,6 +44,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Input",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Input",
+      "inputVariants"
     ]
   },
   {
@@ -37,6 +60,13 @@
     "description": "Auto-growing textarea",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Textarea",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Textarea"
     ]
   },
   {
@@ -45,6 +75,13 @@
     "description": "Muted form label",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Label",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Label"
     ]
   },
   {
@@ -57,6 +94,13 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Checkbox",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Checkbox"
     ]
   },
   {
@@ -68,6 +112,13 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Switch",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Switch"
     ]
   },
   {
@@ -79,6 +130,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Radio Group",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "RadioGroup",
+      "RadioGroupItem"
     ]
   },
   {
@@ -90,6 +149,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Badge",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Badge",
+      "badgeVariants"
     ]
   },
   {
@@ -98,6 +165,14 @@
     "description": "Keyboard shortcut hint",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Kbd",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Kbd",
+      "KbdGroup"
     ]
   },
   {
@@ -106,6 +181,13 @@
     "description": "Hairline divider",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Separator",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Separator"
     ]
   },
   {
@@ -117,6 +199,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Avatar",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Avatar",
+      "AvatarImage",
+      "AvatarFallback"
     ]
   },
   {
@@ -128,6 +219,13 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Spinner",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Spinner"
     ]
   },
   {
@@ -136,6 +234,13 @@
     "description": "Loading placeholder",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Skeleton",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Skeleton"
     ]
   },
   {
@@ -147,6 +252,17 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Popover",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Popover",
+      "PopoverTrigger",
+      "PopoverAnchor",
+      "PopoverContent",
+      "PopoverClose"
     ]
   },
   {
@@ -158,6 +274,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Tooltip",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Tooltip",
+      "TooltipTrigger",
+      "TooltipContent"
     ]
   },
   {
@@ -170,6 +295,26 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Dropdown Menu",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "DropdownMenu",
+      "DropdownMenuTrigger",
+      "ContextMenuTrigger",
+      "DropdownMenuContent",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioGroup",
+      "DropdownMenuRadioItem",
+      "DropdownMenuGroup",
+      "DropdownMenuLabel",
+      "DropdownMenuSeparator",
+      "DropdownMenuShortcut",
+      "DropdownMenuSub",
+      "DropdownMenuSubTrigger"
     ]
   },
   {
@@ -182,6 +327,20 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Dialog",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Dialog",
+      "DialogTrigger",
+      "DialogClose",
+      "DialogContent",
+      "DialogHeader",
+      "DialogFooter",
+      "DialogTitle",
+      "DialogDescription"
     ]
   },
   {
@@ -193,6 +352,16 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Tabs",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Tabs",
+      "TabsList",
+      "TabsTrigger",
+      "TabsContent"
     ]
   },
   {
@@ -205,6 +374,16 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Accordion",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Accordion",
+      "AccordionItem",
+      "AccordionTrigger",
+      "AccordionContent"
     ]
   },
   {
@@ -216,6 +395,16 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Alert",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Alert",
+      "AlertTitle",
+      "AlertDescription",
+      "alertVariants"
     ]
   },
   {
@@ -228,12 +417,34 @@
     "registryDependencies": [
       "utils",
       "button"
+    ],
+    "title": "Alert Dialog",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "AlertDialog",
+      "AlertDialogTrigger",
+      "AlertDialogContent",
+      "AlertDialogHeader",
+      "AlertDialogFooter",
+      "AlertDialogTitle",
+      "AlertDialogDescription",
+      "AlertDialogAction",
+      "AlertDialogCancel"
     ]
   },
   {
     "name": "aspect-ratio",
     "type": "registry:ui",
-    "description": "Keeps content at a fixed ratio"
+    "description": "Keeps content at a fixed ratio",
+    "title": "Aspect Ratio",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "AspectRatio"
+    ]
   },
   {
     "name": "breadcrumb",
@@ -245,6 +456,19 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Breadcrumb",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Breadcrumb",
+      "BreadcrumbList",
+      "BreadcrumbItem",
+      "BreadcrumbLink",
+      "BreadcrumbPage",
+      "BreadcrumbSeparator",
+      "BreadcrumbEllipsis"
     ]
   },
   {
@@ -256,6 +480,16 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Button Group",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "ButtonGroup",
+      "ButtonGroupText",
+      "ButtonGroupSeparator",
+      "buttonGroupVariants"
     ]
   },
   {
@@ -268,6 +502,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Calendar",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Calendar",
+      "CalendarViews"
     ]
   },
   {
@@ -276,6 +518,19 @@
     "description": "Container with header, content and footer",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Card",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Card",
+      "CardHeader",
+      "CardTitle",
+      "CardDescription",
+      "CardAction",
+      "CardContent",
+      "CardFooter"
     ]
   },
   {
@@ -289,6 +544,18 @@
     "registryDependencies": [
       "utils",
       "button"
+    ],
+    "title": "Carousel",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Carousel",
+      "CarouselContent",
+      "CarouselItem",
+      "CarouselPrevious",
+      "CarouselNext",
+      "CarouselIndicators"
     ]
   },
   {
@@ -300,6 +567,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Collapsible",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Collapsible",
+      "CollapsibleTrigger",
+      "CollapsibleContent"
     ]
   },
   {
@@ -313,6 +589,19 @@
     "registryDependencies": [
       "utils",
       "input"
+    ],
+    "title": "Combobox",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Combobox",
+      "ComboboxInput",
+      "ComboboxContent",
+      "ComboboxItem",
+      "ComboboxGroup",
+      "ComboboxLabel",
+      "ComboboxEmpty"
     ]
   },
   {
@@ -325,6 +614,22 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Command",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Command",
+      "CommandDialog",
+      "CommandEmpty",
+      "CommandGroup",
+      "CommandGroupLabel",
+      "CommandInput",
+      "CommandItem",
+      "CommandList",
+      "CommandSeparator",
+      "CommandShortcut"
     ]
   },
   {
@@ -333,6 +638,25 @@
     "description": "Menu opened by right-click",
     "registryDependencies": [
       "dropdown-menu"
+    ],
+    "title": "Context Menu",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "ContextMenu",
+      "ContextMenuTrigger",
+      "ContextMenuContent",
+      "ContextMenuItem",
+      "ContextMenuCheckboxItem",
+      "ContextMenuRadioGroup",
+      "ContextMenuRadioItem",
+      "ContextMenuGroup",
+      "ContextMenuLabel",
+      "ContextMenuSeparator",
+      "ContextMenuShortcut",
+      "ContextMenuSub",
+      "ContextMenuSubTrigger"
     ]
   },
   {
@@ -347,6 +671,15 @@
       "utils",
       "input",
       "calendar"
+    ],
+    "title": "Date Picker",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "DatePicker",
+      "DatePickerInput",
+      "DatePickerContent"
     ]
   },
   {
@@ -358,6 +691,20 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Drawer",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Drawer",
+      "DrawerTrigger",
+      "DrawerClose",
+      "DrawerContent",
+      "DrawerHeader",
+      "DrawerFooter",
+      "DrawerTitle",
+      "DrawerDescription"
     ]
   },
   {
@@ -369,6 +716,18 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Empty",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Empty",
+      "EmptyHeader",
+      "EmptyMedia",
+      "EmptyTitle",
+      "EmptyDescription",
+      "EmptyContent"
     ]
   },
   {
@@ -381,6 +740,21 @@
     "registryDependencies": [
       "utils",
       "label"
+    ],
+    "title": "Field",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Field",
+      "FieldContent",
+      "FieldDescription",
+      "FieldError",
+      "FieldGroup",
+      "FieldLabel",
+      "FieldLegend",
+      "FieldSeparator",
+      "FieldSet"
     ]
   },
   {
@@ -392,6 +766,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Hover Card",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "HoverCard",
+      "HoverCardTrigger",
+      "HoverCardContent"
     ]
   },
   {
@@ -403,6 +786,18 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Input Group",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "InputGroup",
+      "InputGroupAddon",
+      "InputGroupButton",
+      "InputGroupInput",
+      "InputGroupText",
+      "InputGroupTextarea"
     ]
   },
   {
@@ -415,6 +810,16 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Input OTP",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "InputOTP",
+      "InputOTPGroup",
+      "InputOTPSlot",
+      "InputOTPSeparator"
     ]
   },
   {
@@ -427,6 +832,20 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Item",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Item",
+      "ItemActions",
+      "ItemContent",
+      "ItemDescription",
+      "ItemGroup",
+      "ItemMedia",
+      "ItemSeparator",
+      "ItemTitle"
     ]
   },
   {
@@ -439,6 +858,26 @@
     "registryDependencies": [
       "utils",
       "dropdown-menu"
+    ],
+    "title": "Menubar",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Menubar",
+      "MenubarMenu",
+      "MenubarTrigger",
+      "MenubarContent",
+      "MenubarItem",
+      "MenubarCheckboxItem",
+      "MenubarRadioGroup",
+      "MenubarRadioItem",
+      "MenubarGroup",
+      "MenubarLabel",
+      "MenubarSeparator",
+      "MenubarShortcut",
+      "MenubarSub",
+      "MenubarSubTrigger"
     ]
   },
   {
@@ -450,6 +889,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Native Select",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "NativeSelect",
+      "NativeSelectOptGroup",
+      "NativeSelectOption"
     ]
   },
   {
@@ -462,6 +910,19 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Navigation Menu",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "NavigationMenu",
+      "NavigationMenuList",
+      "NavigationMenuItem",
+      "NavigationMenuTrigger",
+      "NavigationMenuContent",
+      "NavigationMenuLink",
+      "navigationMenuTriggerStyle"
     ]
   },
   {
@@ -475,6 +936,13 @@
     "registryDependencies": [
       "utils",
       "button"
+    ],
+    "title": "Pagination",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Pagination"
     ]
   },
   {
@@ -486,6 +954,13 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Progress",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Progress"
     ]
   },
   {
@@ -497,6 +972,15 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Resizable",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "ResizablePanelGroup",
+      "ResizablePanel",
+      "ResizableHandle"
     ]
   },
   {
@@ -508,6 +992,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Scroll Area",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "ScrollArea",
+      "ScrollBar"
     ]
   },
   {
@@ -521,6 +1013,20 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Select",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Select",
+      "SelectTrigger",
+      "SelectValue",
+      "SelectContent",
+      "SelectItem",
+      "SelectGroup",
+      "SelectLabel",
+      "SelectSeparator"
     ]
   },
   {
@@ -533,6 +1039,20 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Sheet",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Sheet",
+      "SheetTrigger",
+      "SheetClose",
+      "SheetContent",
+      "SheetHeader",
+      "SheetFooter",
+      "SheetTitle",
+      "SheetDescription"
     ]
   },
   {
@@ -547,6 +1067,33 @@
     "registryDependencies": [
       "utils",
       "button"
+    ],
+    "title": "Sidebar",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Sidebar",
+      "SidebarContent",
+      "SidebarFooter",
+      "SidebarGroup",
+      "SidebarGroupAction",
+      "SidebarGroupContent",
+      "SidebarGroupLabel",
+      "SidebarHeader",
+      "SidebarInset",
+      "SidebarMenu",
+      "SidebarMenuAction",
+      "SidebarMenuBadge",
+      "SidebarMenuButton",
+      "SidebarMenuItem",
+      "SidebarMenuSub",
+      "SidebarMenuSubButton",
+      "SidebarMenuSubItem",
+      "SidebarProvider",
+      "SidebarSeparator",
+      "SidebarTrigger",
+      "useSidebar"
     ]
   },
   {
@@ -558,6 +1105,13 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Slider",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Slider"
     ]
   },
   {
@@ -570,6 +1124,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Toast",
+    "categories": [
+      "overlays"
+    ],
+    "exports": [
+      "Toaster",
+      "toaster"
     ]
   },
   {
@@ -582,6 +1144,14 @@
     ],
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Toggle",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Toggle",
+      "toggleVariants"
     ]
   },
   {
@@ -595,6 +1165,14 @@
     "registryDependencies": [
       "utils",
       "toggle"
+    ],
+    "title": "Toggle Group",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "ToggleGroup",
+      "ToggleGroupItem"
     ]
   },
   {
@@ -603,6 +1181,20 @@
     "description": "Dense data table with 28px rows",
     "registryDependencies": [
       "utils"
+    ],
+    "title": "Table",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Table",
+      "TableHeader",
+      "TableBody",
+      "TableFooter",
+      "TableHead",
+      "TableRow",
+      "TableCell",
+      "TableCaption"
     ]
   },
   {
@@ -625,6 +1217,21 @@
       "popover",
       "select",
       "separator"
+    ],
+    "title": "Data Table",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "DataTable",
+      "DataTableColumnHeader",
+      "DataTableFacetedFilter",
+      "DataTablePagination",
+      "DataTableToolbar",
+      "DataTableViewOptions",
+      "createDataTableColumnHelper",
+      "dataTableFeatures",
+      "selectColumn"
     ]
   }
 ]

@@ -13,5 +13,15 @@
       "type": "registry:lib",
       "content": "import { clsx, type ClassValue } from 'clsx'\r\nimport { extendTailwindMerge } from 'tailwind-merge'\r\n\r\nconst twMerge = extendTailwindMerge({\r\n  extend: {\r\n    classGroups: {\r\n      shadow: [{ shadow: ['popover', 'dialog'] }],\r\n    },\r\n  },\r\n})\r\n\r\nexport function cn(...inputs: ClassValue[]) {\r\n  return twMerge(clsx(inputs))\r\n}\r\n"
     }
-  ]
+  ],
+  "title": "Utils",
+  "categories": [
+    "lib"
+  ],
+  "docs": "# Utils\n\ncn() class merging helper\n\n## Install\n\n```bash\nnpx denseui@latest add utils\n```\n\nnpm dependencies: `clsx`, `tailwind-merge`\n\n## Usage\n\n```tsx\nimport { cn } from \"@/components/ui/utils\"\n```\n",
+  "meta": {
+    "exports": [
+      "cn"
+    ]
+  }
 }

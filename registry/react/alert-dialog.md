@@ -1,0 +1,146 @@
+# Alert Dialog
+
+Modal that interrupts the user and expects a response
+
+## Install
+
+```bash
+npx denseui@latest add alert-dialog
+```
+
+npm dependencies: `@ark-ui/react`
+
+Also installs: `button`
+
+## Usage
+
+```tsx
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog"
+```
+
+## Example
+
+```tsx
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+
+export default function AlertDialogDemo() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">Delete workspace</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This permanently deletes the workspace and all of its pages. This can't be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+```
+
+## Source: components/ui/alert-dialog.tsx
+
+```tsx
+import * as React from 'react'
+import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
+import { Portal } from '@ark-ui/react/portal'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+function AlertDialog(props: ArkDialog.RootProps) {
+  return <ArkDialog.Root role="alertdialog" closeOnInteractOutside={false} lazyMount unmountOnExit {...props} />
+}
+
+function AlertDialogTrigger(props: ArkDialog.TriggerProps) {
+  return <ArkDialog.Trigger data-slot="alert-dialog-trigger" {...props} />
+}
+
+function AlertDialogContent({ className, ...props }: ArkDialog.ContentProps) {
+  return (
+    <Portal>
+      <ArkDialog.Backdrop className="fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+      <ArkDialog.Positioner className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <ArkDialog.Content
+          data-slot="alert-dialog-content"
+          className={cn(
+            'flex w-full max-w-sm flex-col gap-3 rounded-lg bg-popover px-4 py-3 text-sm text-popover-foreground shadow-dialog outline-none data-[state=closed]:animate-out data-[state=open]:animate-in',
+            className,
+          )}
+          {...props}
+        />
+      </ArkDialog.Positioner>
+    </Portal>
+  )
+}
+
+function AlertDialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div data-slot="alert-dialog-header" className={cn('flex flex-col gap-0.5', className)} {...props} />
+}
+
+function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div data-slot="alert-dialog-footer" className={cn('flex items-center justify-end gap-1.5', className)} {...props} />
+  )
+}
+
+function AlertDialogTitle({ className, ...props }: ArkDialog.TitleProps) {
+  return <ArkDialog.Title data-slot="alert-dialog-title" className={cn('text-lg font-semibold', className)} {...props} />
+}
+
+function AlertDialogDescription({ className, ...props }: ArkDialog.DescriptionProps) {
+  return (
+    <ArkDialog.Description
+      data-slot="alert-dialog-description"
+      className={cn('text-sm text-muted-foreground', className)}
+      {...props}
+    />
+  )
+}
+
+function AlertDialogAction({ className, ...props }: ArkDialog.CloseTriggerProps) {
+  return <ArkDialog.CloseTrigger data-slot="alert-dialog-action" className={cn(buttonVariants(), className)} {...props} />
+}
+
+function AlertDialogCancel({ className, ...props }: ArkDialog.CloseTriggerProps) {
+  return (
+    <ArkDialog.CloseTrigger
+      data-slot="alert-dialog-cancel"
+      className={cn(buttonVariants({ variant: 'outline' }), className)}
+      {...props}
+    />
+  )
+}
+
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+}
+```

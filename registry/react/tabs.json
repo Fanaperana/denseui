@@ -15,5 +15,18 @@
       "type": "registry:ui",
       "content": "import { Tabs as ArkTabs } from '@ark-ui/react/tabs'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Tabs({ className, ...props }: ArkTabs.RootProps) {\r\n  return <ArkTabs.Root data-slot=\"tabs\" className={cn('flex flex-col', className)} {...props} />\r\n}\r\n\r\nfunction TabsList({ className, ...props }: ArkTabs.ListProps) {\r\n  return (\r\n    <ArkTabs.List\r\n      data-slot=\"tabs-list\"\r\n      className={cn('flex items-center gap-0.5 border-b border-border', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction TabsTrigger({ className, ...props }: ArkTabs.TriggerProps) {\r\n  return (\r\n    <ArkTabs.Trigger\r\n      data-slot=\"tabs-trigger\"\r\n      className={cn(\r\n        \"relative mb-1 inline-flex cursor-default items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm text-muted-foreground outline-none transition-colors duration-75 select-none after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-disabled:opacity-40 data-selected:text-foreground data-selected:after:bg-foreground [&_svg:not([class*='size-'])]:size-3.5\",\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction TabsContent({ className, ...props }: ArkTabs.ContentProps) {\r\n  return <ArkTabs.Content data-slot=\"tabs-content\" className={cn('pt-2 outline-none', className)} {...props} />\r\n}\r\n\r\nexport { Tabs, TabsList, TabsTrigger, TabsContent }\r\n"
     }
-  ]
+  ],
+  "title": "Tabs",
+  "categories": [
+    "layout"
+  ],
+  "docs": "# Tabs\n\nUnderlined tabs\n\n## Install\n\n```bash\nnpx denseui@latest add tabs\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { Tabs, TabsList, TabsTrigger, TabsContent } from \"@/components/ui/tabs\"\n```\n\n## Example\n\n```tsx\nimport { FileTextIcon, LayoutGridIcon, TableIcon } from 'lucide-react'\r\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'\r\n\r\nexport default function TabsDemo() {\r\n  return (\r\n    <Tabs defaultValue=\"table\" className=\"w-80\">\r\n      <TabsList>\r\n        <TabsTrigger value=\"table\">\r\n          <TableIcon /> Table\r\n        </TabsTrigger>\r\n        <TabsTrigger value=\"board\">\r\n          <LayoutGridIcon /> Board\r\n        </TabsTrigger>\r\n        <TabsTrigger value=\"docs\">\r\n          <FileTextIcon /> Docs\r\n        </TabsTrigger>\r\n      </TabsList>\r\n      <TabsContent value=\"table\" className=\"text-sm text-muted-foreground\">\r\n        Rows and columns, Notion database style.\r\n      </TabsContent>\r\n      <TabsContent value=\"board\" className=\"text-sm text-muted-foreground\">\r\n        Cards grouped by status.\r\n      </TabsContent>\r\n      <TabsContent value=\"docs\" className=\"text-sm text-muted-foreground\">\r\n        Plain pages.\r\n      </TabsContent>\r\n    </Tabs>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Tabs",
+      "TabsList",
+      "TabsTrigger",
+      "TabsContent"
+    ]
+  }
 }

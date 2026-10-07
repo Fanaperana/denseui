@@ -16,5 +16,15 @@
       "type": "registry:ui",
       "content": "import { Checkbox as ArkCheckbox } from '@ark-ui/react/checkbox'\r\nimport { CheckIcon, MinusIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Checkbox({ className, children, ...props }: ArkCheckbox.RootProps) {\r\n  return (\r\n    <ArkCheckbox.Root\r\n      data-slot=\"checkbox\"\r\n      className={cn(\r\n        'group inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <ArkCheckbox.Control className=\"flex size-3.5 shrink-0 items-center justify-center rounded-sm border-[1.5px] border-foreground/40 text-primary-foreground transition-colors duration-75 group-hover:bg-accent data-focus-visible:ring-2 data-focus-visible:ring-ring data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary\">\r\n        <ArkCheckbox.Indicator>\r\n          <CheckIcon className=\"size-2.5\" strokeWidth={3.5} />\r\n        </ArkCheckbox.Indicator>\r\n        <ArkCheckbox.Indicator indeterminate>\r\n          <MinusIcon className=\"size-2.5\" strokeWidth={3.5} />\r\n        </ArkCheckbox.Indicator>\r\n      </ArkCheckbox.Control>\r\n      {children != null && <ArkCheckbox.Label>{children}</ArkCheckbox.Label>}\r\n      <ArkCheckbox.HiddenInput />\r\n    </ArkCheckbox.Root>\r\n  )\r\n}\r\n\r\nexport { Checkbox }\r\n"
     }
-  ]
+  ],
+  "title": "Checkbox",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Checkbox\n\n14px checkbox with indeterminate state\n\n## Install\n\n```bash\nnpx denseui@latest add checkbox\n```\n\nnpm dependencies: `@ark-ui/react`, `lucide-react`\n\n## Usage\n\n```tsx\nimport { Checkbox } from \"@/components/ui/checkbox\"\n```\n\n## Example\n\n```tsx\nimport { Checkbox } from '@/components/ui/checkbox'\r\n\r\nexport default function CheckboxDemo() {\r\n  return (\r\n    <div className=\"flex flex-col gap-1.5\">\r\n      <Checkbox defaultChecked>Show completed tasks</Checkbox>\r\n      <Checkbox>Wrap cells</Checkbox>\r\n      <Checkbox checked=\"indeterminate\">Select all</Checkbox>\r\n      <Checkbox disabled>Disabled</Checkbox>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Checkbox"
+    ]
+  }
 }

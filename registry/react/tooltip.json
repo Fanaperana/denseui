@@ -15,5 +15,17 @@
       "type": "registry:ui",
       "content": "import { Tooltip as ArkTooltip } from '@ark-ui/react/tooltip'\r\nimport { Portal } from '@ark-ui/react/portal'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Tooltip({ openDelay = 500, closeDelay = 0, ...props }: ArkTooltip.RootProps) {\r\n  return <ArkTooltip.Root openDelay={openDelay} closeDelay={closeDelay} lazyMount unmountOnExit {...props} />\r\n}\r\n\r\nfunction TooltipTrigger(props: ArkTooltip.TriggerProps) {\r\n  return <ArkTooltip.Trigger data-slot=\"tooltip-trigger\" {...props} />\r\n}\r\n\r\nfunction TooltipContent({ className, ...props }: ArkTooltip.ContentProps) {\r\n  return (\r\n    <Portal>\r\n      <ArkTooltip.Positioner>\r\n        <ArkTooltip.Content\r\n          data-slot=\"tooltip-content\"\r\n          className={cn(\r\n            'z-50 max-w-60 origin-(--transform-origin) rounded-md bg-tooltip px-1.5 py-0.5 text-xs font-medium text-tooltip-foreground shadow-popover data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in',\r\n            className,\r\n          )}\r\n          {...props}\r\n        />\r\n      </ArkTooltip.Positioner>\r\n    </Portal>\r\n  )\r\n}\r\n\r\nexport { Tooltip, TooltipTrigger, TooltipContent }\r\n"
     }
-  ]
+  ],
+  "title": "Tooltip",
+  "categories": [
+    "overlays"
+  ],
+  "docs": "# Tooltip\n\nDark compact tooltip\n\n## Install\n\n```bash\nnpx denseui@latest add tooltip\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { Tooltip, TooltipTrigger, TooltipContent } from \"@/components/ui/tooltip\"\n```\n\n## Example\n\n```tsx\nimport { StarIcon } from 'lucide-react'\r\nimport { Button } from '@/components/ui/button'\r\nimport { Kbd } from '@/components/ui/kbd'\r\nimport { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'\r\n\r\nexport default function TooltipDemo() {\r\n  return (\r\n    <div className=\"flex gap-2\">\r\n      <Tooltip>\r\n        <TooltipTrigger asChild>\r\n          <Button variant=\"ghost\" size=\"icon\" aria-label=\"Favorite\">\r\n            <StarIcon />\r\n          </Button>\r\n        </TooltipTrigger>\r\n        <TooltipContent>Add to Favorites</TooltipContent>\r\n      </Tooltip>\r\n      <Tooltip positioning={{ placement: 'bottom' }}>\r\n        <TooltipTrigger asChild>\r\n          <Button variant=\"outline\">Search</Button>\r\n        </TooltipTrigger>\r\n        <TooltipContent>\r\n          Search pages <Kbd className=\"ml-1\">⌘K</Kbd>\r\n        </TooltipContent>\r\n      </Tooltip>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Tooltip",
+      "TooltipTrigger",
+      "TooltipContent"
+    ]
+  }
 }

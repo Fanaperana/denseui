@@ -15,5 +15,19 @@
       "type": "registry:ui",
       "content": "import { Popover as ArkPopover } from '@ark-ui/react/popover'\r\nimport { Portal } from '@ark-ui/react/portal'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Popover(props: ArkPopover.RootProps) {\r\n  return <ArkPopover.Root lazyMount unmountOnExit {...props} />\r\n}\r\n\r\nfunction PopoverTrigger(props: ArkPopover.TriggerProps) {\r\n  return <ArkPopover.Trigger data-slot=\"popover-trigger\" {...props} />\r\n}\r\n\r\nfunction PopoverAnchor(props: ArkPopover.AnchorProps) {\r\n  return <ArkPopover.Anchor data-slot=\"popover-anchor\" {...props} />\r\n}\r\n\r\ntype PopoverContentProps = ArkPopover.ContentProps & { portalled?: boolean }\r\n\r\nfunction PopoverContent({ className, portalled = true, ...props }: PopoverContentProps) {\r\n  return (\r\n    <Portal disabled={!portalled}>\r\n      <ArkPopover.Positioner>\r\n        <ArkPopover.Content\r\n          data-slot=\"popover-content\"\r\n          className={cn(\r\n            'z-50 w-64 origin-(--transform-origin) rounded-lg bg-popover px-3 py-2 text-sm text-popover-foreground shadow-popover outline-none data-[state=closed]:animate-out data-[state=open]:animate-in',\r\n            className,\r\n          )}\r\n          {...props}\r\n        />\r\n      </ArkPopover.Positioner>\r\n    </Portal>\r\n  )\r\n}\r\n\r\nfunction PopoverClose(props: ArkPopover.CloseTriggerProps) {\r\n  return <ArkPopover.CloseTrigger data-slot=\"popover-close\" {...props} />\r\n}\r\n\r\nexport { Popover, PopoverTrigger, PopoverAnchor, PopoverContent, PopoverClose }\r\n"
     }
-  ]
+  ],
+  "title": "Popover",
+  "categories": [
+    "overlays"
+  ],
+  "docs": "# Popover\n\nFloating panel\n\n## Install\n\n```bash\nnpx denseui@latest add popover\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { Popover, PopoverTrigger, PopoverAnchor, PopoverContent, PopoverClose } from \"@/components/ui/popover\"\n```\n\n## Example\n\n```tsx\nimport { LinkIcon } from 'lucide-react'\r\nimport { Button } from '@/components/ui/button'\r\nimport { Input } from '@/components/ui/input'\r\nimport { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui/popover'\r\n\r\nexport default function PopoverDemo() {\r\n  return (\r\n    <Popover>\r\n      <PopoverTrigger asChild>\r\n        <Button variant=\"outline\">\r\n          <LinkIcon /> Add link\r\n        </Button>\r\n      </PopoverTrigger>\r\n      <PopoverContent className=\"flex flex-col gap-2\">\r\n        <Input placeholder=\"Paste link or search pages\" autoFocus />\r\n        <div className=\"flex justify-end\">\r\n          <PopoverClose asChild>\r\n            <Button size=\"sm\">Link</Button>\r\n          </PopoverClose>\r\n        </div>\r\n      </PopoverContent>\r\n    </Popover>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Popover",
+      "PopoverTrigger",
+      "PopoverAnchor",
+      "PopoverContent",
+      "PopoverClose"
+    ]
+  }
 }

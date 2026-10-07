@@ -15,5 +15,17 @@
       "type": "registry:ui",
       "content": "import * as React from 'react'\r\nimport { ChevronDownIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction NativeSelect({ className, ...props }: React.ComponentProps<'select'>) {\r\n  return (\r\n    <div data-slot=\"native-select-wrapper\" className=\"relative w-fit has-[select:disabled]:opacity-50\">\r\n      <select\r\n        data-slot=\"native-select\"\r\n        className={cn(\r\n          'h-6 w-full min-w-0 appearance-none rounded-sm border border-input bg-input-background py-0 pr-6 pl-2 text-sm text-foreground outline-none focus-visible:border-brand/60 focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed aria-invalid:border-destructive/60',\r\n          className,\r\n        )}\r\n        {...props}\r\n      />\r\n      <ChevronDownIcon\r\n        aria-hidden\r\n        className=\"pointer-events-none absolute top-1/2 right-1.5 size-3.5 -translate-y-1/2 text-muted-foreground\"\r\n      />\r\n    </div>\r\n  )\r\n}\r\n\r\nfunction NativeSelectOption({ className, ...props }: React.ComponentProps<'option'>) {\r\n  return (\r\n    <option data-slot=\"native-select-option\" className={cn('bg-popover text-popover-foreground', className)} {...props} />\r\n  )\r\n}\r\n\r\nfunction NativeSelectOptGroup({ className, ...props }: React.ComponentProps<'optgroup'>) {\r\n  return (\r\n    <optgroup\r\n      data-slot=\"native-select-optgroup\"\r\n      className={cn('bg-popover text-muted-foreground', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { NativeSelect, NativeSelectOptGroup, NativeSelectOption }\r\n"
     }
-  ]
+  ],
+  "title": "Native Select",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Native Select\n\nStyled native select element\n\n## Install\n\n```bash\nnpx denseui@latest add native-select\n```\n\nnpm dependencies: `lucide-react`\n\n## Usage\n\n```tsx\nimport { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from \"@/components/ui/native-select\"\n```\n\n## Example\n\n```tsx\nimport { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@/components/ui/native-select'\r\n\r\nexport default function NativeSelectDemo() {\r\n  return (\r\n    <div className=\"flex gap-3\">\r\n      <NativeSelect defaultValue=\"\" className=\"w-40\">\r\n        <NativeSelectOption value=\"\" disabled>\r\n          Select status\r\n        </NativeSelectOption>\r\n        <NativeSelectOption value=\"todo\">Todo</NativeSelectOption>\r\n        <NativeSelectOption value=\"in-progress\">In progress</NativeSelectOption>\r\n        <NativeSelectOption value=\"done\">Done</NativeSelectOption>\r\n      </NativeSelect>\r\n      <NativeSelect className=\"w-40\">\r\n        <NativeSelectOptGroup label=\"Frontend\">\r\n          <NativeSelectOption>React</NativeSelectOption>\r\n          <NativeSelectOption>Vue</NativeSelectOption>\r\n        </NativeSelectOptGroup>\r\n        <NativeSelectOptGroup label=\"Backend\">\r\n          <NativeSelectOption>Node</NativeSelectOption>\r\n          <NativeSelectOption>Go</NativeSelectOption>\r\n        </NativeSelectOptGroup>\r\n      </NativeSelect>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "NativeSelect",
+      "NativeSelectOptGroup",
+      "NativeSelectOption"
+    ]
+  }
 }

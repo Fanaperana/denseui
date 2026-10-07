@@ -15,5 +15,17 @@
       "type": "registry:ui",
       "content": "import { Collapsible as ArkCollapsible } from '@ark-ui/react/collapsible'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Collapsible(props: ArkCollapsible.RootProps) {\r\n  return <ArkCollapsible.Root data-slot=\"collapsible\" {...props} />\r\n}\r\n\r\nfunction CollapsibleTrigger(props: ArkCollapsible.TriggerProps) {\r\n  return <ArkCollapsible.Trigger data-slot=\"collapsible-trigger\" {...props} />\r\n}\r\n\r\nfunction CollapsibleContent({ className, ...props }: ArkCollapsible.ContentProps) {\r\n  return (\r\n    <ArkCollapsible.Content\r\n      data-slot=\"collapsible-content\"\r\n      className={cn(\r\n        'overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\r\n"
     }
-  ]
+  ],
+  "title": "Collapsible",
+  "categories": [
+    "layout"
+  ],
+  "docs": "# Collapsible\n\nExpands and collapses a panel\n\n## Install\n\n```bash\nnpx denseui@latest add collapsible\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { Collapsible, CollapsibleTrigger, CollapsibleContent } from \"@/components/ui/collapsible\"\n```\n\n## Example\n\n```tsx\nimport { ChevronsUpDownIcon } from 'lucide-react'\r\nimport { Button } from '@/components/ui/button'\r\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'\r\n\r\nexport default function CollapsibleDemo() {\r\n  return (\r\n    <Collapsible className=\"flex w-72 flex-col gap-1\">\r\n      <div className=\"flex items-center justify-between px-1\">\r\n        <span className=\"text-sm font-medium\">@denseui starred 3 repositories</span>\r\n        <CollapsibleTrigger asChild>\r\n          <Button variant=\"ghost\" size=\"icon-sm\" aria-label=\"Toggle\">\r\n            <ChevronsUpDownIcon />\r\n          </Button>\r\n        </CollapsibleTrigger>\r\n      </div>\r\n      <div className=\"rounded-sm border border-border px-2 py-1 font-mono text-xs\">@ark-ui/react</div>\r\n      <CollapsibleContent className=\"flex flex-col gap-1\">\r\n        <div className=\"rounded-sm border border-border px-2 py-1 font-mono text-xs\">tailwindcss</div>\r\n        <div className=\"rounded-sm border border-border px-2 py-1 font-mono text-xs\">lucide-react</div>\r\n      </CollapsibleContent>\r\n    </Collapsible>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Collapsible",
+      "CollapsibleTrigger",
+      "CollapsibleContent"
+    ]
+  }
 }

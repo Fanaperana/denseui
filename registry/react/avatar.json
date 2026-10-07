@@ -15,5 +15,17 @@
       "type": "registry:ui",
       "content": "import { Avatar as ArkAvatar } from '@ark-ui/react/avatar'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Avatar({ className, ...props }: ArkAvatar.RootProps) {\r\n  return (\r\n    <ArkAvatar.Root\r\n      data-slot=\"avatar\"\r\n      className={cn('relative inline-flex size-5 shrink-0 overflow-hidden rounded-full select-none', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction AvatarImage({ className, ...props }: ArkAvatar.ImageProps) {\r\n  return <ArkAvatar.Image data-slot=\"avatar-image\" className={cn('size-full object-cover', className)} {...props} />\r\n}\r\n\r\nfunction AvatarFallback({ className, ...props }: ArkAvatar.FallbackProps) {\r\n  return (\r\n    <ArkAvatar.Fallback\r\n      data-slot=\"avatar-fallback\"\r\n      className={cn(\r\n        'flex size-full items-center justify-center bg-tag-gray-bg text-[10px] font-medium text-tag-gray uppercase',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Avatar, AvatarImage, AvatarFallback }\r\n"
     }
-  ]
+  ],
+  "title": "Avatar",
+  "categories": [
+    "data"
+  ],
+  "docs": "# Avatar\n\n20px avatar with fallback\n\n## Install\n\n```bash\nnpx denseui@latest add avatar\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { Avatar, AvatarImage, AvatarFallback } from \"@/components/ui/avatar\"\n```\n\n## Example\n\n```tsx\nimport { Avatar, AvatarFallback } from '@/components/ui/avatar'\r\n\r\nexport default function AvatarDemo() {\r\n  return (\r\n    <div className=\"flex items-center gap-3\">\r\n      <Avatar>\r\n        <AvatarFallback>JD</AvatarFallback>\r\n      </Avatar>\r\n      <Avatar className=\"size-7\">\r\n        <AvatarFallback className=\"text-xs\">AB</AvatarFallback>\r\n      </Avatar>\r\n      <div className=\"flex -space-x-1\">\r\n        {['AL', 'BO', 'CY'].map((initials) => (\r\n          <Avatar key={initials} className=\"ring-2 ring-background\">\r\n            <AvatarFallback>{initials}</AvatarFallback>\r\n          </Avatar>\r\n        ))}\r\n      </div>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Avatar",
+      "AvatarImage",
+      "AvatarFallback"
+    ]
+  }
 }

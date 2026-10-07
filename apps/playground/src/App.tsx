@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 import { components, examples, guides, useRoute, type Route } from './docs'
 import { CliPage } from './pages/cli'
+import { AiPage } from './pages/ai'
 import { ComponentPage } from './pages/component-page'
 import { InstallationPage } from './pages/installation'
 import { Introduction } from './pages/introduction'
@@ -185,6 +186,8 @@ export default function App() {
                 <ThemingPage />
               ) : route.slug === 'cli' ? (
                 <CliPage />
+              ) : route.slug === 'ai' ? (
+                <AiPage />
               ) : (
                 <Introduction />
               )}

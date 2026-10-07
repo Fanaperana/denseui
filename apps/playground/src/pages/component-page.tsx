@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, SparklesIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   Breadcrumb,
@@ -24,12 +24,62 @@ const sections = [
 ]
 
 function exportsOf(source: string | undefined, fallback: string) {
-  const match = source && /export\s*\{([^}]+)\}/.exec(source)
-  if (!match) return [fallback]
-  return match[1]!
-    .split(',')
-    .map((s) => s.trim().split(/\s+as\s+/).pop()!.replace(/^type\s+/, ''))
-    .filter((s) => /^[A-Z]/.test(s) && !s.endsWith('Props'))
+  const blocks = source ? [...source.matchAll(/export\s*\{([^}]+)\}/g)] : []
+  if (blocks.length === 0) return [fallback]
+  return blocks
+    .flatMap((block) => block[1]!.split(','))
+    .map((s) => s.trim())
+    .filter((s) => s && !s.startsWith('type '))
+    .map((s) => s.split(/\s+as\s+/).pop()!)
+    .filter((s) => !s.endsWith('Props'))
+}
+
+function CopyForAiButton({ item, usage }: { item: DocItem; usage: string[] }) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    const source = (await loadComponentSource(item.name)) ?? ''
+    const markdown = [
+      `# ${item.title} (denseui)`,
+      '',
+      item.description,
+      '',
+      '## Install',
+      '',
+      '```bash',
+      `npx denseui@latest add ${item.name}`,
+      '```',
+      '',
+      '## Usage',
+      '',
+      '```tsx',
+      `import { ${usage.join(', ')} } from "@/components/ui/${item.name}"`,
+      '```',
+      ...(item.demoSource ? ['', '## Example', '', '```tsx', item.demoSource.trim(), '```'] : []),
+      '',
+      `## Source: components/ui/${item.name}.tsx`,
+      '',
+      '```tsx',
+      source.trim(),
+      '```',
+      '',
+      'Design rules: https://github.com/Fanaperana/denseui/blob/main/packages/react/llm/guidelines.md',
+    ].join('\n')
+    await navigator.clipboard.writeText(markdown)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline" onClick={copy}>
+          {copied ? <CheckIcon /> : <SparklesIcon />} {copied ? 'Copied' : 'Copy for AI'}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Copy docs, example and source as markdown</TooltipContent>
+    </Tooltip>
+  )
 }
 
 function ManualInstall({ item }: { item: DocItem }) {
@@ -105,6 +155,7 @@ export function ComponentPage({ item }: { item: DocItem }) {
               <p className="text-lg text-muted-foreground">{item.description}</p>
             </div>
             <div className="flex gap-1">
+              <CopyForAiButton item={item} usage={usage} />
               {prev && (
                 <Tooltip>
                   <TooltipTrigger asChild>

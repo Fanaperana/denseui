@@ -16,5 +16,28 @@
       "type": "registry:ui",
       "content": "import * as React from 'react'\r\nimport { Menu } from '@ark-ui/react/menu'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Menubar({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div\r\n      role=\"menubar\"\r\n      data-slot=\"menubar\"\r\n      className={cn('flex w-fit items-center gap-px rounded-md border border-border bg-background p-0.5', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction MenubarMenu(props: Menu.RootProps) {\r\n  return <Menu.Root lazyMount unmountOnExit positioning={{ placement: 'bottom-start', gutter: 6 }} {...props} />\r\n}\r\n\r\nfunction MenubarTrigger({ className, ...props }: Menu.TriggerProps) {\r\n  return (\r\n    <Menu.Trigger\r\n      data-slot=\"menubar-trigger\"\r\n      className={cn(\r\n        'flex cursor-default items-center rounded-sm px-2.5 py-1 text-sm font-medium outline-none select-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Menubar, MenubarMenu, MenubarTrigger }\r\nexport {\r\n  DropdownMenuContent as MenubarContent,\r\n  DropdownMenuItem as MenubarItem,\r\n  DropdownMenuCheckboxItem as MenubarCheckboxItem,\r\n  DropdownMenuRadioGroup as MenubarRadioGroup,\r\n  DropdownMenuRadioItem as MenubarRadioItem,\r\n  DropdownMenuGroup as MenubarGroup,\r\n  DropdownMenuLabel as MenubarLabel,\r\n  DropdownMenuSeparator as MenubarSeparator,\r\n  DropdownMenuShortcut as MenubarShortcut,\r\n  DropdownMenuSub as MenubarSub,\r\n  DropdownMenuSubTrigger as MenubarSubTrigger,\r\n} from '@/components/ui/dropdown-menu'\r\n"
     }
-  ]
+  ],
+  "title": "Menubar",
+  "categories": [
+    "overlays"
+  ],
+  "docs": "# Menubar\n\nDesktop-style horizontal menu bar\n\n## Install\n\n```bash\nnpx denseui@latest add menubar\n```\n\nnpm dependencies: `@ark-ui/react`\n\nAlso installs: `dropdown-menu`\n\n## Usage\n\n```tsx\nimport { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem, MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem, MenubarGroup, MenubarLabel, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubTrigger } from \"@/components/ui/menubar\"\n```\n\n## Example\n\n```tsx\nimport { useState } from 'react'\r\nimport {\r\n  Menubar,\r\n  MenubarCheckboxItem,\r\n  MenubarContent,\r\n  MenubarItem,\r\n  MenubarMenu,\r\n  MenubarSeparator,\r\n  MenubarShortcut,\r\n  MenubarSub,\r\n  MenubarSubTrigger,\r\n  MenubarTrigger,\r\n} from '@/components/ui/menubar'\r\n\r\nexport default function MenubarDemo() {\r\n  const [showBookmarks, setShowBookmarks] = useState(true)\r\n\r\n  return (\r\n    <Menubar>\r\n      <MenubarMenu>\r\n        <MenubarTrigger>File</MenubarTrigger>\r\n        <MenubarContent>\r\n          <MenubarItem value=\"new-tab\">\r\n            New tab <MenubarShortcut>⌘T</MenubarShortcut>\r\n          </MenubarItem>\r\n          <MenubarItem value=\"new-window\">\r\n            New window <MenubarShortcut>⌘N</MenubarShortcut>\r\n          </MenubarItem>\r\n          <MenubarSeparator />\r\n          <MenubarSub>\r\n            <MenubarSubTrigger>Share</MenubarSubTrigger>\r\n            <MenubarContent>\r\n              <MenubarItem value=\"email\">Email link</MenubarItem>\r\n              <MenubarItem value=\"messages\">Messages</MenubarItem>\r\n            </MenubarContent>\r\n          </MenubarSub>\r\n          <MenubarSeparator />\r\n          <MenubarItem value=\"print\">\r\n            Print… <MenubarShortcut>⌘P</MenubarShortcut>\r\n          </MenubarItem>\r\n        </MenubarContent>\r\n      </MenubarMenu>\r\n      <MenubarMenu>\r\n        <MenubarTrigger>Edit</MenubarTrigger>\r\n        <MenubarContent>\r\n          <MenubarItem value=\"undo\">\r\n            Undo <MenubarShortcut>⌘Z</MenubarShortcut>\r\n          </MenubarItem>\r\n          <MenubarItem value=\"redo\">\r\n            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>\r\n          </MenubarItem>\r\n        </MenubarContent>\r\n      </MenubarMenu>\r\n      <MenubarMenu>\r\n        <MenubarTrigger>View</MenubarTrigger>\r\n        <MenubarContent>\r\n          <MenubarCheckboxItem value=\"bookmarks\" checked={showBookmarks} onCheckedChange={setShowBookmarks}>\r\n            Show bookmarks\r\n          </MenubarCheckboxItem>\r\n          <MenubarItem value=\"reload\" inset>\r\n            Reload <MenubarShortcut>⌘R</MenubarShortcut>\r\n          </MenubarItem>\r\n        </MenubarContent>\r\n      </MenubarMenu>\r\n    </Menubar>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Menubar",
+      "MenubarMenu",
+      "MenubarTrigger",
+      "MenubarContent",
+      "MenubarItem",
+      "MenubarCheckboxItem",
+      "MenubarRadioGroup",
+      "MenubarRadioItem",
+      "MenubarGroup",
+      "MenubarLabel",
+      "MenubarSeparator",
+      "MenubarShortcut",
+      "MenubarSub",
+      "MenubarSubTrigger"
+    ]
+  }
 }

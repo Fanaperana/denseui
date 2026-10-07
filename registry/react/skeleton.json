@@ -12,5 +12,15 @@
       "type": "registry:ui",
       "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Skeleton({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"skeleton\" className={cn('animate-pulse rounded-sm bg-accent-active', className)} {...props} />\r\n}\r\n\r\nexport { Skeleton }\r\n"
     }
-  ]
+  ],
+  "title": "Skeleton",
+  "categories": [
+    "data"
+  ],
+  "docs": "# Skeleton\n\nLoading placeholder\n\n## Install\n\n```bash\nnpx denseui@latest add skeleton\n```\n\n## Usage\n\n```tsx\nimport { Skeleton } from \"@/components/ui/skeleton\"\n```\n\n## Example\n\n```tsx\nimport { Skeleton } from '@/components/ui/skeleton'\r\n\r\nexport default function SkeletonDemo() {\r\n  return (\r\n    <div className=\"flex w-72 flex-col gap-2\">\r\n      <div className=\"flex items-center gap-2\">\r\n        <Skeleton className=\"size-5 rounded-full\" />\r\n        <Skeleton className=\"h-3 w-32\" />\r\n      </div>\r\n      <Skeleton className=\"h-3 w-full\" />\r\n      <Skeleton className=\"h-3 w-5/6\" />\r\n      <Skeleton className=\"h-3 w-2/3\" />\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Skeleton"
+    ]
+  }
 }

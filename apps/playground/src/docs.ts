@@ -7,6 +7,7 @@ import {
   BellIcon,
   BoldIcon,
   BookOpenIcon,
+  BotIcon,
   BoxIcon,
   CalendarDaysIcon,
   CalendarIcon,
@@ -168,6 +169,7 @@ export const guides = [
   { slug: 'installation', title: 'Installation', icon: DownloadIcon, href: '#/docs/installation' },
   { slug: 'theming', title: 'Theming', icon: PaletteIcon, href: '#/docs/theming' },
   { slug: 'cli', title: 'CLI', icon: TerminalIcon, href: '#/docs/cli' },
+  { slug: 'ai', title: 'AI & MCP', icon: BotIcon, href: '#/docs/ai' },
 ] as const
 
 export const examples = [{ slug: 'notion', title: 'Workspace page', icon: LayoutTemplateIcon, href: '#/examples/notion' }]

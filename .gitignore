@@ -13,6 +13,7 @@ dist-ssr
 *.local
 packages/cli/registry
 .playwright-mcp
+apps/playground/public/llms*.txt
 
 # Editor directories and files
 .vscode/*

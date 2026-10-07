@@ -49,6 +49,7 @@ denseui is built around a few strict rules:
 - 🏷️ **10-color tag palette**: `bg-tag-*-bg` / `text-tag-*` for labels, statuses and badges
 - 🔤 **Inter-tuned metrics**: with a metric-matched fallback so text stays centered without webfonts
 - 🧭 **Framework-ready architecture**: tokens and state machines are shared, so Vue, Svelte and Solid are next
+- 🤖 **AI-native**: built-in MCP server, `llms.txt`, and machine-readable docs with examples for every component
 
 ## Quick start
 
@@ -79,8 +80,42 @@ export default function App() {
 | `denseui add <names…>` | Copy components plus their registry and npm dependencies (`--all`, `--overwrite`, `--yes`) |
 | `denseui list` | Show available components; installed ones are highlighted |
 | `denseui diff <name>` | Compare your local copy with the latest registry version |
+| `denseui mcp` | Start the MCP server (stdio) for AI assistants |
+| `denseui mcp init --client <c>` | Add the server to `vscode`, `cursor` or `claude` config |
 
 The CLI has **zero runtime dependencies**, validates every registry payload, refuses path traversal, and only installs well-formed package names.
+
+## Use with AI (MCP & llms.txt)
+
+denseui ships a [Model Context Protocol](https://modelcontextprotocol.io) server inside the CLI, so assistants like Copilot, Cursor and Claude can search the registry, read component APIs and examples, follow the design rules, and install components with the right command.
+
+```bash
+npx denseui@latest mcp init --client vscode   # or: cursor | claude
+```
+
+<details>
+<summary>Manual configuration</summary>
+
+```jsonc
+// .vscode/mcp.json
+{ "servers": { "denseui": { "type": "stdio", "command": "npx", "args": ["-y", "denseui@latest", "mcp"] } } }
+
+// .cursor/mcp.json  or  .mcp.json (Claude Code)
+{ "mcpServers": { "denseui": { "command": "npx", "args": ["-y", "denseui@latest", "mcp"] } } }
+```
+
+</details>
+
+| Tool | What the assistant gets |
+| --- | --- |
+| `list_components` | Search by name, description, category or exported symbol |
+| `get_component` | Install command, dependencies, exported API, full example, optional source |
+| `get_add_command` | The exact command plus every component and npm package it installs |
+| `get_design_guidelines` | Density, spacing, color tokens and component-choice rules |
+| `get_theme` | All CSS variables and theme values |
+| `get_project_setup` | Whether the project is initialized, its paths and installed components |
+
+No MCP? Point the model at [`registry/llms.txt`](registry/llms.txt) or [`registry/llms-full.txt`](registry/llms-full.txt), or use the **Copy for AI** button on any component page. Contributors' agents read [`AGENTS.md`](AGENTS.md).
 
 ## Components
 
@@ -215,6 +250,7 @@ Adding a component:
 - [x] React: 55 components
 - [x] CLI with registry, diff and dependency resolution
 - [x] Docs site with live previews and ⌘K search
+- [x] MCP server, llms.txt and AI-ready docs
 - [ ] Publish `denseui` CLI and `@denseui/tokens` to npm
 - [ ] Vue, Svelte and Solid (same tokens, same Ark UI state machines)
 - [ ] Charts and form integration

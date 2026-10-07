@@ -15,5 +15,18 @@
       "type": "registry:ui",
       "content": "import * as React from 'react'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst buttonGroupVariants = cva(\r\n  \"flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-1.5 [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit\",\r\n  {\r\n    variants: {\r\n      orientation: {\r\n        horizontal:\r\n          '[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none',\r\n        vertical:\r\n          'flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none',\r\n      },\r\n    },\r\n    defaultVariants: { orientation: 'horizontal' },\r\n  },\r\n)\r\n\r\nfunction ButtonGroup({\r\n  className,\r\n  orientation,\r\n  ...props\r\n}: React.ComponentProps<'div'> & VariantProps<typeof buttonGroupVariants>) {\r\n  return (\r\n    <div\r\n      role=\"group\"\r\n      data-slot=\"button-group\"\r\n      data-orientation={orientation ?? 'horizontal'}\r\n      className={cn(buttonGroupVariants({ orientation }), className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction ButtonGroupText({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div\r\n      data-slot=\"button-group-text\"\r\n      className={cn(\r\n        \"flex items-center gap-1.5 rounded-sm border border-input bg-muted px-2 text-sm text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5\",\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction ButtonGroupSeparator({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"button-group-separator\" aria-hidden className={cn('w-px self-stretch bg-input', className)} {...props} />\r\n}\r\n\r\nexport { ButtonGroup, ButtonGroupText, ButtonGroupSeparator, buttonGroupVariants }\r\n"
     }
-  ]
+  ],
+  "title": "Button Group",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Button Group\n\nJoins related buttons into one control\n\n## Install\n\n```bash\nnpx denseui@latest add button-group\n```\n\nnpm dependencies: `class-variance-authority`\n\n## Usage\n\n```tsx\nimport { ButtonGroup, ButtonGroupText, ButtonGroupSeparator, buttonGroupVariants } from \"@/components/ui/button-group\"\n```\n\n## Example\n\n```tsx\nimport { ArchiveIcon, ChevronDownIcon, ClockIcon, ReplyIcon } from 'lucide-react'\r\nimport { Button } from '@/components/ui/button'\r\nimport { ButtonGroup, ButtonGroupText } from '@/components/ui/button-group'\r\nimport { Input } from '@/components/ui/input'\r\n\r\nexport default function ButtonGroupDemo() {\r\n  return (\r\n    <div className=\"flex flex-col items-center gap-3\">\r\n      <ButtonGroup>\r\n        <ButtonGroup>\r\n          <Button variant=\"outline\">\r\n            <ArchiveIcon /> Archive\r\n          </Button>\r\n          <Button variant=\"outline\">\r\n            <ClockIcon /> Snooze\r\n          </Button>\r\n        </ButtonGroup>\r\n        <ButtonGroup>\r\n          <Button variant=\"outline\">\r\n            <ReplyIcon /> Reply\r\n          </Button>\r\n          <Button variant=\"outline\" size=\"icon\" aria-label=\"More\">\r\n            <ChevronDownIcon />\r\n          </Button>\r\n        </ButtonGroup>\r\n      </ButtonGroup>\r\n      <ButtonGroup>\r\n        <ButtonGroupText>https://</ButtonGroupText>\r\n        <Input placeholder=\"denseui.dev\" className=\"w-40\" />\r\n        <Button>Go</Button>\r\n      </ButtonGroup>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "ButtonGroup",
+      "ButtonGroupText",
+      "ButtonGroupSeparator",
+      "buttonGroupVariants"
+    ]
+  }
 }
