@@ -1,0 +1,19 @@
+{
+  "name": "@denseui/tokens",
+  "version": "0.0.1",
+  "description": "Ultra-dense, Notion-style design tokens for Tailwind CSS v4",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "style": "./src/index.css",
+      "default": "./src/index.css"
+    },
+    "./*": "./src/*"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  }
+}

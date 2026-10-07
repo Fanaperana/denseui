@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field",
+  "type": "registry:ui",
+  "description": "Form field layout with label, description and error",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils",
+    "label"
+  ],
+  "files": [
+    {
+      "path": "components/ui/field.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { Label } from '@/components/ui/label'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction FieldSet({ className, ...props }: React.ComponentProps<'fieldset'>) {\r\n  return <fieldset data-slot=\"field-set\" className={cn('flex flex-col gap-3', className)} {...props} />\r\n}\r\n\r\nfunction FieldLegend({ className, ...props }: React.ComponentProps<'legend'>) {\r\n  return <legend data-slot=\"field-legend\" className={cn('mb-1 text-lg font-medium', className)} {...props} />\r\n}\r\n\r\nfunction FieldGroup({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"field-group\" className={cn('flex w-full flex-col gap-3', className)} {...props} />\r\n}\r\n\r\nconst fieldVariants = cva('group/field flex w-full gap-1 data-[invalid=true]:text-destructive', {\r\n  variants: {\r\n    orientation: {\r\n      vertical: 'flex-col',\r\n      horizontal: 'flex-row items-center gap-2 [&>[data-slot=field-label]]:flex-auto',\r\n    },\r\n  },\r\n  defaultVariants: { orientation: 'vertical' },\r\n})\r\n\r\nfunction Field({ className, orientation, ...props }: React.ComponentProps<'div'> & VariantProps<typeof fieldVariants>) {\r\n  return (\r\n    <div\r\n      role=\"group\"\r\n      data-slot=\"field\"\r\n      data-orientation={orientation ?? 'vertical'}\r\n      className={cn(fieldVariants({ orientation }), className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction FieldContent({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"field-content\" className={cn('flex flex-1 flex-col gap-0.5', className)} {...props} />\r\n}\r\n\r\nfunction FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {\r\n  return (\r\n    <Label\r\n      data-slot=\"field-label\"\r\n      className={cn('group-data-[disabled=true]/field:opacity-50 group-data-[invalid=true]/field:text-destructive', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction FieldDescription({ className, ...props }: React.ComponentProps<'p'>) {\r\n  return (\r\n    <p\r\n      data-slot=\"field-description\"\r\n      className={cn('text-xs text-subtle-foreground [&>a]:underline [&>a]:underline-offset-2', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction FieldError({ className, children, ...props }: React.ComponentProps<'div'>) {\r\n  if (!children) return null\r\n  return (\r\n    <div role=\"alert\" data-slot=\"field-error\" className={cn('text-xs text-destructive', className)} {...props}>\r\n      {children}\r\n    </div>\r\n  )\r\n}\r\n\r\nfunction FieldSeparator({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"field-separator\" className={cn('my-1 h-px w-full bg-border', className)} {...props} />\r\n}\r\n\r\nexport {\r\n  Field,\r\n  FieldContent,\r\n  FieldDescription,\r\n  FieldError,\r\n  FieldGroup,\r\n  FieldLabel,\r\n  FieldLegend,\r\n  FieldSeparator,\r\n  FieldSet,\r\n}\r\n"
+    }
+  ]
+}

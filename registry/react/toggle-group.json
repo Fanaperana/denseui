@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-group",
+  "type": "registry:ui",
+  "description": "Set of toggles, single or multiple selection",
+  "dependencies": [
+    "@ark-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils",
+    "toggle"
+  ],
+  "files": [
+    {
+      "path": "components/ui/toggle-group.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { ToggleGroup as ArkToggleGroup } from '@ark-ui/react/toggle-group'\r\nimport { type VariantProps } from 'class-variance-authority'\r\nimport { toggleVariants } from '@/components/ui/toggle'\r\nimport { cn } from '@/lib/utils'\r\n\r\ntype ToggleVariants = VariantProps<typeof toggleVariants>\r\n\r\nconst ToggleGroupContext = React.createContext<ToggleVariants>({})\r\n\r\nfunction ToggleGroup({ className, variant, size, children, ...props }: ArkToggleGroup.RootProps & ToggleVariants) {\r\n  return (\r\n    <ArkToggleGroup.Root\r\n      data-slot=\"toggle-group\"\r\n      data-variant={variant}\r\n      className={cn(\r\n        'flex w-fit items-center gap-px rounded-md data-[variant=outline]:gap-0 data-[variant=outline]:*:rounded-none data-[variant=outline]:*:first:rounded-l-sm data-[variant=outline]:*:last:rounded-r-sm data-[variant=outline]:*:not-first:border-l-0',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <ToggleGroupContext.Provider value={{ variant, size }}>{children}</ToggleGroupContext.Provider>\r\n    </ArkToggleGroup.Root>\r\n  )\r\n}\r\n\r\nfunction ToggleGroupItem({ className, variant, size, ...props }: ArkToggleGroup.ItemProps & ToggleVariants) {\r\n  const context = React.useContext(ToggleGroupContext)\r\n  return (\r\n    <ArkToggleGroup.Item\r\n      data-slot=\"toggle-group-item\"\r\n      className={cn(\r\n        toggleVariants({ variant: context.variant ?? variant, size: context.size ?? size }),\r\n        'focus-visible:z-10',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { ToggleGroup, ToggleGroupItem }\r\n"
+    }
+  ]
+}

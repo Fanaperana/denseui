@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "description": "Muted form label",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/label.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Label({ className, ...props }: React.ComponentProps<'label'>) {\r\n  return (\r\n    <label\r\n      data-slot=\"label\"\r\n      className={cn(\r\n        'inline-flex select-none items-center gap-1.5 text-xs font-medium text-muted-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-50',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Label }\r\n"
+    }
+  ]
+}

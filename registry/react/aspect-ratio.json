@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "aspect-ratio",
+  "type": "registry:ui",
+  "description": "Keeps content at a fixed ratio",
+  "files": [
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\n\r\ntype AspectRatioProps = React.ComponentProps<'div'> & { ratio?: number }\r\n\r\nfunction AspectRatio({ ratio = 1, style, ...props }: AspectRatioProps) {\r\n  return <div data-slot=\"aspect-ratio\" style={{ aspectRatio: ratio, ...style }} {...props} />\r\n}\r\n\r\nexport { AspectRatio }\r\n"
+    }
+  ]
+}

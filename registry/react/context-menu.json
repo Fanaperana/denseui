@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "context-menu",
+  "type": "registry:ui",
+  "description": "Menu opened by right-click",
+  "registryDependencies": [
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "components/ui/context-menu.tsx",
+      "type": "registry:ui",
+      "content": "export {\r\n  DropdownMenu as ContextMenu,\r\n  ContextMenuTrigger,\r\n  DropdownMenuContent as ContextMenuContent,\r\n  DropdownMenuItem as ContextMenuItem,\r\n  DropdownMenuCheckboxItem as ContextMenuCheckboxItem,\r\n  DropdownMenuRadioGroup as ContextMenuRadioGroup,\r\n  DropdownMenuRadioItem as ContextMenuRadioItem,\r\n  DropdownMenuGroup as ContextMenuGroup,\r\n  DropdownMenuLabel as ContextMenuLabel,\r\n  DropdownMenuSeparator as ContextMenuSeparator,\r\n  DropdownMenuShortcut as ContextMenuShortcut,\r\n  DropdownMenuSub as ContextMenuSub,\r\n  DropdownMenuSubTrigger as ContextMenuSubTrigger,\r\n} from '@/components/ui/dropdown-menu'\r\n"
+    }
+  ]
+}

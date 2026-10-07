@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "description": "Hairline divider",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/separator.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\ntype SeparatorProps = React.ComponentProps<'div'> & {\r\n  orientation?: 'horizontal' | 'vertical'\r\n  decorative?: boolean\r\n}\r\n\r\nfunction Separator({ className, orientation = 'horizontal', decorative = true, ...props }: SeparatorProps) {\r\n  return (\r\n    <div\r\n      data-slot=\"separator\"\r\n      data-orientation={orientation}\r\n      role={decorative ? 'none' : 'separator'}\r\n      aria-orientation={decorative ? undefined : orientation}\r\n      className={cn(\r\n        'shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Separator }\r\n"
+    }
+  ]
+}

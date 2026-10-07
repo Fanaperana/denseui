@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "carousel",
+  "type": "registry:ui",
+  "description": "Swipeable slides with controls and indicators",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/ui/carousel.tsx",
+      "type": "registry:ui",
+      "content": "import { Carousel as ArkCarousel } from '@ark-ui/react/carousel'\r\nimport { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'\r\nimport { buttonVariants } from '@/components/ui/button'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Carousel({ className, ...props }: ArkCarousel.RootProps) {\r\n  return <ArkCarousel.Root data-slot=\"carousel\" className={cn('relative', className)} {...props} />\r\n}\r\n\r\nfunction CarouselContent({ className, ...props }: ArkCarousel.ItemGroupProps) {\r\n  return (\r\n    <ArkCarousel.ItemGroup data-slot=\"carousel-content\" className={cn('rounded-lg', className)} {...props} />\r\n  )\r\n}\r\n\r\nfunction CarouselItem({ className, ...props }: ArkCarousel.ItemProps) {\r\n  return <ArkCarousel.Item data-slot=\"carousel-item\" className={cn('min-w-0', className)} {...props} />\r\n}\r\n\r\nconst navClass = cn(\r\n  buttonVariants({ variant: 'outline', size: 'icon' }),\r\n  'absolute top-1/2 -translate-y-1/2 rounded-full bg-popover shadow-sm disabled:opacity-0',\r\n)\r\n\r\nfunction CarouselPrevious({ className, ...props }: ArkCarousel.PrevTriggerProps) {\r\n  return (\r\n    <ArkCarousel.PrevTrigger\r\n      data-slot=\"carousel-previous\"\r\n      aria-label=\"Previous slide\"\r\n      className={cn(navClass, 'left-2', className)}\r\n      {...props}\r\n    >\r\n      <ChevronLeftIcon />\r\n    </ArkCarousel.PrevTrigger>\r\n  )\r\n}\r\n\r\nfunction CarouselNext({ className, ...props }: ArkCarousel.NextTriggerProps) {\r\n  return (\r\n    <ArkCarousel.NextTrigger\r\n      data-slot=\"carousel-next\"\r\n      aria-label=\"Next slide\"\r\n      className={cn(navClass, 'right-2', className)}\r\n      {...props}\r\n    >\r\n      <ChevronRightIcon />\r\n    </ArkCarousel.NextTrigger>\r\n  )\r\n}\r\n\r\nfunction CarouselIndicators({ className, ...props }: ArkCarousel.IndicatorGroupProps) {\r\n  return (\r\n    <ArkCarousel.IndicatorGroup\r\n      data-slot=\"carousel-indicators\"\r\n      className={cn('mt-2 flex justify-center gap-1', className)}\r\n      {...props}\r\n    >\r\n      <ArkCarousel.Context>\r\n        {(api) =>\r\n          api.pageSnapPoints.map((_, index) => (\r\n            <ArkCarousel.Indicator\r\n              key={index}\r\n              index={index}\r\n              className=\"h-1.5 w-1.5 rounded-full bg-foreground/20 transition-all data-current:w-3 data-current:bg-foreground\"\r\n            />\r\n          ))\r\n        }\r\n      </ArkCarousel.Context>\r\n    </ArkCarousel.IndicatorGroup>\r\n  )\r\n}\r\n\r\nexport { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselIndicators }\r\n"
+    }
+  ]
+}

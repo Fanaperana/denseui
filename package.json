@@ -1,0 +1,17 @@
+{
+  "name": "denseui-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @denseui/playground dev",
+    "registry:build": "node scripts/build-registry.mjs",
+    "build": "pnpm registry:build && pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "oxlint": "^1.81.0",
+    "typescript": "~6.0.2"
+  }
+}

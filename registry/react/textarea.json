@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "type": "registry:ui",
+  "description": "Auto-growing textarea",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/textarea.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Textarea({ className, ...props }: React.ComponentProps<'textarea'>) {\r\n  return (\r\n    <textarea\r\n      data-slot=\"textarea\"\r\n      className={cn(\r\n        'flex field-sizing-content min-h-12 w-full rounded-sm border border-input bg-input-background px-2 py-1 text-sm text-foreground outline-none transition-[border-color,box-shadow] duration-75 placeholder:text-subtle-foreground focus-visible:border-brand/60 focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive/60 aria-invalid:ring-destructive/20',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Textarea }\r\n"
+    }
+  ]
+}

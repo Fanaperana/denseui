@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-otp",
+  "type": "registry:ui",
+  "description": "One-time password input",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/input-otp.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { PinInput } from '@ark-ui/react/pin-input'\r\nimport { MinusIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction InputOTP({ className, children, ...props }: PinInput.RootProps) {\r\n  return (\r\n    <PinInput.Root data-slot=\"input-otp\" otp {...props}>\r\n      <PinInput.Control className={cn('flex items-center gap-2 has-data-disabled:opacity-50', className)}>\r\n        {children}\r\n      </PinInput.Control>\r\n      <PinInput.HiddenInput />\r\n    </PinInput.Root>\r\n  )\r\n}\r\n\r\nfunction InputOTPGroup({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"input-otp-group\" className={cn('flex items-center', className)} {...props} />\r\n}\r\n\r\nfunction InputOTPSlot({ className, ...props }: PinInput.InputProps) {\r\n  return (\r\n    <PinInput.Input\r\n      data-slot=\"input-otp-slot\"\r\n      className={cn(\r\n        'relative -ml-px size-7 border border-input bg-input-background text-center text-sm text-foreground outline-none transition-[border-color,box-shadow] duration-75 first:ml-0 first:rounded-l-sm last:rounded-r-sm placeholder:text-subtle-foreground focus:z-10 focus:border-brand/60 focus:ring-2 focus:ring-ring aria-invalid:border-destructive/60 data-invalid:border-destructive/60',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction InputOTPSeparator(props: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div data-slot=\"input-otp-separator\" role=\"separator\" className=\"text-subtle-foreground\" {...props}>\r\n      <MinusIcon className=\"size-3\" />\r\n    </div>\r\n  )\r\n}\r\n\r\nexport { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }\r\n"
+    }
+  ]
+}

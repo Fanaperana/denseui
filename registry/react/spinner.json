@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "description": "Loading spinner",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/spinner.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { LoaderCircleIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Spinner({ className, ...props }: React.ComponentProps<'svg'>) {\r\n  return (\r\n    <LoaderCircleIcon\r\n      data-slot=\"spinner\"\r\n      role=\"status\"\r\n      aria-label=\"Loading\"\r\n      className={cn('size-3.5 animate-spin text-muted-foreground', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Spinner }\r\n"
+    }
+  ]
+}

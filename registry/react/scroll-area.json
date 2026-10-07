@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "type": "registry:ui",
+  "description": "Custom overlay scrollbars",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "type": "registry:ui",
+      "content": "import { ScrollArea as ArkScrollArea } from '@ark-ui/react/scroll-area'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction ScrollArea({ className, children, ...props }: ArkScrollArea.RootProps) {\r\n  return (\r\n    <ArkScrollArea.Root data-slot=\"scroll-area\" className={cn('relative overflow-hidden', className)} {...props}>\r\n      <ArkScrollArea.Viewport className=\"size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring\">\r\n        <ArkScrollArea.Content>{children}</ArkScrollArea.Content>\r\n      </ArkScrollArea.Viewport>\r\n      <ScrollBar />\r\n      <ScrollBar orientation=\"horizontal\" />\r\n      <ArkScrollArea.Corner />\r\n    </ArkScrollArea.Root>\r\n  )\r\n}\r\n\r\nfunction ScrollBar({ className, orientation = 'vertical', ...props }: ArkScrollArea.ScrollbarProps) {\r\n  return (\r\n    <ArkScrollArea.Scrollbar\r\n      data-slot=\"scroll-area-scrollbar\"\r\n      orientation={orientation}\r\n      className={cn(\r\n        'flex touch-none p-px opacity-0 transition-opacity duration-150 select-none data-hover:opacity-100 data-scrolling:opacity-100 data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:flex-col data-[orientation=vertical]:w-2',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <ArkScrollArea.Thumb className=\"relative flex-1 rounded-full bg-foreground/20 hover:bg-foreground/35\" />\r\n    </ArkScrollArea.Scrollbar>\r\n  )\r\n}\r\n\r\nexport { ScrollArea, ScrollBar }\r\n"
+    }
+  ]
+}

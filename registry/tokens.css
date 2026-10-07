@@ -1,0 +1,364 @@
+/* DenseUI tokens — generated, edit freely */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Arial resized to Inter's metrics; system UI fonts like Segoe sit low in the line box and look off-center */
+@font-face {
+  font-family: "DenseUI Fallback";
+  src: local("Arial");
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #111113;
+  --muted: #f6f6f7;
+  --muted-foreground: #5d5d66;
+  --subtle-foreground: #9a9aa3;
+  --accent: rgba(17, 17, 19, 0.05);
+  --accent-active: rgba(17, 17, 19, 0.09);
+  --accent-foreground: #111113;
+  --popover: #ffffff;
+  --popover-foreground: #111113;
+  --card: #ffffff;
+  --card-foreground: #111113;
+  --border: #e6e6e9;
+  --input: #dcdce1;
+  --input-background: #ffffff;
+  --brand: #5b5bd6;
+  --brand-foreground: #ffffff;
+  --ring: rgba(91, 91, 214, 0.32);
+  --primary: #18181b;
+  --primary-hover: #2e2e33;
+  --primary-foreground: #fafafa;
+  --destructive: #e5484d;
+  --destructive-foreground: #ffffff;
+  --success: #2b9a66;
+  --warning: #d97706;
+  --tooltip: #18181b;
+  --tooltip-foreground: #fafafa;
+  --selection: rgba(91, 91, 214, 0.22);
+  --scrollbar: rgba(17, 17, 19, 0.18);
+  --popover-shadow: 0 0 0 1px rgba(17, 17, 19, 0.06), 0 4px 12px -2px rgba(17, 17, 19, 0.1),
+    0 12px 32px -4px rgba(17, 17, 19, 0.12);
+  --dialog-shadow: 0 0 0 1px rgba(17, 17, 19, 0.06), 0 8px 20px -4px rgba(17, 17, 19, 0.14),
+    0 24px 64px -8px rgba(17, 17, 19, 0.2);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0b0b0d;
+  --foreground: #ededf0;
+  --muted: #121215;
+  --muted-foreground: #a0a0aa;
+  --subtle-foreground: #6c6c76;
+  --accent: rgba(255, 255, 255, 0.06);
+  --accent-active: rgba(255, 255, 255, 0.1);
+  --accent-foreground: #ededf0;
+  --popover: #17171a;
+  --popover-foreground: #ededf0;
+  --card: #121215;
+  --card-foreground: #ededf0;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.11);
+  --input-background: #111114;
+  --brand: #7c7cf0;
+  --brand-foreground: #ffffff;
+  --ring: rgba(124, 124, 240, 0.4);
+  --primary: #f4f4f5;
+  --primary-hover: #dcdce0;
+  --primary-foreground: #111113;
+  --destructive: #f0575c;
+  --destructive-foreground: #ffffff;
+  --success: #3dd68c;
+  --warning: #f5a524;
+  --tooltip: #f4f4f5;
+  --tooltip-foreground: #111113;
+  --selection: rgba(124, 124, 240, 0.32);
+  --scrollbar: rgba(255, 255, 255, 0.14);
+  --popover-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.4),
+    0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --dialog-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 20px -4px rgba(0, 0, 0, 0.5),
+    0 24px 64px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* Opaque hovers for elements that have their own background; translucent --accent would let content show through */
+:root,
+.dark {
+  --surface-hover: color-mix(in oklab, var(--background), var(--foreground) 5%);
+  --surface-active: color-mix(in oklab, var(--background), var(--foreground) 9%);
+  --brand-hover: color-mix(in oklab, var(--brand), black 10%);
+  --destructive-hover: color-mix(in oklab, var(--destructive), black 10%);
+  --destructive-surface-hover: color-mix(in oklab, var(--background), var(--destructive) 10%);
+}
+
+@theme {
+  --font-sans: "Inter Variable", Inter, "DenseUI Fallback", ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Ultra-dense type scale; xl and above keep Tailwind defaults for headings */
+  --text-xs: 11px;
+  --text-xs--line-height: 16px;
+  --text-sm: 12px;
+  /* Odd on purpose: with Inter at 12px an even line-height snaps the baseline ~0.8px high in its box */
+  --text-sm--line-height: 17px;
+  --text-base: 13px;
+  --text-base--line-height: 20px;
+  --text-lg: 14px;
+  --text-lg--line-height: 20px;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 5px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  --animate-in: dui-enter 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-out: dui-exit 90ms ease-in forwards;
+  --animate-fade-in: dui-fade-in 140ms ease-out;
+  --animate-fade-out: dui-fade-out 90ms ease-in forwards;
+  --animate-collapsible-down: dui-collapsible-down 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-collapsible-up: dui-collapsible-up 120ms ease-in forwards;
+  --animate-slide-in-right: dui-slide-in-right 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-out-right: dui-slide-out-right 140ms ease-in forwards;
+  --animate-slide-in-left: dui-slide-in-left 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-out-left: dui-slide-out-left 140ms ease-in forwards;
+  --animate-slide-in-top: dui-slide-in-top 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-out-top: dui-slide-out-top 140ms ease-in forwards;
+  --animate-slide-in-bottom: dui-slide-in-bottom 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-out-bottom: dui-slide-out-bottom 140ms ease-in forwards;
+
+  @keyframes dui-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  @keyframes dui-exit {
+    to {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  @keyframes dui-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes dui-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes dui-collapsible-down {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--height);
+    }
+  }
+  @keyframes dui-collapsible-up {
+    from {
+      height: var(--height);
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes dui-slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes dui-slide-out-right {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes dui-slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes dui-slide-out-left {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes dui-slide-in-top {
+    from {
+      transform: translateY(-100%);
+    }
+  }
+  @keyframes dui-slide-out-top {
+    to {
+      transform: translateY(-100%);
+    }
+  }
+  @keyframes dui-slide-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes dui-slide-out-bottom {
+    to {
+      transform: translateY(100%);
+    }
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-accent: var(--accent);
+  --color-accent-active: var(--accent-active);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-brand-hover: var(--brand-hover);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-surface-hover: var(--destructive-surface-hover);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-tooltip: var(--tooltip);
+  --color-tooltip-foreground: var(--tooltip-foreground);
+  --shadow-popover: var(--popover-shadow);
+  --shadow-dialog: var(--dialog-shadow);
+}
+
+/* 10-color tag palette: `text-tag-<c>` for colored text, `bg-tag-<c>-bg` for tinted surfaces */
+:root {
+  --tag-default: #1c1c21;
+  --tag-default-bg: #efeff2;
+  --tag-gray: #5f606a;
+  --tag-gray-bg: #e8e8ec;
+  --tag-brown: #8a5a3c;
+  --tag-brown-bg: #f3e9e1;
+  --tag-orange: #c2410c;
+  --tag-orange-bg: #ffedd5;
+  --tag-yellow: #946200;
+  --tag-yellow-bg: #fdf3c4;
+  --tag-green: #1f7a4f;
+  --tag-green-bg: #dcf3e6;
+  --tag-blue: #1e63c4;
+  --tag-blue-bg: #e0edff;
+  --tag-purple: #6e46c0;
+  --tag-purple-bg: #eee8fd;
+  --tag-pink: #b8306f;
+  --tag-pink-bg: #fce7f1;
+  --tag-red: #c4262c;
+  --tag-red-bg: #fde4e4;
+}
+
+.dark {
+  --tag-default: #e4e4e8;
+  --tag-default-bg: #222227;
+  --tag-gray: #b4b4bd;
+  --tag-gray-bg: #26262c;
+  --tag-brown: #d9b08f;
+  --tag-brown-bg: #2c221c;
+  --tag-orange: #ffa45c;
+  --tag-orange-bg: #33200f;
+  --tag-yellow: #f2d15c;
+  --tag-yellow-bg: #2e2708;
+  --tag-green: #5fd99c;
+  --tag-green-bg: #12291e;
+  --tag-blue: #7ab6ff;
+  --tag-blue-bg: #0f2342;
+  --tag-purple: #b99cff;
+  --tag-purple-bg: #251b3d;
+  --tag-pink: #ff8fc4;
+  --tag-pink-bg: #351627;
+  --tag-red: #ff8f8c;
+  --tag-red-bg: #3a1416;
+}
+
+@theme inline {
+  --color-tag-default: var(--tag-default);
+  --color-tag-default-bg: var(--tag-default-bg);
+  --color-tag-gray: var(--tag-gray);
+  --color-tag-gray-bg: var(--tag-gray-bg);
+  --color-tag-brown: var(--tag-brown);
+  --color-tag-brown-bg: var(--tag-brown-bg);
+  --color-tag-orange: var(--tag-orange);
+  --color-tag-orange-bg: var(--tag-orange-bg);
+  --color-tag-yellow: var(--tag-yellow);
+  --color-tag-yellow-bg: var(--tag-yellow-bg);
+  --color-tag-green: var(--tag-green);
+  --color-tag-green-bg: var(--tag-green-bg);
+  --color-tag-blue: var(--tag-blue);
+  --color-tag-blue-bg: var(--tag-blue-bg);
+  --color-tag-purple: var(--tag-purple);
+  --color-tag-purple-bg: var(--tag-purple-bg);
+  --color-tag-pink: var(--tag-pink);
+  --color-tag-pink-bg: var(--tag-pink-bg);
+  --color-tag-red: var(--tag-red);
+  --color-tag-red-bg: var(--tag-red-bg);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  ::selection {
+    background-color: var(--selection);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar) transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

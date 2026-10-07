@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dialog",
+  "type": "registry:ui",
+  "description": "Modal dialog",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/dialog.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { Dialog as ArkDialog } from '@ark-ui/react/dialog'\r\nimport { Portal } from '@ark-ui/react/portal'\r\nimport { XIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Dialog(props: ArkDialog.RootProps) {\r\n  return <ArkDialog.Root lazyMount unmountOnExit {...props} />\r\n}\r\n\r\nfunction DialogTrigger(props: ArkDialog.TriggerProps) {\r\n  return <ArkDialog.Trigger data-slot=\"dialog-trigger\" {...props} />\r\n}\r\n\r\nfunction DialogClose(props: ArkDialog.CloseTriggerProps) {\r\n  return <ArkDialog.CloseTrigger data-slot=\"dialog-close\" {...props} />\r\n}\r\n\r\ntype DialogContentProps = ArkDialog.ContentProps & { showClose?: boolean }\r\n\r\nfunction DialogContent({ className, children, showClose = true, ...props }: DialogContentProps) {\r\n  return (\r\n    <Portal>\r\n      <ArkDialog.Backdrop className=\"fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in dark:bg-black/60\" />\r\n      <ArkDialog.Positioner className=\"fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-[12vh]\">\r\n        <ArkDialog.Content\r\n          data-slot=\"dialog-content\"\r\n          className={cn(\r\n            'relative flex w-full max-w-md flex-col gap-3 rounded-lg bg-popover px-4 py-3 text-sm text-popover-foreground shadow-dialog outline-none data-[state=closed]:animate-out data-[state=open]:animate-in',\r\n            className,\r\n          )}\r\n          {...props}\r\n        >\r\n          {children}\r\n          {showClose && (\r\n            <ArkDialog.CloseTrigger\r\n              aria-label=\"Close\"\r\n              className=\"absolute top-2.5 right-3 inline-flex size-5 items-center justify-center rounded-sm text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring\"\r\n            >\r\n              <XIcon className=\"size-3.5\" />\r\n            </ArkDialog.CloseTrigger>\r\n          )}\r\n        </ArkDialog.Content>\r\n      </ArkDialog.Positioner>\r\n    </Portal>\r\n  )\r\n}\r\n\r\nfunction DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"dialog-header\" className={cn('flex flex-col gap-0.5 pr-6', className)} {...props} />\r\n}\r\n\r\nfunction DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div data-slot=\"dialog-footer\" className={cn('flex items-center justify-end gap-1.5', className)} {...props} />\r\n  )\r\n}\r\n\r\nfunction DialogTitle({ className, ...props }: ArkDialog.TitleProps) {\r\n  return <ArkDialog.Title data-slot=\"dialog-title\" className={cn('text-lg font-semibold', className)} {...props} />\r\n}\r\n\r\nfunction DialogDescription({ className, ...props }: ArkDialog.DescriptionProps) {\r\n  return (\r\n    <ArkDialog.Description\r\n      data-slot=\"dialog-description\"\r\n      className={cn('text-sm text-muted-foreground', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport {\r\n  Dialog,\r\n  DialogTrigger,\r\n  DialogClose,\r\n  DialogContent,\r\n  DialogHeader,\r\n  DialogFooter,\r\n  DialogTitle,\r\n  DialogDescription,\r\n}\r\n"
+    }
+  ]
+}

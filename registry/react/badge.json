@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "description": "Colored tag using the 10-color palette",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/badge.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst badgeVariants = cva(\r\n  'inline-flex max-w-full shrink-0 items-center gap-1 truncate rounded-sm px-1.5 py-0.5 text-xs leading-[14px] whitespace-nowrap [&_svg]:size-3',\r\n  {\r\n    variants: {\r\n      color: {\r\n        default: 'bg-tag-default-bg text-tag-default',\r\n        gray: 'bg-tag-gray-bg text-tag-gray',\r\n        brown: 'bg-tag-brown-bg text-tag-brown',\r\n        orange: 'bg-tag-orange-bg text-tag-orange',\r\n        yellow: 'bg-tag-yellow-bg text-tag-yellow',\r\n        green: 'bg-tag-green-bg text-tag-green',\r\n        blue: 'bg-tag-blue-bg text-tag-blue',\r\n        purple: 'bg-tag-purple-bg text-tag-purple',\r\n        pink: 'bg-tag-pink-bg text-tag-pink',\r\n        red: 'bg-tag-red-bg text-tag-red',\r\n      },\r\n      variant: {\r\n        default: '',\r\n        outline: 'border border-border bg-background text-muted-foreground',\r\n        solid: 'bg-primary font-medium text-primary-foreground',\r\n        brand: 'bg-brand font-medium text-brand-foreground',\r\n      },\r\n    },\r\n    defaultVariants: {\r\n      color: 'default',\r\n      variant: 'default',\r\n    },\r\n  },\r\n)\r\n\r\ntype BadgeProps = Omit<React.ComponentProps<'span'>, 'color'> & VariantProps<typeof badgeVariants>\r\n\r\nfunction Badge({ className, color, variant, ...props }: BadgeProps) {\r\n  return <span data-slot=\"badge\" className={cn(badgeVariants({ color, variant }), className)} {...props} />\r\n}\r\n\r\nexport { Badge, badgeVariants, type BadgeProps }\r\n"
+    }
+  ]
+}

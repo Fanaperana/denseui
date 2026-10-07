@@ -1,0 +1,630 @@
+[
+  {
+    "name": "utils",
+    "type": "registry:lib",
+    "description": "cn() class merging helper",
+    "dependencies": [
+      "clsx",
+      "tailwind-merge"
+    ]
+  },
+  {
+    "name": "button",
+    "type": "registry:ui",
+    "description": "24px button with default, outline, ghost, subtle, destructive and link variants",
+    "dependencies": [
+      "@ark-ui/react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input",
+    "type": "registry:ui",
+    "description": "Compact text input",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "textarea",
+    "type": "registry:ui",
+    "description": "Auto-growing textarea",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "label",
+    "type": "registry:ui",
+    "description": "Muted form label",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "checkbox",
+    "type": "registry:ui",
+    "description": "14px checkbox with indeterminate state",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "switch",
+    "type": "registry:ui",
+    "description": "Small toggle switch",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "radio-group",
+    "type": "registry:ui",
+    "description": "Radio group",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "badge",
+    "type": "registry:ui",
+    "description": "Colored tag using the 10-color palette",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "kbd",
+    "type": "registry:ui",
+    "description": "Keyboard shortcut hint",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "separator",
+    "type": "registry:ui",
+    "description": "Hairline divider",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "avatar",
+    "type": "registry:ui",
+    "description": "20px avatar with fallback",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "spinner",
+    "type": "registry:ui",
+    "description": "Loading spinner",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "skeleton",
+    "type": "registry:ui",
+    "description": "Loading placeholder",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "popover",
+    "type": "registry:ui",
+    "description": "Floating panel",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "tooltip",
+    "type": "registry:ui",
+    "description": "Dark compact tooltip",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dropdown-menu",
+    "type": "registry:ui",
+    "description": "Dropdown and context menu with submenus, checkbox and radio items",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dialog",
+    "type": "registry:ui",
+    "description": "Modal dialog",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "tabs",
+    "type": "registry:ui",
+    "description": "Underlined tabs",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "accordion",
+    "type": "registry:ui",
+    "description": "Vertically stacked headings that reveal sections of content",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "alert",
+    "type": "registry:ui",
+    "description": "Callout for important information, with info, success, warning and destructive variants",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "alert-dialog",
+    "type": "registry:ui",
+    "description": "Modal that interrupts the user and expects a response",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "button"
+    ]
+  },
+  {
+    "name": "aspect-ratio",
+    "type": "registry:ui",
+    "description": "Keeps content at a fixed ratio"
+  },
+  {
+    "name": "breadcrumb",
+    "type": "registry:ui",
+    "description": "Path to the current page in a hierarchy",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "button-group",
+    "type": "registry:ui",
+    "description": "Joins related buttons into one control",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "calendar",
+    "type": "registry:ui",
+    "description": "Inline date grid with day, month and year views",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "card",
+    "type": "registry:ui",
+    "description": "Container with header, content and footer",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "carousel",
+    "type": "registry:ui",
+    "description": "Swipeable slides with controls and indicators",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "button"
+    ]
+  },
+  {
+    "name": "collapsible",
+    "type": "registry:ui",
+    "description": "Expands and collapses a panel",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "combobox",
+    "type": "registry:ui",
+    "description": "Searchable input with a list of suggestions",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "input"
+    ]
+  },
+  {
+    "name": "command",
+    "type": "registry:ui",
+    "description": "Keyboard-first command menu, inline or as a ⌘K dialog",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "context-menu",
+    "type": "registry:ui",
+    "description": "Menu opened by right-click",
+    "registryDependencies": [
+      "dropdown-menu"
+    ]
+  },
+  {
+    "name": "date-picker",
+    "type": "registry:ui",
+    "description": "Date input with a calendar popover",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "input",
+      "calendar"
+    ]
+  },
+  {
+    "name": "drawer",
+    "type": "registry:ui",
+    "description": "Panel that slides up from the bottom",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "empty",
+    "type": "registry:ui",
+    "description": "Empty state with icon, title and actions",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "field",
+    "type": "registry:ui",
+    "description": "Form field layout with label, description and error",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils",
+      "label"
+    ]
+  },
+  {
+    "name": "hover-card",
+    "type": "registry:ui",
+    "description": "Preview content when hovering a link",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input-group",
+    "type": "registry:ui",
+    "description": "Input with icons, text or buttons attached",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input-otp",
+    "type": "registry:ui",
+    "description": "One-time password input",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "item",
+    "type": "registry:ui",
+    "description": "Flexible row with media, content and actions",
+    "dependencies": [
+      "@ark-ui/react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "menubar",
+    "type": "registry:ui",
+    "description": "Desktop-style horizontal menu bar",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "dropdown-menu"
+    ]
+  },
+  {
+    "name": "native-select",
+    "type": "registry:ui",
+    "description": "Styled native select element",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "navigation-menu",
+    "type": "registry:ui",
+    "description": "Site navigation with dropdown panels",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "pagination",
+    "type": "registry:ui",
+    "description": "Page navigation with ellipsis",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "button"
+    ]
+  },
+  {
+    "name": "progress",
+    "type": "registry:ui",
+    "description": "Thin progress bar",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "resizable",
+    "type": "registry:ui",
+    "description": "Resizable panel groups",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "scroll-area",
+    "type": "registry:ui",
+    "description": "Custom overlay scrollbars",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "select",
+    "type": "registry:ui",
+    "description": "Custom select with groups and check indicator",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "sheet",
+    "type": "registry:ui",
+    "description": "Side panel that slides in from any edge",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "sidebar",
+    "type": "registry:ui",
+    "description": "Collapsible app sidebar with groups, menus and sub-menus",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils",
+      "button"
+    ]
+  },
+  {
+    "name": "slider",
+    "type": "registry:ui",
+    "description": "Range slider with one or more thumbs",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "toast",
+    "type": "registry:ui",
+    "description": "Stacked notifications with types and actions",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "toggle",
+    "type": "registry:ui",
+    "description": "Two-state button",
+    "dependencies": [
+      "@ark-ui/react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "toggle-group",
+    "type": "registry:ui",
+    "description": "Set of toggles, single or multiple selection",
+    "dependencies": [
+      "@ark-ui/react",
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils",
+      "toggle"
+    ]
+  },
+  {
+    "name": "table",
+    "type": "registry:ui",
+    "description": "Dense data table with 28px rows",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "data-table",
+    "type": "registry:ui",
+    "description": "Full-featured table: search, faceted filters, sorting, column visibility, selection and pagination",
+    "dependencies": [
+      "@tanstack/react-table",
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "table",
+      "button",
+      "badge",
+      "checkbox",
+      "dropdown-menu",
+      "input-group",
+      "popover",
+      "select",
+      "separator"
+    ]
+  }
+]

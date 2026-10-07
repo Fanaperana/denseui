@@ -1,0 +1,69 @@
+/* 10-color tag palette: `text-tag-<c>` for colored text, `bg-tag-<c>-bg` for tinted surfaces */
+:root {
+  --tag-default: #1c1c21;
+  --tag-default-bg: #efeff2;
+  --tag-gray: #5f606a;
+  --tag-gray-bg: #e8e8ec;
+  --tag-brown: #8a5a3c;
+  --tag-brown-bg: #f3e9e1;
+  --tag-orange: #c2410c;
+  --tag-orange-bg: #ffedd5;
+  --tag-yellow: #946200;
+  --tag-yellow-bg: #fdf3c4;
+  --tag-green: #1f7a4f;
+  --tag-green-bg: #dcf3e6;
+  --tag-blue: #1e63c4;
+  --tag-blue-bg: #e0edff;
+  --tag-purple: #6e46c0;
+  --tag-purple-bg: #eee8fd;
+  --tag-pink: #b8306f;
+  --tag-pink-bg: #fce7f1;
+  --tag-red: #c4262c;
+  --tag-red-bg: #fde4e4;
+}
+
+.dark {
+  --tag-default: #e4e4e8;
+  --tag-default-bg: #222227;
+  --tag-gray: #b4b4bd;
+  --tag-gray-bg: #26262c;
+  --tag-brown: #d9b08f;
+  --tag-brown-bg: #2c221c;
+  --tag-orange: #ffa45c;
+  --tag-orange-bg: #33200f;
+  --tag-yellow: #f2d15c;
+  --tag-yellow-bg: #2e2708;
+  --tag-green: #5fd99c;
+  --tag-green-bg: #12291e;
+  --tag-blue: #7ab6ff;
+  --tag-blue-bg: #0f2342;
+  --tag-purple: #b99cff;
+  --tag-purple-bg: #251b3d;
+  --tag-pink: #ff8fc4;
+  --tag-pink-bg: #351627;
+  --tag-red: #ff8f8c;
+  --tag-red-bg: #3a1416;
+}
+
+@theme inline {
+  --color-tag-default: var(--tag-default);
+  --color-tag-default-bg: var(--tag-default-bg);
+  --color-tag-gray: var(--tag-gray);
+  --color-tag-gray-bg: var(--tag-gray-bg);
+  --color-tag-brown: var(--tag-brown);
+  --color-tag-brown-bg: var(--tag-brown-bg);
+  --color-tag-orange: var(--tag-orange);
+  --color-tag-orange-bg: var(--tag-orange-bg);
+  --color-tag-yellow: var(--tag-yellow);
+  --color-tag-yellow-bg: var(--tag-yellow-bg);
+  --color-tag-green: var(--tag-green);
+  --color-tag-green-bg: var(--tag-green-bg);
+  --color-tag-blue: var(--tag-blue);
+  --color-tag-blue-bg: var(--tag-blue-bg);
+  --color-tag-purple: var(--tag-purple);
+  --color-tag-purple-bg: var(--tag-purple-bg);
+  --color-tag-pink: var(--tag-pink);
+  --color-tag-pink-bg: var(--tag-pink-bg);
+  --color-tag-red: var(--tag-red);
+  --color-tag-red-bg: var(--tag-red-bg);
+}

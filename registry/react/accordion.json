@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "description": "Vertically stacked headings that reveal sections of content",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/accordion.tsx",
+      "type": "registry:ui",
+      "content": "import { Accordion as ArkAccordion } from '@ark-ui/react/accordion'\r\nimport { ChevronDownIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Accordion({ className, ...props }: ArkAccordion.RootProps) {\r\n  return <ArkAccordion.Root data-slot=\"accordion\" className={cn('flex w-full flex-col', className)} {...props} />\r\n}\r\n\r\nfunction AccordionItem({ className, ...props }: ArkAccordion.ItemProps) {\r\n  return (\r\n    <ArkAccordion.Item\r\n      data-slot=\"accordion-item\"\r\n      className={cn('border-b border-border last:border-b-0', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction AccordionTrigger({ className, children, ...props }: ArkAccordion.ItemTriggerProps) {\r\n  return (\r\n    <ArkAccordion.ItemTrigger\r\n      data-slot=\"accordion-trigger\"\r\n      className={cn(\r\n        'flex w-full items-center justify-between gap-2 rounded-sm px-2.5 py-2 text-left text-sm font-medium outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-disabled:pointer-events-none data-disabled:opacity-40',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      {children}\r\n      <ArkAccordion.ItemIndicator className=\"text-muted-foreground transition-transform duration-150 data-[state=open]:rotate-180\">\r\n        <ChevronDownIcon className=\"size-3.5\" />\r\n      </ArkAccordion.ItemIndicator>\r\n    </ArkAccordion.ItemTrigger>\r\n  )\r\n}\r\n\r\nfunction AccordionContent({ className, children, ...props }: ArkAccordion.ItemContentProps) {\r\n  return (\r\n    <ArkAccordion.ItemContent\r\n      data-slot=\"accordion-content\"\r\n      className=\"overflow-hidden text-sm text-muted-foreground data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down\"\r\n      {...props}\r\n    >\r\n      <div className={cn('px-2.5 pb-2.5', className)}>{children}</div>\r\n    </ArkAccordion.ItemContent>\r\n  )\r\n}\r\n\r\nexport { Accordion, AccordionItem, AccordionTrigger, AccordionContent }\r\n"
+    }
+  ]
+}

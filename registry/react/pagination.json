@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pagination",
+  "type": "registry:ui",
+  "description": "Page navigation with ellipsis",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/ui/pagination.tsx",
+      "type": "registry:ui",
+      "content": "import { Pagination as ArkPagination } from '@ark-ui/react/pagination'\r\nimport { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'\r\nimport { buttonVariants } from '@/components/ui/button'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst pageButton = cn(\r\n  buttonVariants({ variant: 'ghost', size: 'icon' }),\r\n  'min-w-6 w-auto px-1.5 tabular-nums data-disabled:pointer-events-none data-disabled:opacity-40',\r\n)\r\n\r\nfunction Pagination({ className, ...props }: Omit<ArkPagination.RootProps, 'children'>) {\r\n  return (\r\n    <ArkPagination.Root\r\n      data-slot=\"pagination\"\r\n      className={cn('flex items-center gap-0.5 text-sm', className)}\r\n      {...props}\r\n    >\r\n      <ArkPagination.PrevTrigger aria-label=\"Previous page\" className={pageButton}>\r\n        <ChevronLeftIcon />\r\n      </ArkPagination.PrevTrigger>\r\n      <ArkPagination.Context>\r\n        {(pagination) =>\r\n          pagination.pages.map((page, index) =>\r\n            page.type === 'page' ? (\r\n              <ArkPagination.Item\r\n                key={index}\r\n                {...page}\r\n                className={cn(\r\n                  pageButton,\r\n                  'data-selected:border data-selected:border-input data-selected:bg-background data-selected:font-semibold data-selected:hover:bg-surface-hover',\r\n                )}\r\n              >\r\n                {page.value}\r\n              </ArkPagination.Item>\r\n            ) : (\r\n              <ArkPagination.Ellipsis\r\n                key={index}\r\n                index={index}\r\n                className=\"flex size-6 items-center justify-center text-muted-foreground\"\r\n              >\r\n                <MoreHorizontalIcon className=\"size-3.5\" />\r\n              </ArkPagination.Ellipsis>\r\n            ),\r\n          )\r\n        }\r\n      </ArkPagination.Context>\r\n      <ArkPagination.NextTrigger aria-label=\"Next page\" className={pageButton}>\r\n        <ChevronRightIcon />\r\n      </ArkPagination.NextTrigger>\r\n    </ArkPagination.Root>\r\n  )\r\n}\r\n\r\nexport { Pagination }\r\n"
+    }
+  ]
+}

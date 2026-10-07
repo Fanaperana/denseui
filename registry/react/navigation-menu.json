@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "navigation-menu",
+  "type": "registry:ui",
+  "description": "Site navigation with dropdown panels",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/navigation-menu.tsx",
+      "type": "registry:ui",
+      "content": "import { NavigationMenu as ArkNavigationMenu } from '@ark-ui/react/navigation-menu'\r\nimport { ChevronDownIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction NavigationMenu({ className, ...props }: ArkNavigationMenu.RootProps) {\r\n  return <ArkNavigationMenu.Root data-slot=\"navigation-menu\" className={cn('relative', className)} {...props} />\r\n}\r\n\r\nfunction NavigationMenuList({ className, ...props }: ArkNavigationMenu.ListProps) {\r\n  return (\r\n    <ArkNavigationMenu.List\r\n      data-slot=\"navigation-menu-list\"\r\n      className={cn('flex list-none items-center gap-0.5', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction NavigationMenuItem({ className, ...props }: ArkNavigationMenu.ItemProps) {\r\n  return <ArkNavigationMenu.Item data-slot=\"navigation-menu-item\" className={cn('relative', className)} {...props} />\r\n}\r\n\r\nconst triggerClass =\r\n  'inline-flex items-center gap-1 rounded-sm px-2.5 py-1 text-sm font-medium outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent'\r\n\r\nfunction NavigationMenuTrigger({ className, children, ...props }: ArkNavigationMenu.TriggerProps) {\r\n  return (\r\n    <ArkNavigationMenu.Trigger data-slot=\"navigation-menu-trigger\" className={cn(triggerClass, 'group', className)} {...props}>\r\n      {children}\r\n      <ChevronDownIcon className=\"size-3 text-muted-foreground transition-transform duration-150 group-data-[state=open]:rotate-180\" />\r\n    </ArkNavigationMenu.Trigger>\r\n  )\r\n}\r\n\r\nfunction NavigationMenuContent({ className, ...props }: ArkNavigationMenu.ContentProps) {\r\n  return (\r\n    <ArkNavigationMenu.Content\r\n      data-slot=\"navigation-menu-content\"\r\n      className={cn(\r\n        'absolute top-full left-0 z-50 mt-1.5 min-w-56 origin-top-left rounded-lg bg-popover p-1 text-popover-foreground shadow-popover data-[state=closed]:animate-out data-[state=open]:animate-in',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction NavigationMenuLink({ className, ...props }: ArkNavigationMenu.LinkProps) {\r\n  return (\r\n    <ArkNavigationMenu.Link\r\n      data-slot=\"navigation-menu-link\"\r\n      className={cn(\r\n        'flex flex-col gap-0.5 rounded-sm px-2.5 py-1.5 text-sm outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-current:bg-accent-active',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport {\r\n  NavigationMenu,\r\n  NavigationMenuList,\r\n  NavigationMenuItem,\r\n  NavigationMenuTrigger,\r\n  NavigationMenuContent,\r\n  NavigationMenuLink,\r\n  triggerClass as navigationMenuTriggerStyle,\r\n}\r\n"
+    }
+  ]
+}

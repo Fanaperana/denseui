@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "type": "registry:ui",
+  "description": "Small toggle switch",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/switch.tsx",
+      "type": "registry:ui",
+      "content": "import { Switch as ArkSwitch } from '@ark-ui/react/switch'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Switch({ className, children, ...props }: ArkSwitch.RootProps) {\r\n  return (\r\n    <ArkSwitch.Root\r\n      data-slot=\"switch\"\r\n      className={cn(\r\n        'inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <ArkSwitch.Control className=\"inline-flex h-3.5 w-6 shrink-0 items-center rounded-full bg-foreground/15 p-0.5 transition-colors duration-100 data-focus-visible:ring-2 data-focus-visible:ring-ring data-[state=checked]:bg-primary\">\r\n        <ArkSwitch.Thumb className=\"size-2.5 rounded-full bg-white shadow-xs transition-transform duration-100 data-[state=checked]:translate-x-2.5 data-[state=checked]:bg-primary-foreground\" />\r\n      </ArkSwitch.Control>\r\n      {children != null && <ArkSwitch.Label>{children}</ArkSwitch.Label>}\r\n      <ArkSwitch.HiddenInput />\r\n    </ArkSwitch.Root>\r\n  )\r\n}\r\n\r\nexport { Switch }\r\n"
+    }
+  ]
+}

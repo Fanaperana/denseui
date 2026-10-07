@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "description": "Thin progress bar",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/progress.tsx",
+      "type": "registry:ui",
+      "content": "import { Progress as ArkProgress } from '@ark-ui/react/progress'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Progress({ className, ...props }: ArkProgress.RootProps) {\r\n  return (\r\n    <ArkProgress.Root data-slot=\"progress\" className={cn('w-full', className)} {...props}>\r\n      <ArkProgress.Track className=\"h-1 w-full overflow-hidden rounded-full bg-accent-active\">\r\n        <ArkProgress.Range className=\"h-full rounded-full bg-primary transition-[width] duration-300 ease-out data-[state=indeterminate]:w-1/3 data-[state=indeterminate]:animate-pulse\" />\r\n      </ArkProgress.Track>\r\n    </ArkProgress.Root>\r\n  )\r\n}\r\n\r\nexport { Progress }\r\n"
+    }
+  ]
+}

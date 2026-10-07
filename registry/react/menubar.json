@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "menubar",
+  "type": "registry:ui",
+  "description": "Desktop-style horizontal menu bar",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "components/ui/menubar.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { Menu } from '@ark-ui/react/menu'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Menubar({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div\r\n      role=\"menubar\"\r\n      data-slot=\"menubar\"\r\n      className={cn('flex w-fit items-center gap-px rounded-md border border-border bg-background p-0.5', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction MenubarMenu(props: Menu.RootProps) {\r\n  return <Menu.Root lazyMount unmountOnExit positioning={{ placement: 'bottom-start', gutter: 6 }} {...props} />\r\n}\r\n\r\nfunction MenubarTrigger({ className, ...props }: Menu.TriggerProps) {\r\n  return (\r\n    <Menu.Trigger\r\n      data-slot=\"menubar-trigger\"\r\n      className={cn(\r\n        'flex cursor-default items-center rounded-sm px-2.5 py-1 text-sm font-medium outline-none select-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Menubar, MenubarMenu, MenubarTrigger }\r\nexport {\r\n  DropdownMenuContent as MenubarContent,\r\n  DropdownMenuItem as MenubarItem,\r\n  DropdownMenuCheckboxItem as MenubarCheckboxItem,\r\n  DropdownMenuRadioGroup as MenubarRadioGroup,\r\n  DropdownMenuRadioItem as MenubarRadioItem,\r\n  DropdownMenuGroup as MenubarGroup,\r\n  DropdownMenuLabel as MenubarLabel,\r\n  DropdownMenuSeparator as MenubarSeparator,\r\n  DropdownMenuShortcut as MenubarShortcut,\r\n  DropdownMenuSub as MenubarSub,\r\n  DropdownMenuSubTrigger as MenubarSubTrigger,\r\n} from '@/components/ui/dropdown-menu'\r\n"
+    }
+  ]
+}

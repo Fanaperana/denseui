@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "description": "Callout for important information, with info, success, warning and destructive variants",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/alert.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst alertVariants = cva(\r\n  'relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-md border px-2.5 py-2 text-sm has-[>svg]:grid-cols-[14px_1fr] has-[>svg]:gap-x-2 [&>svg]:size-3.5 [&>svg]:translate-y-0.5',\r\n  {\r\n    variants: {\r\n      variant: {\r\n        default: 'border-border bg-card text-card-foreground [&>svg]:text-muted-foreground',\r\n        info: 'border-tag-blue/25 bg-tag-blue-bg text-tag-blue [&>svg]:text-current',\r\n        success: 'border-tag-green/25 bg-tag-green-bg text-tag-green [&>svg]:text-current',\r\n        warning: 'border-tag-orange/25 bg-tag-orange-bg text-tag-orange [&>svg]:text-current',\r\n        destructive: 'border-destructive/25 bg-tag-red-bg text-destructive [&>svg]:text-current',\r\n      },\r\n    },\r\n    defaultVariants: { variant: 'default' },\r\n  },\r\n)\r\n\r\nfunction Alert({ className, variant, ...props }: React.ComponentProps<'div'> & VariantProps<typeof alertVariants>) {\r\n  return <div data-slot=\"alert\" role=\"alert\" className={cn(alertVariants({ variant }), className)} {...props} />\r\n}\r\n\r\nfunction AlertTitle({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"alert-title\" className={cn('col-start-2 font-medium', className)} {...props} />\r\n}\r\n\r\nfunction AlertDescription({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div\r\n      data-slot=\"alert-description\"\r\n      className={cn('col-start-2 text-sm opacity-80 [&_p]:leading-relaxed', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Alert, AlertTitle, AlertDescription, alertVariants }\r\n"
+    }
+  ]
+}

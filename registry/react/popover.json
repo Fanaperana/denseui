@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "description": "Floating panel",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/popover.tsx",
+      "type": "registry:ui",
+      "content": "import { Popover as ArkPopover } from '@ark-ui/react/popover'\r\nimport { Portal } from '@ark-ui/react/portal'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Popover(props: ArkPopover.RootProps) {\r\n  return <ArkPopover.Root lazyMount unmountOnExit {...props} />\r\n}\r\n\r\nfunction PopoverTrigger(props: ArkPopover.TriggerProps) {\r\n  return <ArkPopover.Trigger data-slot=\"popover-trigger\" {...props} />\r\n}\r\n\r\nfunction PopoverAnchor(props: ArkPopover.AnchorProps) {\r\n  return <ArkPopover.Anchor data-slot=\"popover-anchor\" {...props} />\r\n}\r\n\r\ntype PopoverContentProps = ArkPopover.ContentProps & { portalled?: boolean }\r\n\r\nfunction PopoverContent({ className, portalled = true, ...props }: PopoverContentProps) {\r\n  return (\r\n    <Portal disabled={!portalled}>\r\n      <ArkPopover.Positioner>\r\n        <ArkPopover.Content\r\n          data-slot=\"popover-content\"\r\n          className={cn(\r\n            'z-50 w-64 origin-(--transform-origin) rounded-lg bg-popover px-3 py-2 text-sm text-popover-foreground shadow-popover outline-none data-[state=closed]:animate-out data-[state=open]:animate-in',\r\n            className,\r\n          )}\r\n          {...props}\r\n        />\r\n      </ArkPopover.Positioner>\r\n    </Portal>\r\n  )\r\n}\r\n\r\nfunction PopoverClose(props: ArkPopover.CloseTriggerProps) {\r\n  return <ArkPopover.CloseTrigger data-slot=\"popover-close\" {...props} />\r\n}\r\n\r\nexport { Popover, PopoverTrigger, PopoverAnchor, PopoverContent, PopoverClose }\r\n"
+    }
+  ]
+}

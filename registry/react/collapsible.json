@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "description": "Expands and collapses a panel",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/collapsible.tsx",
+      "type": "registry:ui",
+      "content": "import { Collapsible as ArkCollapsible } from '@ark-ui/react/collapsible'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Collapsible(props: ArkCollapsible.RootProps) {\r\n  return <ArkCollapsible.Root data-slot=\"collapsible\" {...props} />\r\n}\r\n\r\nfunction CollapsibleTrigger(props: ArkCollapsible.TriggerProps) {\r\n  return <ArkCollapsible.Trigger data-slot=\"collapsible-trigger\" {...props} />\r\n}\r\n\r\nfunction CollapsibleContent({ className, ...props }: ArkCollapsible.ContentProps) {\r\n  return (\r\n    <ArkCollapsible.Content\r\n      data-slot=\"collapsible-content\"\r\n      className={cn(\r\n        'overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\r\n"
+    }
+  ]
+}

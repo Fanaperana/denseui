@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-picker",
+  "type": "registry:ui",
+  "description": "Date input with a calendar popover",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "input",
+    "calendar"
+  ],
+  "files": [
+    {
+      "path": "components/ui/date-picker.tsx",
+      "type": "registry:ui",
+      "content": "import { DatePicker as ArkDatePicker } from '@ark-ui/react/date-picker'\r\nimport { Portal } from '@ark-ui/react/portal'\r\nimport { CalendarIcon } from 'lucide-react'\r\nimport { CalendarViews } from '@/components/ui/calendar'\r\nimport { inputVariants } from '@/components/ui/input'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction DatePicker(props: ArkDatePicker.RootProps) {\r\n  return <ArkDatePicker.Root data-slot=\"date-picker\" lazyMount unmountOnExit {...props} />\r\n}\r\n\r\nfunction DatePickerInput({ className, ...props }: ArkDatePicker.InputProps) {\r\n  return (\r\n    <ArkDatePicker.Control className=\"relative w-full\">\r\n      <ArkDatePicker.Input\r\n        data-slot=\"date-picker-input\"\r\n        className={cn(inputVariants(), 'pr-6', className)}\r\n        {...props}\r\n      />\r\n      <ArkDatePicker.Trigger className=\"absolute inset-y-0 right-0.5 my-auto flex size-5 items-center justify-center rounded-xs text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring\">\r\n        <CalendarIcon className=\"size-3\" />\r\n      </ArkDatePicker.Trigger>\r\n    </ArkDatePicker.Control>\r\n  )\r\n}\r\n\r\nfunction DatePickerContent({ className, children, ...props }: ArkDatePicker.ContentProps) {\r\n  return (\r\n    <Portal>\r\n      <ArkDatePicker.Positioner>\r\n        <ArkDatePicker.Content\r\n          data-slot=\"date-picker-content\"\r\n          className={cn(\r\n            'z-50 origin-(--transform-origin) rounded-lg bg-popover px-3 py-2 text-popover-foreground shadow-popover outline-none data-[state=closed]:animate-out data-[state=open]:animate-in',\r\n            className,\r\n          )}\r\n          {...props}\r\n        >\r\n          {children ?? <CalendarViews />}\r\n        </ArkDatePicker.Content>\r\n      </ArkDatePicker.Positioner>\r\n    </Portal>\r\n  )\r\n}\r\n\r\nexport { DatePicker, DatePickerInput, DatePickerContent }\r\n"
+    }
+  ]
+}

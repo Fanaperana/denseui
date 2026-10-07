@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider",
+  "type": "registry:ui",
+  "description": "Range slider with one or more thumbs",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/slider.tsx",
+      "type": "registry:ui",
+      "content": "import { Slider as ArkSlider } from '@ark-ui/react/slider'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Slider({ className, ...props }: ArkSlider.RootProps) {\r\n  return (\r\n    <ArkSlider.Root\r\n      data-slot=\"slider\"\r\n      className={cn('flex w-full touch-none flex-col gap-1 select-none data-disabled:opacity-50', className)}\r\n      {...props}\r\n    >\r\n      <ArkSlider.Control className=\"relative flex h-4 items-center data-[orientation=vertical]:h-full data-[orientation=vertical]:w-4 data-[orientation=vertical]:flex-col\">\r\n        <ArkSlider.Track className=\"relative h-1 w-full grow overflow-hidden rounded-full bg-accent-active data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1\">\r\n          <ArkSlider.Range className=\"absolute h-full bg-primary data-[orientation=vertical]:w-full\" />\r\n        </ArkSlider.Track>\r\n        <ArkSlider.Context>\r\n          {(api) =>\r\n            api.value.map((_, index) => (\r\n              <ArkSlider.Thumb\r\n                key={index}\r\n                index={index}\r\n                className=\"block size-3 rounded-full border border-input bg-background shadow-sm outline-none transition-shadow hover:ring-3 hover:ring-ring focus-visible:ring-3 focus-visible:ring-ring data-dragging:ring-3 data-dragging:ring-ring\"\r\n              >\r\n                <ArkSlider.HiddenInput />\r\n              </ArkSlider.Thumb>\r\n            ))\r\n          }\r\n        </ArkSlider.Context>\r\n      </ArkSlider.Control>\r\n    </ArkSlider.Root>\r\n  )\r\n}\r\n\r\nexport { Slider }\r\n"
+    }
+  ]
+}

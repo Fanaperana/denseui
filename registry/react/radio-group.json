@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio-group",
+  "type": "registry:ui",
+  "description": "Radio group",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/radio-group.tsx",
+      "type": "registry:ui",
+      "content": "import { RadioGroup as ArkRadioGroup } from '@ark-ui/react/radio-group'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction RadioGroup({ className, ...props }: ArkRadioGroup.RootProps) {\r\n  return (\r\n    <ArkRadioGroup.Root\r\n      data-slot=\"radio-group\"\r\n      className={cn('flex flex-col gap-1 data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:gap-3', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction RadioGroupItem({ className, children, ...props }: ArkRadioGroup.ItemProps) {\r\n  return (\r\n    <ArkRadioGroup.Item\r\n      data-slot=\"radio-group-item\"\r\n      className={cn(\r\n        'group inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <ArkRadioGroup.ItemControl className=\"size-3.5 shrink-0 rounded-full border-[1.5px] border-foreground/40 transition-[border] duration-75 group-hover:bg-accent data-focus-visible:ring-2 data-focus-visible:ring-ring data-[state=checked]:border-4 data-[state=checked]:border-primary data-[state=checked]:bg-primary-foreground\" />\r\n      {children != null && <ArkRadioGroup.ItemText>{children}</ArkRadioGroup.ItemText>}\r\n      <ArkRadioGroup.ItemHiddenInput />\r\n    </ArkRadioGroup.Item>\r\n  )\r\n}\r\n\r\nexport { RadioGroup, RadioGroupItem }\r\n"
+    }
+  ]
+}

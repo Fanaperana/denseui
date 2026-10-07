@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kbd",
+  "type": "registry:ui",
+  "description": "Keyboard shortcut hint",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/kbd.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Kbd({ className, ...props }: React.ComponentProps<'kbd'>) {\r\n  return (\r\n    <kbd\r\n      data-slot=\"kbd\"\r\n      className={cn(\r\n        'inline-flex min-w-4 select-none items-center justify-center gap-0.5 rounded-sm border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px] leading-none font-medium text-muted-foreground [&_svg]:size-2.5',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction KbdGroup({ className, ...props }: React.ComponentProps<'span'>) {\r\n  return <span data-slot=\"kbd-group\" className={cn('inline-flex items-center gap-0.5', className)} {...props} />\r\n}\r\n\r\nexport { Kbd, KbdGroup }\r\n"
+    }
+  ]
+}

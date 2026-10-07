@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "item",
+  "type": "registry:ui",
+  "description": "Flexible row with media, content and actions",
+  "dependencies": [
+    "@ark-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/item.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { ark } from '@ark-ui/react/factory'\r\nimport { cva, type VariantProps } from 'class-variance-authority'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction ItemGroup({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div role=\"list\" data-slot=\"item-group\" className={cn('flex flex-col gap-px', className)} {...props} />\r\n}\r\n\r\nconst itemVariants = cva(\r\n  'group/item flex flex-wrap items-center gap-2.5 rounded-md border border-transparent text-sm outline-none transition-colors duration-75 focus-visible:ring-2 focus-visible:ring-ring [a]:hover:bg-accent',\r\n  {\r\n    variants: {\r\n      variant: {\r\n        default: 'bg-transparent',\r\n        outline: 'border-border bg-card [a]:hover:bg-surface-hover',\r\n        muted: 'bg-muted [a]:hover:bg-surface-hover',\r\n      },\r\n      size: {\r\n        default: 'px-2.5 py-2',\r\n        sm: 'px-2 py-1',\r\n      },\r\n    },\r\n    defaultVariants: { variant: 'default', size: 'default' },\r\n  },\r\n)\r\n\r\nfunction Item({\r\n  className,\r\n  variant,\r\n  size,\r\n  ...props\r\n}: React.ComponentProps<typeof ark.div> & VariantProps<typeof itemVariants>) {\r\n  return <ark.div data-slot=\"item\" className={cn(itemVariants({ variant, size }), className)} {...props} />\r\n}\r\n\r\nconst itemMediaVariants = cva('flex shrink-0 items-center justify-center [&_svg]:pointer-events-none', {\r\n  variants: {\r\n    variant: {\r\n      default: 'bg-transparent',\r\n      icon: \"size-7 rounded-sm border border-border bg-muted [&_svg:not([class*='size-'])]:size-3.5\",\r\n      image: 'size-8 overflow-hidden rounded-sm [&_img]:size-full [&_img]:object-cover',\r\n    },\r\n  },\r\n  defaultVariants: { variant: 'default' },\r\n})\r\n\r\nfunction ItemMedia({\r\n  className,\r\n  variant,\r\n  ...props\r\n}: React.ComponentProps<'div'> & VariantProps<typeof itemMediaVariants>) {\r\n  return <div data-slot=\"item-media\" className={cn(itemMediaVariants({ variant }), className)} {...props} />\r\n}\r\n\r\nfunction ItemContent({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"item-content\" className={cn('flex flex-1 flex-col gap-0.5', className)} {...props} />\r\n}\r\n\r\nfunction ItemTitle({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return (\r\n    <div data-slot=\"item-title\" className={cn('flex w-fit items-center gap-1.5 font-medium', className)} {...props} />\r\n  )\r\n}\r\n\r\nfunction ItemDescription({ className, ...props }: React.ComponentProps<'p'>) {\r\n  return (\r\n    <p data-slot=\"item-description\" className={cn('line-clamp-2 text-sm text-muted-foreground', className)} {...props} />\r\n  )\r\n}\r\n\r\nfunction ItemActions({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"item-actions\" className={cn('flex items-center gap-1', className)} {...props} />\r\n}\r\n\r\nfunction ItemSeparator({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"item-separator\" className={cn('my-1 h-px w-full bg-border', className)} {...props} />\r\n}\r\n\r\nexport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemSeparator, ItemTitle }\r\n"
+    }
+  ]
+}

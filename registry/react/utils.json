@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utils",
+  "type": "registry:lib",
+  "description": "cn() class merging helper",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib",
+      "content": "import { clsx, type ClassValue } from 'clsx'\r\nimport { extendTailwindMerge } from 'tailwind-merge'\r\n\r\nconst twMerge = extendTailwindMerge({\r\n  extend: {\r\n    classGroups: {\r\n      shadow: [{ shadow: ['popover', 'dialog'] }],\r\n    },\r\n  },\r\n})\r\n\r\nexport function cn(...inputs: ClassValue[]) {\r\n  return twMerge(clsx(inputs))\r\n}\r\n"
+    }
+  ]
+}

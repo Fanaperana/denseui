@@ -1,0 +1,24 @@
+{
+  "name": "denseui",
+  "version": "0.0.1",
+  "description": "Add ultra-dense, Notion-style components to your project",
+  "type": "module",
+  "bin": {
+    "denseui": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "registry"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "~6.0.2"
+  }
+}
