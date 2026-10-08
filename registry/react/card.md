@@ -50,7 +50,7 @@ export default function CardDemo() {
         </div>
       </CardContent>
       <CardFooter className="justify-end">
-        <Button variant="ghost">Cancel</Button>
+        <Button variant="outline">Cancel</Button>
         <Button>Deploy</Button>
       </CardFooter>
     </Card>

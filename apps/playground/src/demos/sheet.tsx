@@ -34,10 +34,10 @@ export default function SheetDemo() {
               <Input id={`sheet-name-${side}`} defaultValue="Jane Doe" />
             </div>
             <SheetFooter>
-              <Button>Save changes</Button>
               <SheetClose asChild>
-                <Button variant="outline">Close</Button>
+                <Button variant="outline">Cancel</Button>
               </SheetClose>
+              <Button>Save changes</Button>
             </SheetFooter>
           </SheetContent>
         </Sheet>

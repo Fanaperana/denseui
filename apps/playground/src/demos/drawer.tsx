@@ -39,10 +39,10 @@ export default function DrawerDemo() {
             </Button>
           </div>
           <DrawerFooter>
-            <Button>Submit</Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>
+            <Button>Save goal</Button>
           </DrawerFooter>
         </div>
       </DrawerContent>

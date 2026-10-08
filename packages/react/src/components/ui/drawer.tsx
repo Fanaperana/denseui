@@ -44,7 +44,13 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 function DrawerFooter({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="drawer-footer" className={cn('mt-auto flex flex-col gap-1.5 px-4 py-3', className)} {...props} />
+  return (
+    <div
+      data-slot="drawer-footer"
+      className={cn('mt-auto flex items-center justify-end gap-1.5 px-4 py-3', className)}
+      {...props}
+    />
+  )
 }
 
 function DrawerTitle({ className, ...props }: ArkDrawer.TitleProps) {

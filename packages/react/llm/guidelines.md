@@ -59,6 +59,14 @@ Dark mode is the `.dark` class on `<html>`; tokens switch automatically. Never w
 - Icon-only buttons need `aria-label` and `size="icon" | "icon-sm"`.
 - Use `asChild` to render a link: `<Button asChild><a href="…">…</a></Button>`.
 
+### Action pairs (dialogs, sheets, drawers, cards, popovers)
+
+- Footers are a right-aligned row (`DialogFooter`, `SheetFooter`, `DrawerFooter`, `AlertDialogFooter`, `CardFooter className="justify-end"`).
+- Order: dismiss first, confirm last. `Cancel` is always `variant="outline"` and always labelled "Cancel".
+- Confirm is `default`; if it destroys data it is `destructive` (`<AlertDialogAction variant="destructive">`). Never restyle with `bg-destructive` classes.
+- A button that *opens* a destructive flow is `destructive-outline` and ends with … ("Delete page…"). Bulk delete in a toolbar is also `destructive-outline`.
+- Both buttons in a pair use the same `size`.
+
 ## Accessibility
 
 - Every input has a `<Label htmlFor>` or `FieldLabel`; icon-only controls have `aria-label`.

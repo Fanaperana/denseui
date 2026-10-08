@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
 import { Portal } from '@ark-ui/react/portal'
+import type { VariantProps } from 'class-variance-authority'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -54,8 +55,18 @@ function AlertDialogDescription({ className, ...props }: ArkDialog.DescriptionPr
   )
 }
 
-function AlertDialogAction({ className, ...props }: ArkDialog.CloseTriggerProps) {
-  return <ArkDialog.CloseTrigger data-slot="alert-dialog-action" className={cn(buttonVariants(), className)} {...props} />
+function AlertDialogAction({
+  className,
+  variant = 'default',
+  ...props
+}: ArkDialog.CloseTriggerProps & Pick<VariantProps<typeof buttonVariants>, 'variant'>) {
+  return (
+    <ArkDialog.CloseTrigger
+      data-slot="alert-dialog-action"
+      className={cn(buttonVariants({ variant }), className)}
+      {...props}
+    />
+  )
 }
 
 function AlertDialogCancel({ className, ...props }: ArkDialog.CloseTriggerProps) {
