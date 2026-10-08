@@ -11,7 +11,7 @@ function DatePicker(props: ArkDatePicker.RootProps) {
 
 function DatePickerInput({ className, ...props }: ArkDatePicker.InputProps) {
   return (
-    <ArkDatePicker.Control className="relative w-full">
+    <ArkDatePicker.Control className="relative h-fit w-full">
       <ArkDatePicker.Input
         data-slot="date-picker-input"
         className={cn(inputVariants(), 'pr-6', className)}

@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label'
 
 export default function DatePickerDemo() {
   return (
-    <div className="flex gap-4">
+    <div className="flex items-start gap-4">
       <DatePicker className="grid w-44 gap-1">
         <Label>Due date</Label>
         <DatePickerInput placeholder="mm/dd/yyyy" />
