@@ -10,6 +10,9 @@ const playgroundPublic = path.join(root, 'apps/playground/public')
 const demosDir = path.join(root, 'apps/playground/src/demos')
 const frameworks = ['react']
 const tokenFiles = ['theme.css', 'palette.css', 'base.css']
+
+// LF everywhere so the output doesn't depend on the OS's git checkout settings.
+const readText = async (file) => (await readFile(file, 'utf8')).replace(/\r\n/g, '\n')
 // Set when publishing to a URL so registryDependencies resolve with the shadcn CLI too.
 const publicUrl = process.env.DENSEUI_REGISTRY_URL?.replace(/\/$/, '')
 
@@ -68,17 +71,17 @@ async function buildFramework(framework) {
     const files = await Promise.all(
       item.files.map(async (file) => ({
         ...file,
-        content: await readFile(path.join(pkgDir, 'src', file.path), 'utf8'),
+        content: await readText(path.join(pkgDir, 'src', file.path)),
       })),
     )
     const demoPath = path.join(demosDir, `${item.name}.tsx`)
-    const example = existsSync(demoPath) ? await readFile(demoPath, 'utf8') : undefined
+    const example = existsSync(demoPath) ? await readText(demoPath) : undefined
     const extraExamples = await Promise.all(
       demoFiles
         .filter((f) => f.startsWith(`${item.name}.`) && f !== `${item.name}.tsx`)
         .map(async (f) => ({
           title: toTitle(f.slice(item.name.length + 1, -'.tsx'.length)),
-          code: await readFile(path.join(demosDir, f), 'utf8'),
+          code: await readText(path.join(demosDir, f)),
         })),
     )
     const exports = files.flatMap((f) => exportsOf(f.content))
@@ -134,7 +137,7 @@ function llmsIndex(framework, index) {
 
 async function buildTokens() {
   const parts = await Promise.all(
-    tokenFiles.map((file) => readFile(path.join(root, 'packages/tokens/src', file), 'utf8')),
+    tokenFiles.map((file) => readText(path.join(root, 'packages/tokens/src', file))),
   )
   const css = `/* DenseUI tokens — generated, edit freely */\n\n${parts.join('\n')}`
   await writeFile(path.join(outDir, 'tokens.css'), css)
@@ -142,7 +145,7 @@ async function buildTokens() {
 
 await rm(outDir, { recursive: true, force: true })
 await mkdir(outDir, { recursive: true })
-const guidelines = await readFile(path.join(root, 'packages/react/llm/guidelines.md'), 'utf8')
+const guidelines = await readText(path.join(root, 'packages/react/llm/guidelines.md'))
 await writeFile(path.join(outDir, 'guidelines.md'), guidelines)
 for (const framework of frameworks) {
   const { index, full } = await buildFramework(framework)

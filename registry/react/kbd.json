@@ -10,14 +10,14 @@
     {
       "path": "components/ui/kbd.tsx",
       "type": "registry:ui",
-      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Kbd({ className, ...props }: React.ComponentProps<'kbd'>) {\r\n  return (\r\n    <kbd\r\n      data-slot=\"kbd\"\r\n      className={cn(\r\n        'inline-flex min-w-4 select-none items-center justify-center gap-0.5 rounded-sm border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px] leading-none font-medium text-muted-foreground [&_svg]:size-2.5',\r\n        className,\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction KbdGroup({ className, ...props }: React.ComponentProps<'span'>) {\r\n  return <span data-slot=\"kbd-group\" className={cn('inline-flex items-center gap-0.5', className)} {...props} />\r\n}\r\n\r\nexport { Kbd, KbdGroup }\r\n"
+      "content": "import * as React from 'react'\nimport { cn } from '@/lib/utils'\n\nfunction Kbd({ className, ...props }: React.ComponentProps<'kbd'>) {\n  return (\n    <kbd\n      data-slot=\"kbd\"\n      className={cn(\n        'inline-flex min-w-4 select-none items-center justify-center gap-0.5 rounded-sm border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px] leading-none font-medium text-muted-foreground [&_svg]:size-2.5',\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction KbdGroup({ className, ...props }: React.ComponentProps<'span'>) {\n  return <span data-slot=\"kbd-group\" className={cn('inline-flex items-center gap-0.5', className)} {...props} />\n}\n\nexport { Kbd, KbdGroup }\n"
     }
   ],
   "title": "Kbd",
   "categories": [
     "data"
   ],
-  "docs": "# Kbd\n\nKeyboard shortcut hint\n\n## Install\n\n```bash\nnpx denseui@latest add kbd\n```\n\n## Usage\n\n```tsx\nimport { Kbd, KbdGroup } from \"@/components/ui/kbd\"\n```\n\n## Example\n\n```tsx\nimport { Kbd, KbdGroup } from '@/components/ui/kbd'\r\n\r\nexport default function KbdDemo() {\r\n  return (\r\n    <div className=\"flex flex-col items-center gap-2 text-sm text-muted-foreground\">\r\n      <KbdGroup>\r\n        <Kbd>⌘</Kbd>\r\n        <Kbd>⇧</Kbd>\r\n        <Kbd>P</Kbd>\r\n      </KbdGroup>\r\n      <span>\r\n        Press <Kbd>/</Kbd> for commands\r\n      </span>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "docs": "# Kbd\n\nKeyboard shortcut hint\n\n## Install\n\n```bash\nnpx denseui@latest add kbd\n```\n\n## Usage\n\n```tsx\nimport { Kbd, KbdGroup } from \"@/components/ui/kbd\"\n```\n\n## Example\n\n```tsx\nimport { Kbd, KbdGroup } from '@/components/ui/kbd'\n\nexport default function KbdDemo() {\n  return (\n    <div className=\"flex flex-col items-center gap-2 text-sm text-muted-foreground\">\n      <KbdGroup>\n        <Kbd>⌘</Kbd>\n        <Kbd>⇧</Kbd>\n        <Kbd>P</Kbd>\n      </KbdGroup>\n      <span>\n        Press <Kbd>/</Kbd> for commands\n      </span>\n    </div>\n  )\n}\n```\n",
   "meta": {
     "exports": [
       "Kbd",

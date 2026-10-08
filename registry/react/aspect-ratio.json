@@ -7,14 +7,14 @@
     {
       "path": "components/ui/aspect-ratio.tsx",
       "type": "registry:ui",
-      "content": "import * as React from 'react'\r\n\r\ntype AspectRatioProps = React.ComponentProps<'div'> & { ratio?: number }\r\n\r\nfunction AspectRatio({ ratio = 1, style, ...props }: AspectRatioProps) {\r\n  return <div data-slot=\"aspect-ratio\" style={{ aspectRatio: ratio, ...style }} {...props} />\r\n}\r\n\r\nexport { AspectRatio }\r\n"
+      "content": "import * as React from 'react'\n\ntype AspectRatioProps = React.ComponentProps<'div'> & { ratio?: number }\n\nfunction AspectRatio({ ratio = 1, style, ...props }: AspectRatioProps) {\n  return <div data-slot=\"aspect-ratio\" style={{ aspectRatio: ratio, ...style }} {...props} />\n}\n\nexport { AspectRatio }\n"
     }
   ],
   "title": "Aspect Ratio",
   "categories": [
     "layout"
   ],
-  "docs": "# Aspect Ratio\n\nKeeps content at a fixed ratio\n\n## Install\n\n```bash\nnpx denseui@latest add aspect-ratio\n```\n\n## Usage\n\n```tsx\nimport { AspectRatio } from \"@/components/ui/aspect-ratio\"\n```\n\n## Example\n\n```tsx\nimport { AspectRatio } from '@/components/ui/aspect-ratio'\r\n\r\nexport default function AspectRatioDemo() {\r\n  return (\r\n    <div className=\"w-80\">\r\n      <AspectRatio\r\n        ratio={16 / 9}\r\n        className=\"flex items-center justify-center rounded-lg bg-gradient-to-br from-tag-purple-bg to-tag-blue-bg text-sm text-muted-foreground\"\r\n      >\r\n        16 / 9\r\n      </AspectRatio>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "docs": "# Aspect Ratio\n\nKeeps content at a fixed ratio\n\n## Install\n\n```bash\nnpx denseui@latest add aspect-ratio\n```\n\n## Usage\n\n```tsx\nimport { AspectRatio } from \"@/components/ui/aspect-ratio\"\n```\n\n## Example\n\n```tsx\nimport { AspectRatio } from '@/components/ui/aspect-ratio'\n\nexport default function AspectRatioDemo() {\n  return (\n    <div className=\"w-80\">\n      <AspectRatio\n        ratio={16 / 9}\n        className=\"flex items-center justify-center rounded-lg bg-gradient-to-br from-tag-purple-bg to-tag-blue-bg text-sm text-muted-foreground\"\n      >\n        16 / 9\n      </AspectRatio>\n    </div>\n  )\n}\n```\n",
   "meta": {
     "exports": [
       "AspectRatio"

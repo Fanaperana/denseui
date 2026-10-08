@@ -11,7 +11,7 @@
     {
       "path": "lib/utils.ts",
       "type": "registry:lib",
-      "content": "import { clsx, type ClassValue } from 'clsx'\r\nimport { extendTailwindMerge } from 'tailwind-merge'\r\n\r\nconst twMerge = extendTailwindMerge({\r\n  extend: {\r\n    classGroups: {\r\n      shadow: [{ shadow: ['popover', 'dialog'] }],\r\n    },\r\n  },\r\n})\r\n\r\nexport function cn(...inputs: ClassValue[]) {\r\n  return twMerge(clsx(inputs))\r\n}\r\n"
+      "content": "import { clsx, type ClassValue } from 'clsx'\nimport { extendTailwindMerge } from 'tailwind-merge'\n\nconst twMerge = extendTailwindMerge({\n  extend: {\n    classGroups: {\n      shadow: [{ shadow: ['popover', 'dialog'] }],\n    },\n  },\n})\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs))\n}\n"
     }
   ],
   "title": "Utils",
