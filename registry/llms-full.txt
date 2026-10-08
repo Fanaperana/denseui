@@ -17,20 +17,29 @@ Read the design guidelines before generating UI. An MCP server is available: `np
 - [Input](react/input.md): Compact text input
 - [Input Group](react/input-group.md): Input with icons, text or buttons attached
 - [Input OTP](react/input-otp.md): One-time password input
+- [Password Input](react/password-input.md): Password field with show/hide toggle
+- [Number Input](react/number-input.md): Numeric input with steppers, min/max and formatting
 - [Textarea](react/textarea.md): Auto-growing textarea
 - [Label](react/label.md): Muted form label
 - [Field](react/field.md): Form field layout with label, description and error
+- [Form](react/form.md): react-hook-form bindings with accessible labels, descriptions and error messages
 - [Checkbox](react/checkbox.md): 14px checkbox with indeterminate state
 - [Radio Group](react/radio-group.md): Radio group
 - [Switch](react/switch.md): Small toggle switch
 - [Select](react/select.md): Custom select with groups and check indicator
 - [Native Select](react/native-select.md): Styled native select element
 - [Combobox](react/combobox.md): Searchable input with a list of suggestions
+- [Tags Input](react/tags-input.md): Multi-value tag input with stable per-tag colors
 - [Slider](react/slider.md): Range slider with one or more thumbs
+- [Rating](react/rating.md): Star rating input
 - [Toggle](react/toggle.md): Two-state button
 - [Toggle Group](react/toggle-group.md): Set of toggles, single or multiple selection
+- [Segmented Control](react/segmented-control.md): Single-choice segmented switcher with a sliding indicator
 - [Calendar](react/calendar.md): Inline date grid with day, month and year views
 - [Date Picker](react/date-picker.md): Date input with a calendar popover
+- [Color Picker](react/color-picker.md): Color input with saturation area, hue/alpha sliders, eyedropper and presets
+- [File Upload](react/file-upload.md): Drag-and-drop dropzone with file list and image previews
+- [Editable](react/editable.md): Click-to-edit inline text, like a page title
 
 ## Overlays
 
@@ -50,27 +59,34 @@ Read the design guidelines before generating UI. An MCP server is available: `np
 ## Layout
 
 - [Sidebar](react/sidebar.md): Collapsible app sidebar with groups, menus and sub-menus
+- [Tree View](react/tree-view.md): Nested page tree with expand/collapse, indent guides and hover actions
 - [Navigation Menu](react/navigation-menu.md): Site navigation with dropdown panels
 - [Breadcrumb](react/breadcrumb.md): Path to the current page in a hierarchy
 - [Tabs](react/tabs.md): Underlined tabs
+- [Steps](react/steps.md): Multi-step flow with progress indicator and navigation
 - [Accordion](react/accordion.md): Vertically stacked headings that reveal sections of content
 - [Collapsible](react/collapsible.md): Expands and collapses a panel
 - [Resizable](react/resizable.md): Resizable panel groups
 - [Scroll Area](react/scroll-area.md): Custom overlay scrollbars
 - [Card](react/card.md): Container with header, content and footer
 - [Item](react/item.md): Flexible row with media, content and actions
+- [Property](react/property.md): Label/value property rows for record details
+- [Block](react/block.md): Content block with hover gutter: add button and drag/menu grip
 - [Separator](react/separator.md): Hairline divider
 - [Aspect Ratio](react/aspect-ratio.md): Keeps content at a fixed ratio
 - [Pagination](react/pagination.md): Page navigation with ellipsis
+- [Typography](react/typography.md): Headings, paragraphs, lead, blockquote, lists and inline code
 
 ## Data
 
 - [Data Table](react/data-table.md): Full-featured table: search, faceted filters, sorting, column visibility, selection and pagination
 - [Table](react/table.md): Dense data table with 28px rows
+- [Chart](react/chart.md): Recharts wrapper with themed tooltip, legend and per-series colors
 - [Badge](react/badge.md): Colored tag using the 10-color palette
 - [Kbd](react/kbd.md): Keyboard shortcut hint
 - [Avatar](react/avatar.md): 20px avatar with fallback
 - [Alert](react/alert.md): Callout for important information, with info, success, warning and destructive variants
+- [Callout](react/callout.md): Highlighted note with an emoji or icon
 - [Empty](react/empty.md): Empty state with icon, title and actions
 - [Progress](react/progress.md): Thin progress bar
 - [Spinner](react/spinner.md): Loading spinner
@@ -553,10 +569,13 @@ import { Checkbox as ArkCheckbox } from '@ark-ui/react/checkbox'
 import { CheckIcon, MinusIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-function Checkbox({ className, children, ...props }: ArkCheckbox.RootProps) {
+/** `id` targets the hidden input, so `<Label htmlFor={id}>` works. */
+function Checkbox({ className, children, id, ids, ...props }: ArkCheckbox.RootProps) {
   return (
     <ArkCheckbox.Root
       data-slot="checkbox"
+      id={id}
+      ids={id ? { hiddenInput: id, ...ids } : ids}
       className={cn(
         'group inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',
         className,
@@ -622,10 +641,13 @@ export default function SwitchDemo() {
 import { Switch as ArkSwitch } from '@ark-ui/react/switch'
 import { cn } from '@/lib/utils'
 
-function Switch({ className, children, ...props }: ArkSwitch.RootProps) {
+/** `id` targets the hidden input, so `<Label htmlFor={id}>` works. */
+function Switch({ className, children, id, ids, ...props }: ArkSwitch.RootProps) {
   return (
     <ArkSwitch.Root
       data-slot="switch"
+      id={id}
+      ids={id ? { hiddenInput: id, ...ids } : ids}
       className={cn(
         'inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',
         className,
@@ -3329,10 +3351,11 @@ function CommandInput({ className, ...props }: Listbox.InputProps) {
   )
 }
 
-function CommandList({ className, ...props }: Listbox.ContentProps) {
+function CommandList({ className, 'aria-label': ariaLabel = 'Results', ...props }: Listbox.ContentProps) {
   return (
     <Listbox.Content
       data-slot="command-list"
+      aria-label={ariaLabel}
       className={cn('max-h-72 scroll-py-1 overflow-y-auto p-1 outline-none', className)}
       {...props}
     />
@@ -3681,39 +3704,42 @@ export default function DrawerDemo() {
 
 ```tsx
 import * as React from 'react'
-import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
+import { Drawer as ArkDrawer } from '@ark-ui/react/drawer'
 import { Portal } from '@ark-ui/react/portal'
 import { cn } from '@/lib/utils'
 
-function Drawer(props: ArkDialog.RootProps) {
-  return <ArkDialog.Root lazyMount unmountOnExit {...props} />
+/** Bottom sheet that can be swiped down to close. */
+function Drawer(props: ArkDrawer.RootProps) {
+  return <ArkDrawer.Root lazyMount unmountOnExit {...props} />
 }
 
-function DrawerTrigger(props: ArkDialog.TriggerProps) {
-  return <ArkDialog.Trigger data-slot="drawer-trigger" {...props} />
+function DrawerTrigger(props: ArkDrawer.TriggerProps) {
+  return <ArkDrawer.Trigger data-slot="drawer-trigger" {...props} />
 }
 
-function DrawerClose(props: ArkDialog.CloseTriggerProps) {
-  return <ArkDialog.CloseTrigger data-slot="drawer-close" {...props} />
+function DrawerClose(props: ArkDrawer.CloseTriggerProps) {
+  return <ArkDrawer.CloseTrigger data-slot="drawer-close" {...props} />
 }
 
-function DrawerContent({ className, children, ...props }: ArkDialog.ContentProps) {
+function DrawerContent({ className, children, ...props }: ArkDrawer.ContentProps) {
   return (
     <Portal>
-      <ArkDialog.Backdrop className="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
-      <ArkDialog.Positioner className="fixed inset-0 z-50 flex flex-col justify-end">
-        <ArkDialog.Content
+      <ArkDrawer.Backdrop className="fixed inset-0 z-50 bg-black/40 opacity-[calc(1-var(--drawer-swipe-progress,0))] data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+      <ArkDrawer.Positioner className="fixed inset-0 z-50 flex flex-col justify-end">
+        <ArkDrawer.Content
           data-slot="drawer-content"
           className={cn(
-            'mx-auto flex max-h-[85vh] w-full max-w-2xl flex-col rounded-t-xl border border-b-0 border-border bg-popover text-sm text-popover-foreground shadow-dialog outline-none data-[state=closed]:animate-slide-out-bottom data-[state=open]:animate-slide-in-bottom',
+            'mx-auto flex max-h-[85vh] w-full max-w-2xl flex-col rounded-t-xl border border-b-0 border-border bg-popover text-sm text-popover-foreground shadow-dialog outline-none transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[state=closed]:animate-slide-out-bottom data-[state=open]:animate-slide-in-bottom',
             className,
           )}
           {...props}
         >
-          <div aria-hidden className="mx-auto mt-2 mb-1 h-1 w-10 shrink-0 rounded-full bg-accent-active" />
+          <ArkDrawer.Grabber className="flex shrink-0 cursor-grab justify-center pt-2 pb-1 active:cursor-grabbing">
+            <ArkDrawer.GrabberIndicator className="h-1 w-10 rounded-full bg-accent-active" />
+          </ArkDrawer.Grabber>
           {children}
-        </ArkDialog.Content>
-      </ArkDialog.Positioner>
+        </ArkDrawer.Content>
+      </ArkDrawer.Positioner>
     </Portal>
   )
 }
@@ -3726,13 +3752,13 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return <div data-slot="drawer-footer" className={cn('mt-auto flex flex-col gap-1.5 px-4 py-3', className)} {...props} />
 }
 
-function DrawerTitle({ className, ...props }: ArkDialog.TitleProps) {
-  return <ArkDialog.Title data-slot="drawer-title" className={cn('text-lg font-semibold', className)} {...props} />
+function DrawerTitle({ className, ...props }: ArkDrawer.TitleProps) {
+  return <ArkDrawer.Title data-slot="drawer-title" className={cn('text-lg font-semibold', className)} {...props} />
 }
 
-function DrawerDescription({ className, ...props }: ArkDialog.DescriptionProps) {
+function DrawerDescription({ className, ...props }: ArkDrawer.DescriptionProps) {
   return (
-    <ArkDialog.Description
+    <ArkDrawer.Description
       data-slot="drawer-description"
       className={cn('text-sm text-muted-foreground', className)}
       {...props}
@@ -4165,7 +4191,7 @@ export default function InputGroupDemo() {
         <InputGroupAddon>
           <MailIcon />
         </InputGroupAddon>
-        <InputGroupInput defaultValue="hello@denseui.dev" />
+        <InputGroupInput defaultValue="hello@denseui.dev" aria-label="Email" />
         <InputGroupAddon align="inline-end">
           <InputGroupButton aria-label="Copy">
             <CopyIcon />
@@ -4470,7 +4496,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 function ItemGroup({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div role="list" data-slot="item-group" className={cn('flex flex-col gap-px', className)} {...props} />
+  return <div data-slot="item-group" className={cn('flex flex-col gap-px', className)} {...props} />
 }
 
 const itemVariants = cva(
@@ -4647,29 +4673,108 @@ import * as React from 'react'
 import { Menu } from '@ark-ui/react/menu'
 import { cn } from '@/lib/utils'
 
-function Menubar({ className, ...props }: React.ComponentProps<'div'>) {
+type MenubarContextValue = {
+  active: string | null
+  setActive: (value: string | null) => void
+}
+
+const MenubarContext = React.createContext<MenubarContextValue | null>(null)
+
+function Menubar({ className, onKeyDown, ...props }: React.ComponentProps<'div'>) {
+  const [active, setActive] = React.useState<string | null>(null)
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  const triggers = () => [...(ref.current?.querySelectorAll<HTMLElement>('[data-slot=menubar-trigger]') ?? [])]
+
+  // Menu content stops keydown propagation, so listen in the capture phase while a menu is open.
+  React.useEffect(() => {
+    if (active === null) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
+      const list = triggers()
+      const index = list.findIndex((t) => t.dataset.menubarValue === active)
+      const contentId = list[index]?.getAttribute('aria-controls')
+      const target = event.target as HTMLElement | null
+      if (!contentId || !target?.closest(`[id="${contentId}"]`)) return
+      // Leave arrows to an item that opens a submenu.
+      if (event.key === 'ArrowRight' && target.querySelector('[data-highlighted][aria-haspopup]')) return
+      const step = event.key === 'ArrowRight' ? 1 : -1
+      const next = list[(index + step + list.length) % list.length]
+      if (!next?.dataset.menubarValue) return
+      event.preventDefault()
+      event.stopPropagation()
+      setActive(next.dataset.menubarValue)
+    }
+    document.addEventListener('keydown', onKeyDown, true)
+    return () => document.removeEventListener('keydown', onKeyDown, true)
+  }, [active])
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event)
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
+    const list = triggers()
+    const focusedIndex = list.indexOf(event.target as HTMLElement)
+    if (focusedIndex < 0 || active !== null) return
+    event.preventDefault()
+    const step = event.key === 'ArrowRight' ? 1 : -1
+    list[(focusedIndex + step + list.length) % list.length]?.focus()
+  }
+
   return (
-    <div
-      role="menubar"
-      data-slot="menubar"
-      className={cn('flex w-fit items-center gap-px rounded-md border border-border bg-background p-0.5', className)}
-      {...props}
-    />
+    <MenubarContext.Provider value={{ active, setActive }}>
+      <div
+        ref={ref}
+        role="menubar"
+        data-slot="menubar"
+        className={cn('flex w-fit items-center gap-px rounded-md border border-border bg-background p-0.5', className)}
+        onKeyDown={handleKeyDown}
+        {...props}
+      />
+    </MenubarContext.Provider>
   )
 }
 
-function MenubarMenu(props: Menu.RootProps) {
-  return <Menu.Root lazyMount unmountOnExit positioning={{ placement: 'bottom-start', gutter: 6 }} {...props} />
+const MenubarMenuContext = React.createContext<string | null>(null)
+
+function MenubarMenu({ onOpenChange, ...props }: Menu.RootProps) {
+  const value = React.useId()
+  const bar = React.useContext(MenubarContext)
+  const open = bar ? bar.active === value : undefined
+
+  return (
+    <MenubarMenuContext.Provider value={value}>
+      <Menu.Root
+        lazyMount
+        unmountOnExit
+        positioning={{ placement: 'bottom-start', gutter: 6 }}
+        open={open}
+        onOpenChange={(details) => {
+          onOpenChange?.(details)
+          bar?.setActive(details.open ? value : bar.active === value ? null : bar.active)
+        }}
+        {...props}
+      />
+    </MenubarMenuContext.Provider>
+  )
 }
 
-function MenubarTrigger({ className, ...props }: Menu.TriggerProps) {
+function MenubarTrigger({ className, onPointerEnter, ...props }: Menu.TriggerProps) {
+  const value = React.useContext(MenubarMenuContext)
+  const bar = React.useContext(MenubarContext)
+
   return (
     <Menu.Trigger
       data-slot="menubar-trigger"
+      role="menuitem"
+      data-menubar-value={value ?? undefined}
       className={cn(
         'flex cursor-default items-center rounded-sm px-2.5 py-1 text-sm font-medium outline-none select-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent',
         className,
       )}
+      onPointerEnter={(event) => {
+        onPointerEnter?.(event)
+        if (bar && value && bar.active !== null && bar.active !== value) bar.setActive(value)
+      }}
       {...props}
     />
   )
@@ -4719,7 +4824,7 @@ import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@/compon
 export default function NativeSelectDemo() {
   return (
     <div className="flex gap-3">
-      <NativeSelect defaultValue="" className="w-40">
+      <NativeSelect defaultValue="" className="w-40" aria-label="Status">
         <NativeSelectOption value="" disabled>
           Select status
         </NativeSelectOption>
@@ -4727,7 +4832,7 @@ export default function NativeSelectDemo() {
         <NativeSelectOption value="in-progress">In progress</NativeSelectOption>
         <NativeSelectOption value="done">Done</NativeSelectOption>
       </NativeSelect>
-      <NativeSelect className="w-40">
+      <NativeSelect className="w-40" aria-label="Stack">
         <NativeSelectOptGroup label="Frontend">
           <NativeSelectOption>React</NativeSelectOption>
           <NativeSelectOption>Vue</NativeSelectOption>
@@ -5172,10 +5277,11 @@ function ResizablePanel({ className, ...props }: Splitter.PanelProps) {
   return <Splitter.Panel data-slot="resizable-panel" className={cn('overflow-hidden', className)} {...props} />
 }
 
-function ResizableHandle({ className, ...props }: Splitter.ResizeTriggerProps) {
+function ResizableHandle({ className, 'aria-label': ariaLabel = 'Resize', ...props }: Splitter.ResizeTriggerProps) {
   return (
     <Splitter.ResizeTrigger
       data-slot="resizable-handle"
+      aria-label={ariaLabel}
       className={cn(
         'relative shrink-0 bg-border outline-none transition-colors after:absolute focus-visible:bg-brand data-dragging:bg-brand data-[orientation=horizontal]:w-px data-[orientation=horizontal]:after:inset-y-0 data-[orientation=horizontal]:after:-inset-x-1 data-[orientation=vertical]:h-px data-[orientation=vertical]:after:inset-x-0 data-[orientation=vertical]:after:-inset-y-1 hover:bg-brand/60',
         className,
@@ -5243,7 +5349,10 @@ import { cn } from '@/lib/utils'
 function ScrollArea({ className, children, ...props }: ArkScrollArea.RootProps) {
   return (
     <ArkScrollArea.Root data-slot="scroll-area" className={cn('relative overflow-hidden', className)} {...props}>
-      <ArkScrollArea.Viewport className="size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <ArkScrollArea.Viewport
+        tabIndex={0}
+        className="size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         <ArkScrollArea.Content>{children}</ArkScrollArea.Content>
       </ArkScrollArea.Viewport>
       <ScrollBar />
@@ -5320,7 +5429,7 @@ const fruits = createListCollection({
 export default function SelectDemo() {
   return (
     <Select collection={fruits} className="w-48">
-      <SelectTrigger>
+      <SelectTrigger aria-label="Fruit">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>
@@ -5805,15 +5914,34 @@ export default function SidebarDemo() {
 
 ```tsx
 import * as React from 'react'
+import { Dialog } from '@ark-ui/react/dialog'
 import { ark } from '@ark-ui/react/factory'
+import { Portal } from '@ark-ui/react/portal'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
+const MOBILE_QUERY = '(max-width: 767px)'
+
+function useIsMobile() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia(MOBILE_QUERY)
+      media.addEventListener('change', onChange)
+      return () => media.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => false,
+  )
+}
+
 type SidebarContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  isMobile: boolean
+  openMobile: boolean
+  setOpenMobile: (open: boolean) => void
   toggle: () => void
 }
 
@@ -5841,6 +5969,8 @@ function SidebarProvider({
   ...props
 }: SidebarProviderProps) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const [openMobile, setOpenMobile] = React.useState(false)
+  const isMobile = useIsMobile()
   const open = openProp ?? internalOpen
 
   const setOpen = React.useCallback(
@@ -5850,7 +5980,10 @@ function SidebarProvider({
     },
     [onOpenChange],
   )
-  const toggle = React.useCallback(() => setOpen(!open), [open, setOpen])
+  const toggle = React.useCallback(
+    () => (isMobile ? setOpenMobile((value) => !value) : setOpen(!open)),
+    [isMobile, open, setOpen],
+  )
 
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -5863,7 +5996,10 @@ function SidebarProvider({
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [toggle])
 
-  const value = React.useMemo(() => ({ open, setOpen, toggle }), [open, setOpen, toggle])
+  const value = React.useMemo(
+    () => ({ open, setOpen, isMobile, openMobile, setOpenMobile, toggle }),
+    [open, setOpen, isMobile, openMobile, toggle],
+  )
 
   return (
     <SidebarContext.Provider value={value}>
@@ -5885,8 +6021,36 @@ type SidebarProps = React.ComponentProps<'aside'> & {
 }
 
 function Sidebar({ side = 'left', collapsible = 'offcanvas', className, children, ...props }: SidebarProps) {
-  const { open } = useSidebar()
+  const { open, isMobile, openMobile, setOpenMobile } = useSidebar()
   const collapsed = collapsible !== 'none' && !open
+
+  if (isMobile) {
+    return (
+      <Dialog.Root open={openMobile} onOpenChange={(e) => setOpenMobile(e.open)} lazyMount unmountOnExit>
+        <Portal>
+          <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+          <Dialog.Positioner className={cn('fixed inset-0 z-50 flex', side === 'right' && 'justify-end')}>
+            <Dialog.Content
+              data-slot="sidebar"
+              data-mobile="true"
+              data-side={side}
+              className={cn(
+                'group/sidebar flex h-full w-(--sidebar-width) max-w-[85vw] flex-col border-border bg-muted text-foreground shadow-dialog outline-none',
+                side === 'left'
+                  ? 'border-r data-[state=closed]:animate-slide-out-left data-[state=open]:animate-slide-in-left'
+                  : 'border-l data-[state=closed]:animate-slide-out-right data-[state=open]:animate-slide-in-right',
+                className,
+              )}
+              style={{ '--sidebar-width': '17rem' } as React.CSSProperties}
+            >
+              <Dialog.Title className="sr-only">Sidebar</Dialog.Title>
+              {children}
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
+    )
+  }
 
   return (
     <aside
@@ -6779,15 +6943,17 @@ export default function DataTableDemo() {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Task" />,
         cell: (info) => <span className="font-mono text-xs text-muted-foreground">{info.getValue()}</span>,
         enableHiding: false,
+        size: 104,
       }),
       helper.accessor('title', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
         cell: ({ row }) => (
-          <div className="flex max-w-80 items-center gap-1.5">
+          <div className="flex min-w-0 items-center gap-1.5">
             <Badge color={labelColor[row.original.label]}>{row.original.label}</Badge>
             <span className="truncate font-medium">{row.original.title}</span>
           </div>
         ),
+        size: 320,
       }),
       helper.accessor('status', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
@@ -6801,6 +6967,7 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 130,
       }),
       helper.accessor('priority', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Priority" />,
@@ -6814,14 +6981,18 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 110,
       }),
       helper.accessor('estimate', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Points" className="ml-auto" />,
         cell: (info) => <div className="text-right tabular-nums">{info.getValue()}</div>,
         enableGlobalFilter: false,
+        size: 90,
       }),
       helper.display({
         id: 'actions',
+        size: 44,
+        enableResizing: false,
         cell: ({ row }) => (
           <DropdownMenu positioning={{ placement: 'bottom-end' }}>
             <DropdownMenuTrigger asChild>
@@ -6860,6 +7031,7 @@ export default function DataTableDemo() {
       className="w-full"
       columns={columns}
       data={tasks}
+      columnSizing
       getRowId={(task) => task.id}
       searchPlaceholder="Search tasks…"
       filters={filters}
@@ -6882,6 +7054,107 @@ export default function DataTableDemo() {
 }
 ```
 
+## Example: Server
+
+```tsx
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
+import {
+  DataTable,
+  DataTableColumnHeader,
+  createDataTableColumnHelper,
+  type DataTableQuery,
+} from '@/components/ui/data-table'
+
+type Order = { id: string; customer: string; status: 'paid' | 'pending' | 'refunded'; total: number }
+
+const statusColor = { paid: 'green', pending: 'yellow', refunded: 'gray' } as const
+const customers = ['Acme Inc.', 'Globex', 'Initech', 'Umbrella', 'Hooli', 'Soylent', 'Stark Ind.', 'Wayne Ent.']
+
+// A fake API: in your app, replace with fetch(`/api/orders?${params}`).
+const allOrders: Order[] = Array.from({ length: 1240 }, (_, i) => ({
+  id: `ORD-${10000 + i}`,
+  customer: customers[(i * 7) % customers.length]!,
+  status: (['paid', 'paid', 'pending', 'refunded'] as const)[(i * 3) % 4]!,
+  total: Math.round(((i * 7919) % 50000) / 10) / 10 + 4.99,
+}))
+
+function fetchOrders(query: DataTableQuery): Promise<{ rows: Order[]; total: number }> {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      let rows = allOrders
+      if (query.search) {
+        const q = query.search.toLowerCase()
+        rows = rows.filter((o) => o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q))
+      }
+      for (const { id, desc } of [...query.sorting].reverse()) {
+        rows = [...rows].sort((a, b) => {
+          const x = a[id as keyof Order]
+          const y = b[id as keyof Order]
+          return (x < y ? -1 : x > y ? 1 : 0) * (desc ? -1 : 1)
+        })
+      }
+      const start = query.pageIndex * query.pageSize
+      resolve({ rows: rows.slice(start, start + query.pageSize), total: rows.length })
+    }, 350),
+  )
+}
+
+const helper = createDataTableColumnHelper<Order>()
+
+export default function DataTableServerDemo() {
+  const [data, setData] = useState<Order[]>([])
+  const [rowCount, setRowCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const latest = useRef(0)
+
+  const onQueryChange = useCallback(async (query: DataTableQuery) => {
+    const request = ++latest.current
+    setLoading(true)
+    const result = await fetchOrders(query)
+    if (request !== latest.current) return
+    setData(result.rows)
+    setRowCount(result.total)
+    setLoading(false)
+  }, [])
+
+  useEffect(() => () => void (latest.current = -1), [])
+
+  const columns = useMemo(
+    () => [
+      helper.accessor('id', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Order" />,
+        cell: (info) => <span className="font-mono text-xs">{info.getValue()}</span>,
+      }),
+      helper.accessor('customer', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
+      }),
+      helper.accessor('status', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        cell: (info) => <Badge color={statusColor[info.getValue()]}>{info.getValue()}</Badge>,
+      }),
+      helper.accessor('total', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Total" className="ml-auto" />,
+        cell: (info) => <div className="text-right tabular-nums">${info.getValue().toFixed(2)}</div>,
+      }),
+    ],
+    [],
+  )
+
+  return (
+    <DataTable
+      className="w-full"
+      columns={columns}
+      data={data}
+      getRowId={(order) => order.id}
+      searchPlaceholder="Search orders…"
+      manual={{ rowCount, onQueryChange }}
+      loading={loading}
+    />
+  )
+}
+```
+
 ## Source: components/ui/data-table.tsx
 
 ```tsx
@@ -6889,6 +7162,9 @@ import * as React from 'react'
 import {
   columnFacetingFeature,
   columnFilteringFeature,
+  columnPinningFeature,
+  columnResizingFeature,
+  columnSizingFeature,
   columnVisibilityFeature,
   createColumnHelper,
   createFacetedRowModel,
@@ -6925,6 +7201,8 @@ import {
   ChevronsRightIcon,
   ChevronsUpDownIcon,
   EyeOffIcon,
+  PinIcon,
+  PinOffIcon,
   PlusCircleIcon,
   SearchIcon,
   Settings2Icon,
@@ -6970,6 +7248,9 @@ const dataTableFeatures = tableFeatures({
   paginatedRowModel: createPaginatedRowModel(),
   rowSelectionFeature,
   columnVisibilityFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  columnPinningFeature,
 })
 
 type DataTableFeatures = typeof dataTableFeatures
@@ -6998,9 +7279,15 @@ function columnTitle<TData extends RowData>(column: Column<DataTableFeatures, TD
   return typeof header === 'string' ? header : column.id
 }
 
+const rangeAnchors = new WeakMap<object, string>()
+let shiftHeld = false
+
+/** Checkbox column. Shift-click selects every row between the last clicked row and this one. */
 function selectColumn<TData extends RowData>(): DataTableColumnDef<TData> {
   return {
     id: 'select',
+    size: 36,
+    enableResizing: false,
     header: ({ table }) => (
       <Checkbox
         aria-label="Select all rows on this page"
@@ -7010,17 +7297,44 @@ function selectColumn<TData extends RowData>(): DataTableColumnDef<TData> {
         onCheckedChange={(details) => table.toggleAllPageRowsSelected(details.checked === true)}
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        aria-label="Select row"
-        checked={row.getIsSelected()}
-        disabled={!row.getCanSelect()}
-        onCheckedChange={(details) => row.toggleSelected(details.checked === true)}
-      />
+    cell: ({ row, table }) => (
+      <span className="flex" onClickCapture={(event) => (shiftHeld = event.shiftKey)}>
+        <Checkbox
+          aria-label="Select row"
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onCheckedChange={(details) => {
+            const checked = details.checked === true
+            const anchor = rangeAnchors.get(table)
+            const rows = table.getPrePaginatedRowModel().rows
+            const from = rows.findIndex((r) => r.id === anchor)
+            const to = rows.findIndex((r) => r.id === row.id)
+            if (shiftHeld && from >= 0 && to >= 0 && from !== to) {
+              const ids = rows
+                .slice(Math.min(from, to), Math.max(from, to) + 1)
+                .filter((r) => r.getCanSelect())
+                .map((r) => r.id)
+              table.setRowSelection((old) => {
+                const next = { ...old }
+                for (const id of ids) {
+                  if (checked) next[id] = true
+                  else delete next[id]
+                }
+                return next
+              })
+            } else {
+              row.toggleSelected(checked)
+            }
+            rangeAnchors.set(table, row.id)
+            shiftHeld = false
+          }}
+        />
+      </span>
     ),
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
+    enablePinning: false,
   }
 }
 
@@ -7039,6 +7353,10 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
     return <span className={className}>{title}</span>
   }
   const sorted = column.getIsSorted()
+  const sortedColumns = column.table.getAllLeafColumns().filter((c) => c.getIsSorted())
+  const othersSorted = sortedColumns.some((c) => c.id !== column.id)
+  const sortIndex = column.getSortIndex()
+  const pinned = column.getIsPinned()
 
   return (
     <DropdownMenu positioning={{ placement: 'bottom-start' }}>
@@ -7059,9 +7377,12 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
           ) : (
             <ChevronsUpDownIcon className="size-3 opacity-60" />
           )}
+          {sorted && sortedColumns.length > 1 && (
+            <span className="font-mono text-[10px] text-subtle-foreground tabular-nums">{sortIndex + 1}</span>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-36">
+      <DropdownMenuContent className="min-w-40">
         {column.getCanSort() && (
           <>
             <DropdownMenuItem value="asc" onSelect={() => column.toggleSorting(false)}>
@@ -7070,6 +7391,16 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
             <DropdownMenuItem value="desc" onSelect={() => column.toggleSorting(true)}>
               <ArrowDownIcon /> Descending
             </DropdownMenuItem>
+            {othersSorted && !sorted && column.getCanMultiSort() && (
+              <>
+                <DropdownMenuItem value="then-asc" onSelect={() => column.toggleSorting(false, true)}>
+                  <ArrowUpIcon /> Then ascending
+                </DropdownMenuItem>
+                <DropdownMenuItem value="then-desc" onSelect={() => column.toggleSorting(true, true)}>
+                  <ArrowDownIcon /> Then descending
+                </DropdownMenuItem>
+              </>
+            )}
             {sorted && (
               <DropdownMenuItem value="clear" onSelect={() => column.clearSorting()}>
                 <XIcon /> Clear sort
@@ -7077,11 +7408,27 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
             )}
           </>
         )}
-        {column.getCanSort() && column.getCanHide() && <DropdownMenuSeparator />}
+        {column.getCanPin() && (
+          <>
+            <DropdownMenuSeparator />
+            {pinned ? (
+              <DropdownMenuItem value="unpin" onSelect={() => column.pin(false)}>
+                <PinOffIcon /> Unpin
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem value="pin" onSelect={() => column.pin('start')}>
+                <PinIcon /> Pin to start
+              </DropdownMenuItem>
+            )}
+          </>
+        )}
         {column.getCanHide() && (
-          <DropdownMenuItem value="hide" onSelect={() => column.toggleVisibility(false)}>
-            <EyeOffIcon /> Hide column
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem value="hide" onSelect={() => column.toggleVisibility(false)}>
+              <EyeOffIcon /> Hide column
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -7380,6 +7727,14 @@ function DataTablePagination<TData extends RowData>({
   )
 }
 
+type DataTableQuery = {
+  pageIndex: number
+  pageSize: number
+  sorting: { id: string; desc: boolean }[]
+  filters: { id: string; value: unknown }[]
+  search: string
+}
+
 type DataTableProps<TData extends RowData> = {
   /** Keep stable (module scope or useMemo) so row models aren't rebuilt every render. */
   columns: DataTableColumnDef<TData>[]
@@ -7393,6 +7748,14 @@ type DataTableProps<TData extends RowData> = {
   /** Toolbar content before the View button; receives the table for bulk actions. */
   actions?: (table: DataTableInstance<TData>) => React.ReactNode
   emptyMessage?: React.ReactNode
+  /** Fixed column widths with drag-to-resize handles and "Pin to start". Set `size` on columns. */
+  columnSizing?: boolean
+  /**
+   * Server-side mode: `data` is the current page, sorting/filtering/paging happen on your server.
+   * `onQueryChange` fires whenever the user changes page, sort, filters or search.
+   */
+  manual?: { rowCount: number; onQueryChange: (query: DataTableQuery) => void }
+  loading?: boolean
   className?: string
 }
 
@@ -7406,6 +7769,9 @@ function DataTable<TData extends RowData>({
   initialPageSize = pageSizeOptions[0] ?? 10,
   actions,
   emptyMessage = 'No results.',
+  columnSizing = false,
+  manual,
+  loading = false,
   className,
 }: DataTableProps<TData>) {
   const table = useTable({
@@ -7415,33 +7781,94 @@ function DataTable<TData extends RowData>({
     getRowId,
     globalFilterFn: 'includesString',
     initialState: { pagination: { pageIndex: 0, pageSize: initialPageSize } },
+    enableColumnResizing: columnSizing,
+    enableColumnPinning: columnSizing,
+    columnResizeMode: 'onChange',
+    manualPagination: !!manual,
+    manualSorting: !!manual,
+    manualFiltering: !!manual,
+    rowCount: manual?.rowCount,
   })
   const rows = table.getRowModel().rows
+
+  const onQueryChange = React.useRef(manual?.onQueryChange)
+  React.useLayoutEffect(() => {
+    onQueryChange.current = manual?.onQueryChange
+  })
+  const { pagination, sorting, columnFilters, globalFilter } = table.state
+  const query = JSON.stringify({
+    pageIndex: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    sorting,
+    filters: columnFilters,
+    search: (globalFilter as string | undefined) ?? '',
+  })
+  React.useEffect(() => {
+    onQueryChange.current?.(JSON.parse(query) as DataTableQuery)
+  }, [query])
+
+  const pinnedStyle = (column: Column<DataTableFeatures, TData>): React.CSSProperties | undefined =>
+    columnSizing && column.getIsPinned() === 'start'
+      ? { position: 'sticky', insetInlineStart: column.getStart('start'), zIndex: 1 }
+      : undefined
 
   return (
     <div data-slot="data-table" className={cn('flex flex-col gap-2', className)}>
       <DataTableToolbar table={table} searchPlaceholder={searchPlaceholder} filters={filters}>
         {actions?.(table)}
       </DataTableToolbar>
-      <div data-slot="data-table-container" className="overflow-hidden rounded-lg border border-border bg-background">
-        <Table>
+      <div
+        data-slot="data-table-container"
+        aria-busy={loading}
+        className="relative overflow-hidden rounded-lg border border-border bg-background"
+      >
+        {loading && (
+          <div className="absolute inset-x-0 top-0 z-10 h-0.5 animate-pulse bg-brand" role="progressbar" aria-label="Loading" />
+        )}
+        <Table
+          className={cn(columnSizing && 'table-fixed')}
+          style={columnSizing ? { width: table.getTotalSize(), minWidth: '100%' } : undefined}
+        >
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-transparent">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} colSpan={header.colSpan}>
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    data-pinned={header.column.getIsPinned() || undefined}
+                    className={cn('relative', columnSizing && 'data-pinned:bg-muted')}
+                    style={{ ...(columnSizing ? { width: header.getSize() } : undefined), ...pinnedStyle(header.column) }}
+                  >
                     {header.isPlaceholder ? null : <table.FlexRender header={header} />}
+                    {columnSizing && header.column.getCanResize() && (
+                      <div
+                        role="separator"
+                        aria-orientation="vertical"
+                        aria-label={`Resize ${header.column.id}`}
+                        data-resizing={header.column.getIsResizing() || undefined}
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        onDoubleClick={() => header.column.resetSize()}
+                        className="absolute top-1 right-0 bottom-1 w-1 cursor-col-resize touch-none rounded-full select-none hover:bg-brand/60 data-resizing:bg-brand"
+                      />
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className={cn(loading && 'opacity-60 transition-opacity')}>
             {rows.length > 0 ? (
               rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      data-pinned={cell.column.getIsPinned() || undefined}
+                      className={cn(columnSizing && 'truncate data-pinned:bg-background')}
+                      style={pinnedStyle(cell.column)}
+                    >
                       <table.FlexRender cell={cell} />
                     </TableCell>
                   ))}
@@ -7453,7 +7880,7 @@ function DataTable<TData extends RowData>({
                   colSpan={table.getVisibleLeafColumns().length}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  {emptyMessage}
+                  {loading ? 'Loading…' : emptyMessage}
                 </TableCell>
               </TableRow>
             )}
@@ -7480,5 +7907,2025 @@ export {
   type DataTableFilter,
   type DataTableFilterOption,
   type DataTableInstance,
+  type DataTableQuery,
 }
+```
+
+---
+
+# Chart
+
+Recharts wrapper with themed tooltip, legend and per-series colors
+
+## Install
+
+```bash
+npx denseui@latest add chart
+```
+
+npm dependencies: `recharts`
+
+## Usage
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, useChart } from "@/components/ui/chart"
+```
+
+## Example
+
+```tsx
+import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '@/components/ui/chart'
+
+const data = [
+  { month: 'Jan', desktop: 186, mobile: 80 },
+  { month: 'Feb', desktop: 305, mobile: 200 },
+  { month: 'Mar', desktop: 237, mobile: 120 },
+  { month: 'Apr', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'Jun', desktop: 214, mobile: 140 },
+]
+
+const config = {
+  desktop: { label: 'Desktop', color: 'var(--brand)' },
+  mobile: { label: 'Mobile', color: 'var(--tag-green)' },
+} satisfies ChartConfig
+
+export default function ChartDemo() {
+  return (
+    <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+      <ChartContainer config={config} className="h-48 w-full">
+        <BarChart data={data} margin={{ left: -20, right: 4, top: 4 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={6} />
+          <YAxis tickLine={false} axisLine={false} width={44} />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent />} />
+          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={3} />
+          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={3} />
+        </BarChart>
+      </ChartContainer>
+      <ChartContainer config={config} className="h-48 w-full">
+        <LineChart data={data} margin={{ left: -20, right: 8, top: 4 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={6} />
+          <YAxis tickLine={false} axisLine={false} width={44} />
+          <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
+          <Line dataKey="desktop" stroke="var(--color-desktop)" strokeWidth={2} dot={false} type="monotone" />
+          <Line dataKey="mobile" stroke="var(--color-mobile)" strokeWidth={2} dot={false} type="monotone" />
+        </LineChart>
+      </ChartContainer>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/chart.tsx
+
+```tsx
+import * as React from 'react'
+import * as Recharts from 'recharts'
+import { cn } from '@/lib/utils'
+
+type ChartConfig = Record<
+  string,
+  {
+    label?: React.ReactNode
+    icon?: React.ComponentType<{ className?: string }>
+    /** Any CSS color, e.g. `var(--brand)` or `var(--tag-green)`. */
+    color?: string
+  }
+>
+
+const ChartContext = React.createContext<{ config: ChartConfig } | null>(null)
+
+function useChart() {
+  const context = React.useContext(ChartContext)
+  if (!context) throw new Error('useChart must be used within a <ChartContainer />')
+  return context
+}
+
+type ChartContainerProps = React.ComponentProps<'div'> & {
+  config: ChartConfig
+  children: React.ComponentProps<typeof Recharts.ResponsiveContainer>['children']
+}
+
+function ChartContainer({ config, className, children, style, ...props }: ChartContainerProps) {
+  // Series colors become --color-<key> so charts reference them as `fill="var(--color-desktop)"`.
+  const vars = Object.fromEntries(
+    Object.entries(config)
+      .filter(([, item]) => item.color)
+      .map(([key, item]) => [`--color-${key}`, item.color]),
+  ) as React.CSSProperties
+
+  return (
+    <ChartContext.Provider value={{ config }}>
+      <div
+        data-slot="chart"
+        style={{ ...vars, ...style }}
+        className={cn(
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-accent [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
+          className,
+        )}
+        {...props}
+      >
+        <Recharts.ResponsiveContainer>{children}</Recharts.ResponsiveContainer>
+      </div>
+    </ChartContext.Provider>
+  )
+}
+
+const ChartTooltip = Recharts.Tooltip
+
+type TooltipItem = {
+  name?: string | number
+  value?: unknown
+  dataKey?: string | number
+  color?: string
+  fill?: string
+  payload?: Record<string, unknown>
+}
+
+type ChartTooltipContentProps = {
+  active?: boolean
+  payload?: TooltipItem[]
+  label?: React.ReactNode
+  className?: string
+  hideLabel?: boolean
+  indicator?: 'dot' | 'line'
+  labelFormatter?: (label: React.ReactNode) => React.ReactNode
+  valueFormatter?: (value: unknown, key: string) => React.ReactNode
+}
+
+function ChartTooltipContent({
+  active,
+  payload,
+  label,
+  className,
+  hideLabel = false,
+  indicator = 'dot',
+  labelFormatter,
+  valueFormatter = (value) => (typeof value === 'number' ? value.toLocaleString() : String(value)),
+}: ChartTooltipContentProps) {
+  const { config } = useChart()
+  if (!active || !payload?.length) return null
+
+  return (
+    <div
+      data-slot="chart-tooltip"
+      className={cn(
+        'grid min-w-32 gap-1 rounded-md bg-popover px-2.5 py-1.5 text-xs text-popover-foreground shadow-popover',
+        className,
+      )}
+    >
+      {!hideLabel && label != null && (
+        <div className="font-medium">{labelFormatter ? labelFormatter(label) : label}</div>
+      )}
+      {payload.map((item) => {
+        const key = String(item.dataKey ?? item.name ?? 'value')
+        const itemConfig = config[key]
+        const color = item.color ?? item.fill ?? itemConfig?.color
+        return (
+          <div key={key} className="flex items-center gap-2">
+            {itemConfig?.icon ? (
+              <itemConfig.icon className="size-3 text-muted-foreground" />
+            ) : (
+              <span
+                className={cn('shrink-0 rounded-[2px]', indicator === 'dot' ? 'size-2' : 'h-3 w-1')}
+                style={{ background: color }}
+              />
+            )}
+            <span className="text-muted-foreground">{itemConfig?.label ?? item.name}</span>
+            <span className="ml-auto font-mono font-medium tabular-nums">{valueFormatter(item.value, key)}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const ChartLegend = Recharts.Legend
+
+type ChartLegendContentProps = {
+  payload?: { value?: unknown; dataKey?: unknown; color?: string }[]
+  className?: string
+}
+
+function ChartLegendContent({ payload, className }: ChartLegendContentProps) {
+  const { config } = useChart()
+  if (!payload?.length) return null
+
+  return (
+    <div data-slot="chart-legend" className={cn('flex items-center justify-center gap-3 pt-2', className)}>
+      {payload.map((item) => {
+        const key = String(item.dataKey ?? item.value ?? '')
+        const itemConfig = config[key]
+        return (
+          <div key={key} className="flex items-center gap-1.5 text-muted-foreground">
+            {itemConfig?.icon ? (
+              <itemConfig.icon className="size-3" />
+            ) : (
+              <span className="size-2 shrink-0 rounded-[2px]" style={{ background: item.color }} />
+            )}
+            {itemConfig?.label ?? key}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, useChart, type ChartConfig }
+```
+
+---
+
+# Form
+
+react-hook-form bindings with accessible labels, descriptions and error messages
+
+## Install
+
+```bash
+npx denseui@latest add form
+```
+
+npm dependencies: `react-hook-form`, `@ark-ui/react`
+
+Also installs: `label`
+
+## Usage
+
+```tsx
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, useFormField } from "@/components/ui/form"
+```
+
+## Example
+
+```tsx
+import { useForm } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
+import { toaster } from '@/components/ui/toast'
+
+type Values = { username: string; email: string; marketing: boolean }
+
+export default function FormDemo() {
+  const form = useForm<Values>({ defaultValues: { username: '', email: '', marketing: false }, mode: 'onTouched' })
+
+  return (
+    <Form {...form}>
+      <form
+        className="flex w-80 flex-col gap-3"
+        onSubmit={form.handleSubmit((values) => toaster.success({ title: 'Saved', description: JSON.stringify(values) }))}
+      >
+        <FormField
+          control={form.control}
+          name="username"
+          rules={{ required: 'Username is required.', minLength: { value: 3, message: 'At least 3 characters.' } }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="janedoe" {...field} />
+              </FormControl>
+              <FormDescription>Your public display name.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          rules={{ required: 'Email is required.', pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email.' } }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="jane@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="marketing"
+          render={({ field }) => (
+            <FormItem className="flex-row items-center justify-between rounded-md border border-border px-3 py-2">
+              <div className="flex flex-col gap-0.5">
+                <FormLabel>Product updates</FormLabel>
+                <FormDescription>One email a month, no spam.</FormDescription>
+              </div>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={(e) => field.onChange(e.checked)} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="self-end">
+          Save
+        </Button>
+      </form>
+    </Form>
+  )
+}
+```
+
+## Source: components/ui/form.tsx
+
+```tsx
+import * as React from 'react'
+import { ark } from '@ark-ui/react/factory'
+import {
+  Controller,
+  FormProvider,
+  useFormContext,
+  useFormState,
+  type ControllerProps,
+  type FieldPath,
+  type FieldValues,
+} from 'react-hook-form'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
+
+const Form = FormProvider
+
+const FormFieldContext = React.createContext<{ name: string } | null>(null)
+const FormItemContext = React.createContext<{ id: string } | null>(null)
+
+function FormField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(props: ControllerProps<TFieldValues, TName>) {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  )
+}
+
+function useFormField() {
+  const field = React.useContext(FormFieldContext)
+  const item = React.useContext(FormItemContext)
+  const { getFieldState } = useFormContext()
+  if (!field || !item) throw new Error('useFormField must be used within <FormField> and <FormItem>')
+  const formState = useFormState({ name: field.name })
+  const fieldState = getFieldState(field.name, formState)
+
+  return {
+    name: field.name,
+    formItemId: `${item.id}-item`,
+    formDescriptionId: `${item.id}-description`,
+    formMessageId: `${item.id}-message`,
+    ...fieldState,
+  }
+}
+
+function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
+  const id = React.useId()
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div data-slot="form-item" className={cn('flex flex-col gap-1', className)} {...props} />
+    </FormItemContext.Provider>
+  )
+}
+
+function FormLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
+  const { error, formItemId } = useFormField()
+  return (
+    <Label
+      data-slot="form-label"
+      data-error={!!error}
+      htmlFor={formItemId}
+      className={cn('data-[error=true]:text-destructive', className)}
+      {...props}
+    />
+  )
+}
+
+/** Passes id and aria attributes to its single child control. */
+function FormControl(props: Omit<React.ComponentProps<typeof ark.div>, 'asChild'>) {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+  return (
+    <ark.div
+      data-slot="form-control"
+      asChild
+      id={formItemId}
+      aria-describedby={error ? `${formDescriptionId} ${formMessageId}` : formDescriptionId}
+      aria-invalid={!!error}
+      {...props}
+    />
+  )
+}
+
+function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
+  const { formDescriptionId } = useFormField()
+  return (
+    <p
+      data-slot="form-description"
+      id={formDescriptionId}
+      className={cn('text-xs text-subtle-foreground', className)}
+      {...props}
+    />
+  )
+}
+
+function FormMessage({ className, children, ...props }: React.ComponentProps<'p'>) {
+  const { error, formMessageId } = useFormField()
+  const body = error ? String(error.message ?? '') : children
+  if (!body) return null
+  return (
+    <p
+      data-slot="form-message"
+      id={formMessageId}
+      role="alert"
+      className={cn('text-xs text-destructive', className)}
+      {...props}
+    >
+      {body}
+    </p>
+  )
+}
+
+export { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, useFormField }
+```
+
+---
+
+# Typography
+
+Headings, paragraphs, lead, blockquote, lists and inline code
+
+## Install
+
+```bash
+npx denseui@latest add typography
+```
+
+## Usage
+
+```tsx
+import { TypographyBlockquote, TypographyH1, TypographyH2, TypographyH3, TypographyH4, TypographyInlineCode, TypographyLead, TypographyList, TypographyMuted, TypographyP } from "@/components/ui/typography"
+```
+
+## Example
+
+```tsx
+import {
+  TypographyBlockquote,
+  TypographyH1,
+  TypographyH2,
+  TypographyH3,
+  TypographyInlineCode,
+  TypographyLead,
+  TypographyList,
+  TypographyMuted,
+  TypographyP,
+} from '@/components/ui/typography'
+
+export default function TypographyDemo() {
+  return (
+    <div className="max-w-lg">
+      <TypographyH1>The Dense Manifesto</TypographyH1>
+      <TypographyLead className="mt-2">Interfaces for people who get work done.</TypographyLead>
+      <TypographyH2 className="mt-6">Why density</TypographyH2>
+      <TypographyP>
+        Productivity tools are used for hours a day. Every pixel of padding is a pixel of content you can't see. Use{' '}
+        <TypographyInlineCode>h-6</TypographyInlineCode> controls and let the content breathe instead.
+      </TypographyP>
+      <TypographyBlockquote>"Whitespace is not a feature. Clarity is."</TypographyBlockquote>
+      <TypographyH3 className="mt-6">Principles</TypographyH3>
+      <TypographyList>
+        <li>Vertical padding is always smaller than horizontal.</li>
+        <li>Semantic tokens, never raw colors.</li>
+        <li>Text sits optically centered at whole pixels.</li>
+      </TypographyList>
+      <TypographyMuted className="mt-4">Last edited 2 minutes ago</TypographyMuted>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/typography.tsx
+
+```tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+function TypographyH1({ className, ...props }: React.ComponentProps<'h1'>) {
+  return <h1 data-slot="h1" className={cn('scroll-m-16 text-3xl font-bold tracking-tight text-balance', className)} {...props} />
+}
+
+function TypographyH2({ className, ...props }: React.ComponentProps<'h2'>) {
+  return (
+    <h2
+      data-slot="h2"
+      className={cn('scroll-m-16 border-b border-border pb-1.5 text-2xl font-semibold tracking-tight first:mt-0', className)}
+      {...props}
+    />
+  )
+}
+
+function TypographyH3({ className, ...props }: React.ComponentProps<'h3'>) {
+  return <h3 data-slot="h3" className={cn('scroll-m-16 text-xl font-semibold tracking-tight', className)} {...props} />
+}
+
+function TypographyH4({ className, ...props }: React.ComponentProps<'h4'>) {
+  return <h4 data-slot="h4" className={cn('scroll-m-16 text-lg font-semibold tracking-tight', className)} {...props} />
+}
+
+function TypographyP({ className, ...props }: React.ComponentProps<'p'>) {
+  return <p data-slot="p" className={cn('leading-6 [&:not(:first-child)]:mt-3', className)} {...props} />
+}
+
+function TypographyLead({ className, ...props }: React.ComponentProps<'p'>) {
+  return <p data-slot="lead" className={cn('text-lg text-muted-foreground', className)} {...props} />
+}
+
+function TypographyMuted({ className, ...props }: React.ComponentProps<'p'>) {
+  return <p data-slot="muted" className={cn('text-sm text-muted-foreground', className)} {...props} />
+}
+
+function TypographyInlineCode({ className, ...props }: React.ComponentProps<'code'>) {
+  return (
+    <code
+      data-slot="inline-code"
+      className={cn('rounded-xs bg-muted px-1 py-px font-mono text-[0.9em] text-tag-red', className)}
+      {...props}
+    />
+  )
+}
+
+function TypographyBlockquote({ className, ...props }: React.ComponentProps<'blockquote'>) {
+  return (
+    <blockquote
+      data-slot="blockquote"
+      className={cn('mt-3 border-l-[3px] border-foreground pl-3.5 text-lg', className)}
+      {...props}
+    />
+  )
+}
+
+function TypographyList({ className, ...props }: React.ComponentProps<'ul'>) {
+  return <ul data-slot="list" className={cn('mt-3 ml-5 list-disc [&>li]:mt-1', className)} {...props} />
+}
+
+export {
+  TypographyBlockquote,
+  TypographyH1,
+  TypographyH2,
+  TypographyH3,
+  TypographyH4,
+  TypographyInlineCode,
+  TypographyLead,
+  TypographyList,
+  TypographyMuted,
+  TypographyP,
+}
+```
+
+---
+
+# Tree View
+
+Nested page tree with expand/collapse, indent guides and hover actions
+
+## Install
+
+```bash
+npx denseui@latest add tree-view
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+## Usage
+
+```tsx
+import { TreeView } from "@/components/ui/tree-view"
+```
+
+## Example
+
+```tsx
+import { FileTextIcon, MoreHorizontalIcon, PlusIcon } from 'lucide-react'
+import { TreeView, type TreeViewItem } from '@/components/ui/tree-view'
+
+const pages: TreeViewItem[] = [
+  {
+    id: 'eng',
+    name: 'Engineering',
+    icon: '🛠️',
+    children: [
+      { id: 'roadmap', name: 'Roadmap', icon: <FileTextIcon /> },
+      {
+        id: 'rfcs',
+        name: 'RFCs',
+        icon: '📐',
+        children: [
+          { id: 'rfc-1', name: 'RFC-001 Tokens', icon: <FileTextIcon /> },
+          { id: 'rfc-2', name: 'RFC-002 Registry', icon: <FileTextIcon /> },
+        ],
+      },
+      { id: 'oncall', name: 'On-call', icon: <FileTextIcon /> },
+    ],
+  },
+  { id: 'design', name: 'Design', icon: '🎨', children: [{ id: 'tokens', name: 'Tokens', icon: <FileTextIcon /> }] },
+  { id: 'marketing', name: 'Marketing', icon: '📣', children: [] },
+  { id: 'notes', name: 'Meeting notes', icon: <FileTextIcon /> },
+]
+
+const action =
+  'flex size-5 items-center justify-center rounded-sm text-subtle-foreground hover:bg-accent-active hover:text-foreground'
+
+export default function TreeViewDemo() {
+  return (
+    <div className="w-64 rounded-lg border border-border bg-muted px-1.5 py-1.5">
+      <TreeView
+        items={pages}
+        defaultExpandedValue={['eng', 'rfcs']}
+        defaultSelectedValue={['rfc-2']}
+        renderActions={(item) => (
+          <>
+            <span className={action}>
+              <MoreHorizontalIcon className="size-3.5" />
+            </span>
+            {item.children && (
+              <span className={action}>
+                <PlusIcon className="size-3.5" />
+              </span>
+            )}
+          </>
+        )}
+      />
+    </div>
+  )
+}
+```
+
+## Source: components/ui/tree-view.tsx
+
+```tsx
+import * as React from 'react'
+import { TreeView as ArkTreeView, createTreeCollection } from '@ark-ui/react/tree-view'
+import { ChevronRightIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+type TreeViewItem = {
+  id: string
+  name: string
+  icon?: React.ReactNode
+  children?: TreeViewItem[]
+}
+
+type TreeViewProps = Omit<ArkTreeView.RootProps<TreeViewItem>, 'collection' | 'children'> & {
+  items: TreeViewItem[]
+  /** Hover actions rendered at the end of each row, e.g. "+" and "…" buttons. */
+  renderActions?: (item: TreeViewItem) => React.ReactNode
+}
+
+const rowClass =
+  'group/tree-row relative flex w-full cursor-default items-center gap-1.5 rounded-sm py-1.5 pr-2.5 ps-[calc((var(--depth)-1)*14px+10px)] text-left text-sm text-muted-foreground outline-none select-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-selected:bg-accent-active data-selected:font-medium data-selected:text-foreground'
+
+function TreeNode({
+  node,
+  indexPath,
+  renderActions,
+}: {
+  node: TreeViewItem
+  indexPath: number[]
+  renderActions?: TreeViewProps['renderActions']
+}) {
+  const actions = renderActions?.(node)
+  // Tree items can't contain interactive children, so actions are pointer affordances; offer keyboard
+  // equivalents (e.g. a context menu) for the same operations.
+  const actionSlot = actions ? (
+    <span
+      aria-hidden
+      className="ml-auto flex items-center gap-0.5 opacity-0 group-hover/tree-row:opacity-100 group-focus-within/tree-row:opacity-100"
+    >
+      {actions}
+    </span>
+  ) : null
+
+  return (
+    <ArkTreeView.NodeProvider node={node} indexPath={indexPath}>
+      {node.children ? (
+        <ArkTreeView.Branch data-slot="tree-view-branch">
+          <ArkTreeView.BranchControl className={rowClass}>
+            <ArkTreeView.BranchIndicator className="flex size-3.5 shrink-0 items-center justify-center text-subtle-foreground transition-transform duration-100 data-[state=open]:rotate-90">
+              <ChevronRightIcon className="size-3" />
+            </ArkTreeView.BranchIndicator>
+            {node.icon && <span className="flex size-4 shrink-0 items-center justify-center [&_svg]:size-3.5">{node.icon}</span>}
+            <ArkTreeView.BranchText className="truncate">{node.name}</ArkTreeView.BranchText>
+            {actionSlot}
+          </ArkTreeView.BranchControl>
+          <ArkTreeView.BranchContent className="relative">
+            <ArkTreeView.BranchIndentGuide className="absolute inset-y-0 start-[calc((var(--depth)-1)*14px+16px)] w-px bg-border" />
+            {node.children.map((child, index) => (
+              <TreeNode key={child.id} node={child} indexPath={[...indexPath, index]} renderActions={renderActions} />
+            ))}
+            {node.children.length === 0 && (
+              <div className="py-1.5 ps-[calc(var(--depth)*14px+24px)] text-xs text-subtle-foreground">No pages inside</div>
+            )}
+          </ArkTreeView.BranchContent>
+        </ArkTreeView.Branch>
+      ) : (
+        <ArkTreeView.Item data-slot="tree-view-item" className={rowClass}>
+          <span className="size-3.5 shrink-0" />
+          {node.icon && <span className="flex size-4 shrink-0 items-center justify-center [&_svg]:size-3.5">{node.icon}</span>}
+          <ArkTreeView.ItemText className="truncate">{node.name}</ArkTreeView.ItemText>
+          {actionSlot}
+        </ArkTreeView.Item>
+      )}
+    </ArkTreeView.NodeProvider>
+  )
+}
+
+function TreeView({ items, renderActions, className, ...props }: TreeViewProps) {
+  const collection = React.useMemo(
+    () =>
+      createTreeCollection<TreeViewItem>({
+        nodeToValue: (node) => node.id,
+        nodeToString: (node) => node.name,
+        rootNode: { id: 'ROOT', name: '', children: items },
+      }),
+    [items],
+  )
+
+  return (
+    <ArkTreeView.Root data-slot="tree-view" collection={collection} className={cn('w-full', className)} {...props}>
+      <ArkTreeView.Tree className="flex flex-col gap-px">
+        {collection.rootNode.children?.map((node, index) => (
+          <TreeNode key={node.id} node={node} indexPath={[index]} renderActions={renderActions} />
+        ))}
+      </ArkTreeView.Tree>
+    </ArkTreeView.Root>
+  )
+}
+
+export { TreeView, type TreeViewItem, type TreeViewProps }
+```
+
+---
+
+# Editable
+
+Click-to-edit inline text, like a page title
+
+## Install
+
+```bash
+npx denseui@latest add editable
+```
+
+npm dependencies: `@ark-ui/react`
+
+## Usage
+
+```tsx
+import { Editable } from "@/components/ui/editable"
+```
+
+## Example
+
+```tsx
+import { Editable } from '@/components/ui/editable'
+
+export default function EditableDemo() {
+  return (
+    <div className="flex w-96 flex-col gap-2">
+      <Editable defaultValue="Q4 Planning" placeholder="Untitled" textClassName="text-3xl font-bold tracking-tight" />
+      <Editable placeholder="Add a description…" textClassName="text-base text-muted-foreground" />
+    </div>
+  )
+}
+```
+
+## Source: components/ui/editable.tsx
+
+```tsx
+import { Editable as ArkEditable } from '@ark-ui/react/editable'
+import { cn } from '@/lib/utils'
+
+type EditableProps = ArkEditable.RootProps & {
+  /** Applied to both the preview and the input so editing doesn't shift layout. */
+  textClassName?: string
+}
+
+function Editable({ className, textClassName, activationMode = 'click', ...props }: EditableProps) {
+  return (
+    <ArkEditable.Root
+      data-slot="editable"
+      activationMode={activationMode}
+      className={cn('w-full', className)}
+      {...props}
+    >
+      <ArkEditable.Area className="relative">
+        <ArkEditable.Input
+          className={cn(
+            'w-full min-w-0 rounded-sm bg-transparent px-1.5 py-0.5 text-foreground outline-none ring-2 ring-ring',
+            textClassName,
+          )}
+        />
+        <ArkEditable.Preview
+          className={cn(
+            'block min-h-[1lh] cursor-text truncate rounded-sm px-1.5 py-0.5 transition-colors duration-75 hover:bg-accent data-placeholder-shown:text-subtle-foreground',
+            textClassName,
+          )}
+        />
+      </ArkEditable.Area>
+    </ArkEditable.Root>
+  )
+}
+
+export { Editable, type EditableProps }
+```
+
+---
+
+# Property
+
+Label/value property rows for record details
+
+## Install
+
+```bash
+npx denseui@latest add property
+```
+
+## Usage
+
+```tsx
+import { PropertyList, Property, PropertyEmpty } from "@/components/ui/property"
+```
+
+## Example
+
+```tsx
+import { CalendarIcon, CircleDotIcon, LinkIcon, TagIcon, UserIcon } from 'lucide-react'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Editable } from '@/components/ui/editable'
+import { Property, PropertyEmpty, PropertyList } from '@/components/ui/property'
+
+export default function PropertyDemo() {
+  return (
+    <PropertyList className="w-[420px]">
+      <Property icon={<CircleDotIcon />} label="Status">
+        <Badge color="blue">In progress</Badge>
+      </Property>
+      <Property icon={<UserIcon />} label="Assignee">
+        <Avatar>
+          <AvatarFallback>JD</AvatarFallback>
+        </Avatar>
+        Jane Doe
+      </Property>
+      <Property icon={<CalendarIcon />} label="Due date">
+        October 24, 2026
+      </Property>
+      <Property icon={<TagIcon />} label="Tags">
+        <Badge color="purple">design</Badge>
+        <Badge color="green">v2</Badge>
+      </Property>
+      <Property icon={<LinkIcon />} label="URL">
+        <Editable placeholder="Empty" />
+      </Property>
+      <Property icon={<CalendarIcon />} label="Completed">
+        <PropertyEmpty />
+      </Property>
+    </PropertyList>
+  )
+}
+```
+
+## Source: components/ui/property.tsx
+
+```tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+function PropertyList({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div data-slot="property-list" className={cn('flex w-full flex-col', className)} {...props} />
+}
+
+type PropertyProps = React.ComponentProps<'div'> & {
+  label: React.ReactNode
+  icon?: React.ReactNode
+}
+
+function Property({ label, icon, className, children, ...props }: PropertyProps) {
+  return (
+    <div data-slot="property" className={cn('flex min-h-7 items-start', className)} {...props}>
+      <div
+        data-slot="property-label"
+        className="flex w-36 shrink-0 items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-muted-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
+      >
+        {icon}
+        <span className="truncate">{label}</span>
+      </div>
+      <div
+        data-slot="property-value"
+        className="flex min-h-7 min-w-0 flex-1 flex-wrap items-center gap-1 rounded-sm px-2 py-1 text-sm transition-colors duration-75 hover:bg-accent has-[[data-slot=editable]]:p-0.5"
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function PropertyEmpty({ className, children = 'Empty', ...props }: React.ComponentProps<'span'>) {
+  return <span data-slot="property-empty" className={cn('text-subtle-foreground', className)} {...props}>{children}</span>
+}
+
+export { PropertyList, Property, PropertyEmpty, type PropertyProps }
+```
+
+---
+
+# Tags Input
+
+Multi-value tag input with stable per-tag colors
+
+## Install
+
+```bash
+npx denseui@latest add tags-input
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+## Usage
+
+```tsx
+import { TagsInput, tagColor } from "@/components/ui/tags-input"
+```
+
+## Example
+
+```tsx
+import { TagsInput } from '@/components/ui/tags-input'
+
+export default function TagsInputDemo() {
+  return (
+    <div className="flex w-80 flex-col gap-3">
+      <TagsInput defaultValue={['design', 'frontend', 'v2']} placeholder="Add tag…" />
+      <TagsInput defaultValue={['react', 'tailwind']} colorful={false} max={5} placeholder="Up to 5…" />
+    </div>
+  )
+}
+```
+
+## Source: components/ui/tags-input.tsx
+
+```tsx
+import { TagsInput as ArkTagsInput } from '@ark-ui/react/tags-input'
+import { XIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const tagColors = [
+  'bg-tag-gray-bg text-tag-gray',
+  'bg-tag-brown-bg text-tag-brown',
+  'bg-tag-orange-bg text-tag-orange',
+  'bg-tag-yellow-bg text-tag-yellow',
+  'bg-tag-green-bg text-tag-green',
+  'bg-tag-blue-bg text-tag-blue',
+  'bg-tag-purple-bg text-tag-purple',
+  'bg-tag-pink-bg text-tag-pink',
+  'bg-tag-red-bg text-tag-red',
+]
+
+/** Stable color per tag value, like Notion's multi-select. */
+function tagColor(value: string) {
+  let hash = 0
+  for (const char of value) hash = (hash * 31 + char.charCodeAt(0)) | 0
+  return tagColors[Math.abs(hash) % tagColors.length]
+}
+
+type TagsInputProps = ArkTagsInput.RootProps & {
+  placeholder?: string
+  /** Color tags by their value (default) or render them all neutral. */
+  colorful?: boolean
+}
+
+function TagsInput({ className, placeholder = 'Add tag…', colorful = true, id, ids, ...props }: TagsInputProps) {
+  return (
+    <ArkTagsInput.Root
+      data-slot="tags-input"
+      id={id}
+      ids={id ? { input: id, ...ids } : ids}
+      className={cn('w-full', className)}
+      {...props}
+    >
+      <ArkTagsInput.Context>
+        {(api) => (
+          <ArkTagsInput.Control className="flex min-h-6 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-input-background px-1.5 py-[3px] transition-[border-color,box-shadow] duration-75 focus-within:border-brand/60 focus-within:ring-2 focus-within:ring-ring data-disabled:opacity-50">
+            {api.value.map((value, index) => (
+              <ArkTagsInput.Item key={`${value}-${index}`} index={index} value={value}>
+                <ArkTagsInput.ItemPreview
+                  className={cn(
+                    'inline-flex items-center gap-0.5 rounded-xs py-px pr-0.5 pl-1.5 text-xs leading-[14px] data-highlighted:ring-2 data-highlighted:ring-ring',
+                    colorful ? tagColor(value) : 'bg-tag-default-bg text-tag-default',
+                  )}
+                >
+                  <ArkTagsInput.ItemText>{value}</ArkTagsInput.ItemText>
+                  <ArkTagsInput.ItemDeleteTrigger
+                    aria-label={`Remove ${value}`}
+                    className="flex size-3.5 items-center justify-center rounded-xs opacity-60 hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10"
+                  >
+                    <XIcon className="size-2.5" />
+                  </ArkTagsInput.ItemDeleteTrigger>
+                </ArkTagsInput.ItemPreview>
+                <ArkTagsInput.ItemInput className="w-20 rounded-xs bg-transparent px-1 text-xs outline-none ring-1 ring-ring" />
+              </ArkTagsInput.Item>
+            ))}
+            <ArkTagsInput.Input
+              placeholder={placeholder}
+              className="h-[18px] min-w-16 flex-1 bg-transparent px-0.5 text-sm outline-none placeholder:text-subtle-foreground"
+            />
+          </ArkTagsInput.Control>
+        )}
+      </ArkTagsInput.Context>
+      <ArkTagsInput.HiddenInput />
+    </ArkTagsInput.Root>
+  )
+}
+
+export { TagsInput, tagColor, type TagsInputProps }
+```
+
+---
+
+# Callout
+
+Highlighted note with an emoji or icon
+
+## Install
+
+```bash
+npx denseui@latest add callout
+```
+
+npm dependencies: `class-variance-authority`
+
+## Usage
+
+```tsx
+import { Callout, calloutVariants } from "@/components/ui/callout"
+```
+
+## Example
+
+```tsx
+import { LightbulbIcon } from 'lucide-react'
+import { Callout } from '@/components/ui/callout'
+
+export default function CalloutDemo() {
+  return (
+    <div className="flex w-[440px] flex-col gap-2">
+      <Callout>Keep controls at 24px. Density is a feature, not a bug.</Callout>
+      <Callout color="blue" icon="ℹ️">
+        <strong className="font-semibold">Heads up:</strong> the registry is rebuilt on every push.
+      </Callout>
+      <Callout color="yellow" icon="⚠️">
+        Changing <code className="font-mono text-sm">--text-sm--line-height</code> breaks optical centering.
+      </Callout>
+      <Callout variant="outline" icon={<LightbulbIcon className="text-warning" />}>
+        Tip: press <kbd className="font-mono text-sm">⌘K</kbd> to search the docs.
+      </Callout>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/callout.tsx
+
+```tsx
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+
+const calloutVariants = cva('flex w-full items-start gap-2.5 rounded-md px-4 py-3 text-base', {
+  variants: {
+    color: {
+      default: 'bg-muted',
+      gray: 'bg-tag-gray-bg',
+      brown: 'bg-tag-brown-bg',
+      orange: 'bg-tag-orange-bg',
+      yellow: 'bg-tag-yellow-bg',
+      green: 'bg-tag-green-bg',
+      blue: 'bg-tag-blue-bg',
+      purple: 'bg-tag-purple-bg',
+      pink: 'bg-tag-pink-bg',
+      red: 'bg-tag-red-bg',
+    },
+    variant: {
+      default: '',
+      outline: 'border border-border bg-background',
+    },
+  },
+  defaultVariants: { color: 'default', variant: 'default' },
+})
+
+type CalloutProps = Omit<React.ComponentProps<'div'>, 'color'> &
+  VariantProps<typeof calloutVariants> & {
+    /** Emoji or icon element shown at the start. */
+    icon?: React.ReactNode
+  }
+
+function Callout({ className, color, variant, icon = '💡', children, ...props }: CalloutProps) {
+  return (
+    <div data-slot="callout" role="note" className={cn(calloutVariants({ color, variant }), className)} {...props}>
+      {icon != null && (
+        <span data-slot="callout-icon" className="flex h-5 shrink-0 items-center text-base leading-none [&_svg]:size-4">
+          {icon}
+        </span>
+      )}
+      <div data-slot="callout-content" className="min-w-0 flex-1 leading-5">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export { Callout, calloutVariants, type CalloutProps }
+```
+
+---
+
+# Block
+
+Content block with hover gutter: add button and drag/menu grip
+
+## Install
+
+```bash
+npx denseui@latest add block
+```
+
+npm dependencies: `lucide-react`
+
+Also installs: `dropdown-menu`
+
+## Usage
+
+```tsx
+import { Block } from "@/components/ui/block"
+```
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import { CopyIcon, Trash2Icon, TypeIcon } from 'lucide-react'
+import { Block } from '@/components/ui/block'
+import { DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu'
+
+export default function BlockDemo() {
+  const [blocks, setBlocks] = useState([
+    'Hover a block to reveal its handles.',
+    'Click + to insert a block below.',
+    'Click the grip to open the block menu.',
+  ])
+
+  const insertAfter = (index: number) =>
+    setBlocks((b) => [...b.slice(0, index + 1), 'New block', ...b.slice(index + 1)])
+
+  return (
+    <div className="flex w-[420px] flex-col gap-0.5 pl-12">
+      {blocks.map((text, index) => (
+        <Block
+          key={`${index}-${text}`}
+          onAdd={() => insertAfter(index)}
+          menu={
+            <>
+              <DropdownMenuItem value="turn-into">
+                <TypeIcon /> Turn into
+              </DropdownMenuItem>
+              <DropdownMenuItem value="duplicate" onSelect={() => insertAfter(index)}>
+                <CopyIcon /> Duplicate
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                value="delete"
+                variant="destructive"
+                onSelect={() => setBlocks((b) => b.filter((_, i) => i !== index))}
+              >
+                <Trash2Icon /> Delete
+              </DropdownMenuItem>
+            </>
+          }
+        >
+          <p className="rounded-sm px-1 py-0.5 text-base">{text}</p>
+        </Block>
+      ))}
+    </div>
+  )
+}
+```
+
+## Source: components/ui/block.tsx
+
+```tsx
+import * as React from 'react'
+import { GripVerticalIcon, PlusIcon } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
+
+const handleButton =
+  'flex h-6 w-5 items-center justify-center rounded-sm text-subtle-foreground outline-none hover:bg-accent hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5'
+
+type BlockProps = React.ComponentProps<'div'> & {
+  /** Called when the "+" handle is clicked. */
+  onAdd?: () => void
+  /** DropdownMenu items shown when the grip handle is clicked. */
+  menu?: React.ReactNode
+  /** Props for the grip, e.g. drag listeners from your DnD library. */
+  handleProps?: React.ComponentProps<'button'>
+}
+
+/** Notion-style block: hover reveals "+" and a drag/menu grip in the left gutter. */
+function Block({ onAdd, menu, handleProps, className, children, ...props }: BlockProps) {
+  const grip = (
+    <button type="button" aria-label="Drag to move, click for options" className={cn(handleButton, 'cursor-grab')} {...handleProps}>
+      <GripVerticalIcon />
+    </button>
+  )
+
+  return (
+    <div data-slot="block" className={cn('group/block relative -ml-12 flex items-start pl-12', className)} {...props}>
+      <div
+        data-slot="block-handle"
+        className="absolute top-0 left-0 flex items-center gap-px pr-1 opacity-0 transition-opacity duration-100 group-hover/block:opacity-100 group-focus-within/block:opacity-100 has-[[data-state=open]]:opacity-100"
+      >
+        {onAdd && (
+          <button type="button" aria-label="Add block below" className={handleButton} onClick={onAdd}>
+            <PlusIcon />
+          </button>
+        )}
+        {menu ? (
+          <DropdownMenu positioning={{ placement: 'left-start' }}>
+            <DropdownMenuTrigger asChild>{grip}</DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48">{menu}</DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          grip
+        )}
+      </div>
+      <div data-slot="block-content" className="min-w-0 flex-1">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export { Block, type BlockProps }
+```
+
+---
+
+# Color Picker
+
+Color input with saturation area, hue/alpha sliders, eyedropper and presets
+
+## Install
+
+```bash
+npx denseui@latest add color-picker
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+## Usage
+
+```tsx
+import { ColorPicker, parseColor } from "@/components/ui/color-picker"
+```
+
+## Example
+
+```tsx
+import { ColorPicker, parseColor } from '@/components/ui/color-picker'
+import { Label } from '@/components/ui/label'
+
+export default function ColorPickerDemo() {
+  return (
+    <div className="flex w-56 flex-col gap-3">
+      <div className="grid gap-1">
+        <Label>Brand color</Label>
+        <ColorPicker />
+      </div>
+      <div className="grid gap-1">
+        <Label>Highlight (no alpha)</Label>
+        <ColorPicker defaultValue={parseColor('#1f7a4f')} showAlpha={false} />
+      </div>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/color-picker.tsx
+
+```tsx
+import { ColorPicker as ArkColorPicker, parseColor } from '@ark-ui/react/color-picker'
+import { Portal } from '@ark-ui/react/portal'
+import { PipetteIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const defaultPresets = ['#111113', '#5b5bd6', '#1e63c4', '#1f7a4f', '#946200', '#c2410c', '#c4262c', '#b8306f', '#6e46c0', '#8a5a3c']
+
+const thumb = 'size-3 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_1px_3px_rgba(0,0,0,0.3)] outline-none'
+
+type ColorPickerProps = Omit<ArkColorPicker.RootProps, 'children'> & {
+  presets?: string[]
+  showAlpha?: boolean
+}
+
+function ColorPicker({
+  className,
+  presets = defaultPresets,
+  showAlpha = true,
+  defaultValue = parseColor('#5b5bd6'),
+  ...props
+}: ColorPickerProps) {
+  return (
+    <ArkColorPicker.Root
+      data-slot="color-picker"
+      defaultValue={defaultValue}
+      lazyMount
+      unmountOnExit
+      className={cn('w-full', className)}
+      {...props}
+    >
+      <ArkColorPicker.Control className="flex h-6 w-full items-center rounded-sm border border-input bg-input-background transition-[border-color,box-shadow] duration-75 focus-within:border-brand/60 focus-within:ring-2 focus-within:ring-ring">
+        <ArkColorPicker.Trigger
+          aria-label="Open color picker"
+          className="ml-[3px] flex size-4 shrink-0 items-center justify-center overflow-hidden rounded-xs outline-none"
+        >
+          <ArkColorPicker.TransparencyGrid size="6px" className="rounded-xs" />
+          <ArkColorPicker.ValueSwatch className="relative size-full rounded-xs shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]" />
+        </ArkColorPicker.Trigger>
+        <ArkColorPicker.ChannelInput
+          channel="hex"
+          aria-label="Hex color"
+          className="h-full w-full min-w-0 bg-transparent px-2 font-mono text-xs uppercase outline-none"
+        />
+      </ArkColorPicker.Control>
+      <Portal>
+        <ArkColorPicker.Positioner>
+          <ArkColorPicker.Content className="z-50 flex w-56 origin-(--transform-origin) flex-col gap-2 rounded-lg bg-popover px-3 py-3 shadow-popover outline-none data-[state=closed]:animate-out data-[state=open]:animate-in">
+            <ArkColorPicker.Area className="h-32 w-full overflow-hidden rounded-md">
+              <ArkColorPicker.AreaBackground className="size-full" />
+              <ArkColorPicker.AreaThumb className={thumb} />
+            </ArkColorPicker.Area>
+            <div className="flex items-center gap-2">
+              <ArkColorPicker.EyeDropperTrigger
+                aria-label="Pick a color from the screen"
+                className="flex size-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+              >
+                <PipetteIcon className="size-3.5" />
+              </ArkColorPicker.EyeDropperTrigger>
+              <div className="flex flex-1 flex-col gap-1.5">
+                <ArkColorPicker.ChannelSlider channel="hue" className="relative">
+                  <ArkColorPicker.ChannelSliderTrack className="h-2.5 rounded-full" />
+                  <ArkColorPicker.ChannelSliderThumb className={cn(thumb, '-translate-y-1/2 top-1/2')} />
+                </ArkColorPicker.ChannelSlider>
+                {showAlpha && (
+                  <ArkColorPicker.ChannelSlider channel="alpha" className="relative">
+                    <ArkColorPicker.TransparencyGrid size="6px" className="rounded-full" />
+                    <ArkColorPicker.ChannelSliderTrack className="h-2.5 rounded-full" />
+                    <ArkColorPicker.ChannelSliderThumb className={cn(thumb, '-translate-y-1/2 top-1/2')} />
+                  </ArkColorPicker.ChannelSlider>
+                )}
+              </div>
+            </div>
+            {presets.length > 0 && (
+              <ArkColorPicker.SwatchGroup className="grid grid-cols-10 gap-1">
+                {presets.map((color) => (
+                  <ArkColorPicker.SwatchTrigger
+                    key={color}
+                    value={color}
+                    aria-label={color}
+                    className="rounded-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <ArkColorPicker.Swatch
+                      value={color}
+                      className="aspect-square w-full rounded-xs shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]"
+                    />
+                  </ArkColorPicker.SwatchTrigger>
+                ))}
+              </ArkColorPicker.SwatchGroup>
+            )}
+          </ArkColorPicker.Content>
+        </ArkColorPicker.Positioner>
+      </Portal>
+      <ArkColorPicker.HiddenInput aria-hidden tabIndex={-1} />
+    </ArkColorPicker.Root>
+  )
+}
+
+export { ColorPicker, parseColor, type ColorPickerProps }
+```
+
+---
+
+# File Upload
+
+Drag-and-drop dropzone with file list and image previews
+
+## Install
+
+```bash
+npx denseui@latest add file-upload
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+## Usage
+
+```tsx
+import { FileUpload } from "@/components/ui/file-upload"
+```
+
+## Example
+
+```tsx
+import { FileUpload } from '@/components/ui/file-upload'
+
+export default function FileUploadDemo() {
+  return (
+    <FileUpload
+      className="w-96"
+      accept="image/*,application/pdf"
+      maxFiles={5}
+      description="PNG, JPG or PDF up to 10 MB"
+      maxFileSize={10 * 1024 * 1024}
+    />
+  )
+}
+```
+
+## Source: components/ui/file-upload.tsx
+
+```tsx
+import { FileUpload as ArkFileUpload } from '@ark-ui/react/file-upload'
+import { FileIcon, UploadIcon, XIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+type FileUploadProps = ArkFileUpload.RootProps & {
+  label?: string
+  description?: string
+}
+
+function FileUpload({
+  className,
+  label = 'Drop files here or click to browse',
+  description,
+  maxFiles = 10,
+  ...props
+}: FileUploadProps) {
+  return (
+    <ArkFileUpload.Root data-slot="file-upload" maxFiles={maxFiles} className={cn('flex w-full flex-col gap-2', className)} {...props}>
+      <ArkFileUpload.Dropzone className="flex cursor-default flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-input bg-background px-6 py-5 text-center outline-none transition-colors hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-ring data-dragging:border-brand data-dragging:bg-surface-active">
+        <span className="mb-1 flex size-7 items-center justify-center rounded-md border border-border bg-muted text-muted-foreground">
+          <UploadIcon className="size-3.5" />
+        </span>
+        <span className="text-sm font-medium">{label}</span>
+        {description && <span className="text-xs text-subtle-foreground">{description}</span>}
+      </ArkFileUpload.Dropzone>
+      <ArkFileUpload.ItemGroup className="flex flex-col gap-1">
+        <ArkFileUpload.Context>
+          {({ acceptedFiles }) =>
+            acceptedFiles.map((file) => (
+              <ArkFileUpload.Item
+                key={`${file.name}-${file.size}`}
+                file={file}
+                className="flex items-center gap-2.5 rounded-md border border-border bg-card px-2.5 py-1.5"
+              >
+                <ArkFileUpload.ItemPreview type="image/*" className="size-7 shrink-0 overflow-hidden rounded-sm">
+                  <ArkFileUpload.ItemPreviewImage className="size-full object-cover" />
+                </ArkFileUpload.ItemPreview>
+                <ArkFileUpload.ItemPreview
+                  type=".*"
+                  className="flex size-7 shrink-0 items-center justify-center rounded-sm bg-muted text-muted-foreground"
+                >
+                  <FileIcon className="size-3.5" />
+                </ArkFileUpload.ItemPreview>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <ArkFileUpload.ItemName className="truncate text-sm font-medium" />
+                  <ArkFileUpload.ItemSizeText className="text-xs text-subtle-foreground" />
+                </div>
+                <ArkFileUpload.ItemDeleteTrigger
+                  aria-label={`Remove ${file.name}`}
+                  className="flex size-5 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  <XIcon className="size-3" />
+                </ArkFileUpload.ItemDeleteTrigger>
+              </ArkFileUpload.Item>
+            ))
+          }
+        </ArkFileUpload.Context>
+      </ArkFileUpload.ItemGroup>
+      <ArkFileUpload.HiddenInput />
+    </ArkFileUpload.Root>
+  )
+}
+
+export { FileUpload, type FileUploadProps }
+```
+
+---
+
+# Number Input
+
+Numeric input with steppers, min/max and formatting
+
+## Install
+
+```bash
+npx denseui@latest add number-input
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+Also installs: `input`
+
+## Usage
+
+```tsx
+import { NumberInput } from "@/components/ui/number-input"
+```
+
+## Example
+
+```tsx
+import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
+
+export default function NumberInputDemo() {
+  return (
+    <div className="flex gap-3">
+      <div className="grid w-28 gap-1">
+        <Label htmlFor="qty">Quantity</Label>
+        <NumberInput id="qty" defaultValue="3" min={0} max={99} />
+      </div>
+      <div className="grid w-32 gap-1">
+        <Label htmlFor="price">Price</Label>
+        <NumberInput
+          id="price"
+          defaultValue="24.5"
+          step={0.5}
+          formatOptions={{ style: 'currency', currency: 'USD' }}
+        />
+      </div>
+      <div className="grid w-28 gap-1">
+        <Label htmlFor="opacity">Opacity</Label>
+        <NumberInput id="opacity" defaultValue="0.8" step={0.05} min={0} max={1} formatOptions={{ style: 'percent' }} />
+      </div>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/number-input.tsx
+
+```tsx
+import { NumberInput as ArkNumberInput } from '@ark-ui/react/number-input'
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import { inputVariants } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
+
+const stepper =
+  'flex flex-1 items-center justify-center text-muted-foreground outline-none hover:bg-surface-hover hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
+
+/** `id` targets the input, so `<Label htmlFor={id}>` works. */
+function NumberInput({ className, id, ids, ...props }: ArkNumberInput.RootProps) {
+  return (
+    <ArkNumberInput.Root
+      data-slot="number-input"
+      id={id}
+      ids={id ? { input: id, ...ids } : ids}
+      className={cn('w-full', className)}
+      {...props}
+    >
+      <ArkNumberInput.Control className="relative flex w-full">
+        <ArkNumberInput.Input className={cn(inputVariants(), 'pr-6 tabular-nums')} />
+        <div className="absolute inset-y-px right-px flex w-5 flex-col overflow-hidden rounded-r-[3px] border-l border-input">
+          <ArkNumberInput.IncrementTrigger aria-label="Increment" className={stepper}>
+            <ChevronUpIcon className="size-2.5" />
+          </ArkNumberInput.IncrementTrigger>
+          <ArkNumberInput.DecrementTrigger aria-label="Decrement" className={cn(stepper, 'border-t border-input')}>
+            <ChevronDownIcon className="size-2.5" />
+          </ArkNumberInput.DecrementTrigger>
+        </div>
+      </ArkNumberInput.Control>
+    </ArkNumberInput.Root>
+  )
+}
+
+export { NumberInput }
+```
+
+---
+
+# Segmented Control
+
+Single-choice segmented switcher with a sliding indicator
+
+## Install
+
+```bash
+npx denseui@latest add segmented-control
+```
+
+npm dependencies: `@ark-ui/react`
+
+## Usage
+
+```tsx
+import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control"
+```
+
+## Example
+
+```tsx
+import { CalendarIcon, KanbanIcon, ListIcon, TableIcon } from 'lucide-react'
+import { SegmentedControl, SegmentedControlItem } from '@/components/ui/segmented-control'
+
+export default function SegmentedControlDemo() {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <SegmentedControl defaultValue="board">
+        <SegmentedControlItem value="table">
+          <TableIcon /> Table
+        </SegmentedControlItem>
+        <SegmentedControlItem value="board">
+          <KanbanIcon /> Board
+        </SegmentedControlItem>
+        <SegmentedControlItem value="list">
+          <ListIcon /> List
+        </SegmentedControlItem>
+        <SegmentedControlItem value="calendar">
+          <CalendarIcon /> Calendar
+        </SegmentedControlItem>
+      </SegmentedControl>
+      <SegmentedControl defaultValue="month">
+        <SegmentedControlItem value="day">Day</SegmentedControlItem>
+        <SegmentedControlItem value="week">Week</SegmentedControlItem>
+        <SegmentedControlItem value="month">Month</SegmentedControlItem>
+      </SegmentedControl>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/segmented-control.tsx
+
+```tsx
+import { SegmentGroup } from '@ark-ui/react/segment-group'
+import { cn } from '@/lib/utils'
+
+function SegmentedControl({ className, children, ...props }: SegmentGroup.RootProps) {
+  return (
+    <SegmentGroup.Root
+      data-slot="segmented-control"
+      className={cn(
+        'relative inline-flex w-fit items-center gap-px rounded-md bg-muted p-0.5 ring-1 ring-border ring-inset data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch',
+        className,
+      )}
+      {...props}
+    >
+      <SegmentGroup.Indicator className="absolute top-(--top) left-(--left) h-(--height) w-(--width) rounded-sm bg-background shadow-[0_0_0_1px_var(--border),0_1px_2px_rgba(0,0,0,0.06)] transition-[left,top,width,height] duration-150 ease-out" />
+      {children}
+    </SegmentGroup.Root>
+  )
+}
+
+function SegmentedControlItem({ className, children, ...props }: SegmentGroup.ItemProps) {
+  return (
+    <SegmentGroup.Item
+      data-slot="segmented-control-item"
+      className={cn(
+        "relative z-10 inline-flex cursor-default items-center justify-center gap-1.5 rounded-sm px-2.5 py-1 text-sm text-muted-foreground transition-colors duration-75 select-none hover:text-foreground data-disabled:pointer-events-none data-disabled:opacity-40 data-[state=checked]:font-medium data-[state=checked]:text-foreground data-focus-visible:ring-2 data-focus-visible:ring-ring [&_svg:not([class*='size-'])]:size-3.5",
+        className,
+      )}
+      {...props}
+    >
+      <SegmentGroup.ItemText className="inline-flex items-center gap-1.5">{children}</SegmentGroup.ItemText>
+      <SegmentGroup.ItemControl />
+      <SegmentGroup.ItemHiddenInput />
+    </SegmentGroup.Item>
+  )
+}
+
+export { SegmentedControl, SegmentedControlItem }
+```
+
+---
+
+# Rating
+
+Star rating input
+
+## Install
+
+```bash
+npx denseui@latest add rating
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+## Usage
+
+```tsx
+import { Rating } from "@/components/ui/rating"
+```
+
+## Example
+
+```tsx
+import { Label } from '@/components/ui/label'
+import { Rating } from '@/components/ui/rating'
+
+export default function RatingDemo() {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <Label className="w-16">Quality</Label>
+        <Rating defaultValue={4} />
+      </div>
+      <div className="flex items-center gap-3">
+        <Label className="w-16">Speed</Label>
+        <Rating defaultValue={2} />
+      </div>
+      <div className="flex items-center gap-3">
+        <Label className="w-16">Read-only</Label>
+        <Rating defaultValue={3} readOnly />
+      </div>
+    </div>
+  )
+}
+```
+
+## Source: components/ui/rating.tsx
+
+```tsx
+import { RatingGroup } from '@ark-ui/react/rating-group'
+import { StarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+function Rating({ className, count = 5, ...props }: RatingGroup.RootProps) {
+  return (
+    <RatingGroup.Root data-slot="rating" count={count} className={cn('inline-flex', className)} {...props}>
+      <RatingGroup.Control className="flex items-center gap-0.5">
+        <RatingGroup.Context>
+          {({ items }) =>
+            items.map((item) => (
+              <RatingGroup.Item
+                key={item}
+                index={item}
+                className="rounded-xs text-subtle-foreground/60 outline-none transition-colors duration-75 data-disabled:opacity-50 data-focus-visible:ring-2 data-focus-visible:ring-ring data-highlighted:text-warning data-highlighted:[&_svg]:fill-current"
+              >
+                <StarIcon className="size-3.5" />
+              </RatingGroup.Item>
+            ))
+          }
+        </RatingGroup.Context>
+      </RatingGroup.Control>
+      <RatingGroup.HiddenInput />
+    </RatingGroup.Root>
+  )
+}
+
+export { Rating }
+```
+
+---
+
+# Steps
+
+Multi-step flow with progress indicator and navigation
+
+## Install
+
+```bash
+npx denseui@latest add steps
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+Also installs: `button`
+
+## Usage
+
+```tsx
+import { Steps, StepsList, StepsItem, StepsContent, StepsCompletedContent, StepsPrevTrigger, StepsNextTrigger } from "@/components/ui/steps"
+```
+
+## Example
+
+```tsx
+import {
+  Steps,
+  StepsCompletedContent,
+  StepsContent,
+  StepsItem,
+  StepsList,
+  StepsNextTrigger,
+  StepsPrevTrigger,
+} from '@/components/ui/steps'
+
+const steps = [
+  { title: 'Account', description: 'Email & password', body: 'Create your account with a work email.' },
+  { title: 'Workspace', description: 'Name & URL', body: 'Pick a name and a URL for your workspace.' },
+  { title: 'Invite', description: 'Add teammates', body: 'Invite teammates by email, or skip for now.' },
+]
+
+export default function StepsDemo() {
+  return (
+    <Steps count={steps.length} defaultStep={1} className="w-[520px]">
+      <StepsList>
+        {steps.map((step, index) => (
+          <StepsItem key={step.title} index={index} title={step.title} description={step.description} />
+        ))}
+      </StepsList>
+      <div className="rounded-lg border border-border bg-card px-4 py-3">
+        {steps.map((step, index) => (
+          <StepsContent key={step.title} index={index}>
+            {step.body}
+          </StepsContent>
+        ))}
+        <StepsCompletedContent>🎉 You're all set.</StepsCompletedContent>
+      </div>
+      <div className="flex justify-end gap-1.5">
+        <StepsPrevTrigger>Back</StepsPrevTrigger>
+        <StepsNextTrigger>Continue</StepsNextTrigger>
+      </div>
+    </Steps>
+  )
+}
+```
+
+## Source: components/ui/steps.tsx
+
+```tsx
+import * as React from 'react'
+import { Steps as ArkSteps, useStepsContext } from '@ark-ui/react/steps'
+import { CheckIcon } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+function Steps({ className, ...props }: ArkSteps.RootProps) {
+  return <ArkSteps.Root data-slot="steps" className={cn('flex w-full flex-col gap-4', className)} {...props} />
+}
+
+function StepsList({ className, ...props }: ArkSteps.ListProps) {
+  return <ArkSteps.List data-slot="steps-list" className={cn('flex w-full items-center gap-2', className)} {...props} />
+}
+
+type StepsItemProps = ArkSteps.ItemProps & { title: React.ReactNode; description?: React.ReactNode }
+
+// The tab already conveys the current step via aria-selected; Ark's aria-current on the item would
+// make it non-presentational and break the tablist's required-children contract.
+function StepsItemShell({ 'aria-current': _current, ...props }: React.ComponentProps<'div'>) {
+  return <div role="presentation" {...props} />
+}
+
+function StepsItem({ className, index, title, description, children, ...props }: StepsItemProps) {
+  const state = useStepsContext().getItemState({ index })
+  return (
+    <ArkSteps.Item
+      data-slot="steps-item"
+      data-complete={state.completed ? '' : undefined}
+      data-current={state.current ? '' : undefined}
+      index={index}
+      className={cn('group/step flex flex-1 items-center gap-2 last:flex-none', className)}
+      asChild
+      {...props}
+    >
+      <StepsItemShell>
+        <ArkSteps.Trigger className="flex shrink-0 items-center gap-2 rounded-sm px-1.5 py-1 text-left outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring">
+          <ArkSteps.Indicator className="flex size-5 shrink-0 items-center justify-center rounded-full border border-input bg-background text-xs font-medium text-muted-foreground tabular-nums data-complete:border-primary data-complete:bg-primary data-complete:text-primary-foreground data-current:border-primary data-current:text-foreground">
+            <span className="group-data-complete/step:hidden">{index + 1}</span>
+            <CheckIcon className="hidden size-3 group-data-complete/step:block" strokeWidth={3} />
+          </ArkSteps.Indicator>
+          <span className="flex flex-col">
+            <span className="text-sm font-medium text-muted-foreground group-data-complete/step:text-foreground group-data-current/step:text-foreground">
+              {title}
+            </span>
+            {description && <span className="text-xs text-subtle-foreground">{description}</span>}
+          </span>
+        </ArkSteps.Trigger>
+        {children}
+        <div aria-hidden className="h-px flex-1 bg-border group-last/step:hidden group-data-complete/step:bg-primary" />
+      </StepsItemShell>
+    </ArkSteps.Item>
+  )
+}
+
+function StepsContent({ className, ...props }: ArkSteps.ContentProps) {
+  return <ArkSteps.Content data-slot="steps-content" className={cn('text-sm', className)} {...props} />
+}
+
+function StepsCompletedContent({ className, ...props }: ArkSteps.CompletedContentProps) {
+  return <ArkSteps.CompletedContent data-slot="steps-completed" className={cn('text-sm', className)} {...props} />
+}
+
+function StepsPrevTrigger({ className, ...props }: ArkSteps.PrevTriggerProps) {
+  return (
+    <ArkSteps.PrevTrigger
+      data-slot="steps-prev"
+      className={cn(buttonVariants({ variant: 'outline' }), className)}
+      {...props}
+    />
+  )
+}
+
+function StepsNextTrigger({ className, ...props }: ArkSteps.NextTriggerProps) {
+  return <ArkSteps.NextTrigger data-slot="steps-next" className={cn(buttonVariants(), className)} {...props} />
+}
+
+export { Steps, StepsList, StepsItem, StepsContent, StepsCompletedContent, StepsPrevTrigger, StepsNextTrigger }
+```
+
+---
+
+# Password Input
+
+Password field with show/hide toggle
+
+## Install
+
+```bash
+npx denseui@latest add password-input
+```
+
+npm dependencies: `@ark-ui/react`, `lucide-react`
+
+Also installs: `input`
+
+## Usage
+
+```tsx
+import { PasswordInput } from "@/components/ui/password-input"
+```
+
+## Example
+
+```tsx
+import { Label } from '@/components/ui/label'
+import { PasswordInput } from '@/components/ui/password-input'
+
+export default function PasswordInputDemo() {
+  return (
+    <div className="grid w-64 gap-1">
+      <Label htmlFor="password">Password</Label>
+      <PasswordInput id="password" placeholder="At least 12 characters" defaultValue="correct-horse-battery" />
+    </div>
+  )
+}
+```
+
+## Source: components/ui/password-input.tsx
+
+```tsx
+import { PasswordInput as ArkPasswordInput } from '@ark-ui/react/password-input'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { inputVariants } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
+
+type PasswordInputProps = ArkPasswordInput.RootProps & { placeholder?: string; inputClassName?: string }
+
+/** `id` targets the input, so `<Label htmlFor={id}>` works. */
+function PasswordInput({ className, placeholder, inputClassName, id, ids, ...props }: PasswordInputProps) {
+  return (
+    <ArkPasswordInput.Root
+      data-slot="password-input"
+      id={id}
+      ids={id ? { input: id, ...ids } : ids}
+      className={cn('w-full', className)}
+      {...props}
+    >
+      <ArkPasswordInput.Control className="relative w-full">
+        <ArkPasswordInput.Input placeholder={placeholder} className={cn(inputVariants(), 'pr-7', inputClassName)} />
+        <ArkPasswordInput.VisibilityTrigger className="absolute inset-y-0 right-0.5 my-auto flex size-5 items-center justify-center rounded-xs text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">
+          <ArkPasswordInput.Indicator fallback={<EyeOffIcon className="size-3.5" />}>
+            <EyeIcon className="size-3.5" />
+          </ArkPasswordInput.Indicator>
+        </ArkPasswordInput.VisibilityTrigger>
+      </ArkPasswordInput.Control>
+    </ArkPasswordInput.Root>
+  )
+}
+
+export { PasswordInput, type PasswordInputProps }
 ```

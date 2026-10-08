@@ -3,7 +3,7 @@ import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@/compon
 export default function NativeSelectDemo() {
   return (
     <div className="flex gap-3">
-      <NativeSelect defaultValue="" className="w-40">
+      <NativeSelect defaultValue="" className="w-40" aria-label="Status">
         <NativeSelectOption value="" disabled>
           Select status
         </NativeSelectOption>
@@ -11,7 +11,7 @@ export default function NativeSelectDemo() {
         <NativeSelectOption value="in-progress">In progress</NativeSelectOption>
         <NativeSelectOption value="done">Done</NativeSelectOption>
       </NativeSelect>
-      <NativeSelect className="w-40">
+      <NativeSelect className="w-40" aria-label="Stack">
         <NativeSelectOptGroup label="Frontend">
           <NativeSelectOption>React</NativeSelectOption>
           <NativeSelectOption>Vue</NativeSelectOption>

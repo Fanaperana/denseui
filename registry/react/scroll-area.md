@@ -51,7 +51,10 @@ import { cn } from '@/lib/utils'
 function ScrollArea({ className, children, ...props }: ArkScrollArea.RootProps) {
   return (
     <ArkScrollArea.Root data-slot="scroll-area" className={cn('relative overflow-hidden', className)} {...props}>
-      <ArkScrollArea.Viewport className="size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <ArkScrollArea.Viewport
+        tabIndex={0}
+        className="size-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         <ArkScrollArea.Content>{children}</ArkScrollArea.Content>
       </ArkScrollArea.Viewport>
       <ScrollBar />

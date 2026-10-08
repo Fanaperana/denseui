@@ -2,10 +2,13 @@ import { Checkbox as ArkCheckbox } from '@ark-ui/react/checkbox'
 import { CheckIcon, MinusIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-function Checkbox({ className, children, ...props }: ArkCheckbox.RootProps) {
+/** `id` targets the hidden input, so `<Label htmlFor={id}>` works. */
+function Checkbox({ className, children, id, ids, ...props }: ArkCheckbox.RootProps) {
   return (
     <ArkCheckbox.Root
       data-slot="checkbox"
+      id={id}
+      ids={id ? { hiddenInput: id, ...ids } : ids}
       className={cn(
         'group inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',
         className,

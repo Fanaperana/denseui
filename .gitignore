@@ -13,6 +13,8 @@ dist-ssr
 *.local
 packages/cli/registry
 .playwright-mcp
+playwright-report
+test-results
 apps/playground/public/llms*.txt
 
 # Editor directories and files

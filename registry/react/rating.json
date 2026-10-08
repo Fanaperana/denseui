@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rating",
+  "type": "registry:ui",
+  "description": "Star rating input",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/rating.tsx",
+      "type": "registry:ui",
+      "content": "import { RatingGroup } from '@ark-ui/react/rating-group'\r\nimport { StarIcon } from 'lucide-react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Rating({ className, count = 5, ...props }: RatingGroup.RootProps) {\r\n  return (\r\n    <RatingGroup.Root data-slot=\"rating\" count={count} className={cn('inline-flex', className)} {...props}>\r\n      <RatingGroup.Control className=\"flex items-center gap-0.5\">\r\n        <RatingGroup.Context>\r\n          {({ items }) =>\r\n            items.map((item) => (\r\n              <RatingGroup.Item\r\n                key={item}\r\n                index={item}\r\n                className=\"rounded-xs text-subtle-foreground/60 outline-none transition-colors duration-75 data-disabled:opacity-50 data-focus-visible:ring-2 data-focus-visible:ring-ring data-highlighted:text-warning data-highlighted:[&_svg]:fill-current\"\r\n              >\r\n                <StarIcon className=\"size-3.5\" />\r\n              </RatingGroup.Item>\r\n            ))\r\n          }\r\n        </RatingGroup.Context>\r\n      </RatingGroup.Control>\r\n      <RatingGroup.HiddenInput />\r\n    </RatingGroup.Root>\r\n  )\r\n}\r\n\r\nexport { Rating }\r\n"
+    }
+  ],
+  "title": "Rating",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Rating\n\nStar rating input\n\n## Install\n\n```bash\nnpx denseui@latest add rating\n```\n\nnpm dependencies: `@ark-ui/react`, `lucide-react`\n\n## Usage\n\n```tsx\nimport { Rating } from \"@/components/ui/rating\"\n```\n\n## Example\n\n```tsx\nimport { Label } from '@/components/ui/label'\r\nimport { Rating } from '@/components/ui/rating'\r\n\r\nexport default function RatingDemo() {\r\n  return (\r\n    <div className=\"flex flex-col gap-2\">\r\n      <div className=\"flex items-center gap-3\">\r\n        <Label className=\"w-16\">Quality</Label>\r\n        <Rating defaultValue={4} />\r\n      </div>\r\n      <div className=\"flex items-center gap-3\">\r\n        <Label className=\"w-16\">Speed</Label>\r\n        <Rating defaultValue={2} />\r\n      </div>\r\n      <div className=\"flex items-center gap-3\">\r\n        <Label className=\"w-16\">Read-only</Label>\r\n        <Rating defaultValue={3} readOnly />\r\n      </div>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Rating"
+    ]
+  }
+}

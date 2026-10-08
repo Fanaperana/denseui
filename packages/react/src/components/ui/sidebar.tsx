@@ -1,13 +1,32 @@
 import * as React from 'react'
+import { Dialog } from '@ark-ui/react/dialog'
 import { ark } from '@ark-ui/react/factory'
+import { Portal } from '@ark-ui/react/portal'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
+const MOBILE_QUERY = '(max-width: 767px)'
+
+function useIsMobile() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia(MOBILE_QUERY)
+      media.addEventListener('change', onChange)
+      return () => media.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => false,
+  )
+}
+
 type SidebarContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  isMobile: boolean
+  openMobile: boolean
+  setOpenMobile: (open: boolean) => void
   toggle: () => void
 }
 
@@ -35,6 +54,8 @@ function SidebarProvider({
   ...props
 }: SidebarProviderProps) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const [openMobile, setOpenMobile] = React.useState(false)
+  const isMobile = useIsMobile()
   const open = openProp ?? internalOpen
 
   const setOpen = React.useCallback(
@@ -44,7 +65,10 @@ function SidebarProvider({
     },
     [onOpenChange],
   )
-  const toggle = React.useCallback(() => setOpen(!open), [open, setOpen])
+  const toggle = React.useCallback(
+    () => (isMobile ? setOpenMobile((value) => !value) : setOpen(!open)),
+    [isMobile, open, setOpen],
+  )
 
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -57,7 +81,10 @@ function SidebarProvider({
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [toggle])
 
-  const value = React.useMemo(() => ({ open, setOpen, toggle }), [open, setOpen, toggle])
+  const value = React.useMemo(
+    () => ({ open, setOpen, isMobile, openMobile, setOpenMobile, toggle }),
+    [open, setOpen, isMobile, openMobile, toggle],
+  )
 
   return (
     <SidebarContext.Provider value={value}>
@@ -79,8 +106,36 @@ type SidebarProps = React.ComponentProps<'aside'> & {
 }
 
 function Sidebar({ side = 'left', collapsible = 'offcanvas', className, children, ...props }: SidebarProps) {
-  const { open } = useSidebar()
+  const { open, isMobile, openMobile, setOpenMobile } = useSidebar()
   const collapsed = collapsible !== 'none' && !open
+
+  if (isMobile) {
+    return (
+      <Dialog.Root open={openMobile} onOpenChange={(e) => setOpenMobile(e.open)} lazyMount unmountOnExit>
+        <Portal>
+          <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/40 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+          <Dialog.Positioner className={cn('fixed inset-0 z-50 flex', side === 'right' && 'justify-end')}>
+            <Dialog.Content
+              data-slot="sidebar"
+              data-mobile="true"
+              data-side={side}
+              className={cn(
+                'group/sidebar flex h-full w-(--sidebar-width) max-w-[85vw] flex-col border-border bg-muted text-foreground shadow-dialog outline-none',
+                side === 'left'
+                  ? 'border-r data-[state=closed]:animate-slide-out-left data-[state=open]:animate-slide-in-left'
+                  : 'border-l data-[state=closed]:animate-slide-out-right data-[state=open]:animate-slide-in-right',
+                className,
+              )}
+              style={{ '--sidebar-width': '17rem' } as React.CSSProperties}
+            >
+              <Dialog.Title className="sr-only">Sidebar</Dialog.Title>
+              {children}
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
+    )
+  }
 
   return (
     <aside

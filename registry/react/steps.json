@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "steps",
+  "type": "registry:ui",
+  "description": "Multi-step flow with progress indicator and navigation",
+  "dependencies": [
+    "@ark-ui/react",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/ui/steps.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { Steps as ArkSteps, useStepsContext } from '@ark-ui/react/steps'\r\nimport { CheckIcon } from 'lucide-react'\r\nimport { buttonVariants } from '@/components/ui/button'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction Steps({ className, ...props }: ArkSteps.RootProps) {\r\n  return <ArkSteps.Root data-slot=\"steps\" className={cn('flex w-full flex-col gap-4', className)} {...props} />\r\n}\r\n\r\nfunction StepsList({ className, ...props }: ArkSteps.ListProps) {\r\n  return <ArkSteps.List data-slot=\"steps-list\" className={cn('flex w-full items-center gap-2', className)} {...props} />\r\n}\r\n\r\ntype StepsItemProps = ArkSteps.ItemProps & { title: React.ReactNode; description?: React.ReactNode }\r\n\r\n// The tab already conveys the current step via aria-selected; Ark's aria-current on the item would\r\n// make it non-presentational and break the tablist's required-children contract.\r\nfunction StepsItemShell({ 'aria-current': _current, ...props }: React.ComponentProps<'div'>) {\r\n  return <div role=\"presentation\" {...props} />\r\n}\r\n\r\nfunction StepsItem({ className, index, title, description, children, ...props }: StepsItemProps) {\r\n  const state = useStepsContext().getItemState({ index })\r\n  return (\r\n    <ArkSteps.Item\r\n      data-slot=\"steps-item\"\r\n      data-complete={state.completed ? '' : undefined}\r\n      data-current={state.current ? '' : undefined}\r\n      index={index}\r\n      className={cn('group/step flex flex-1 items-center gap-2 last:flex-none', className)}\r\n      asChild\r\n      {...props}\r\n    >\r\n      <StepsItemShell>\r\n        <ArkSteps.Trigger className=\"flex shrink-0 items-center gap-2 rounded-sm px-1.5 py-1 text-left outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring\">\r\n          <ArkSteps.Indicator className=\"flex size-5 shrink-0 items-center justify-center rounded-full border border-input bg-background text-xs font-medium text-muted-foreground tabular-nums data-complete:border-primary data-complete:bg-primary data-complete:text-primary-foreground data-current:border-primary data-current:text-foreground\">\r\n            <span className=\"group-data-complete/step:hidden\">{index + 1}</span>\r\n            <CheckIcon className=\"hidden size-3 group-data-complete/step:block\" strokeWidth={3} />\r\n          </ArkSteps.Indicator>\r\n          <span className=\"flex flex-col\">\r\n            <span className=\"text-sm font-medium text-muted-foreground group-data-complete/step:text-foreground group-data-current/step:text-foreground\">\r\n              {title}\r\n            </span>\r\n            {description && <span className=\"text-xs text-subtle-foreground\">{description}</span>}\r\n          </span>\r\n        </ArkSteps.Trigger>\r\n        {children}\r\n        <div aria-hidden className=\"h-px flex-1 bg-border group-last/step:hidden group-data-complete/step:bg-primary\" />\r\n      </StepsItemShell>\r\n    </ArkSteps.Item>\r\n  )\r\n}\r\n\r\nfunction StepsContent({ className, ...props }: ArkSteps.ContentProps) {\r\n  return <ArkSteps.Content data-slot=\"steps-content\" className={cn('text-sm', className)} {...props} />\r\n}\r\n\r\nfunction StepsCompletedContent({ className, ...props }: ArkSteps.CompletedContentProps) {\r\n  return <ArkSteps.CompletedContent data-slot=\"steps-completed\" className={cn('text-sm', className)} {...props} />\r\n}\r\n\r\nfunction StepsPrevTrigger({ className, ...props }: ArkSteps.PrevTriggerProps) {\r\n  return (\r\n    <ArkSteps.PrevTrigger\r\n      data-slot=\"steps-prev\"\r\n      className={cn(buttonVariants({ variant: 'outline' }), className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction StepsNextTrigger({ className, ...props }: ArkSteps.NextTriggerProps) {\r\n  return <ArkSteps.NextTrigger data-slot=\"steps-next\" className={cn(buttonVariants(), className)} {...props} />\r\n}\r\n\r\nexport { Steps, StepsList, StepsItem, StepsContent, StepsCompletedContent, StepsPrevTrigger, StepsNextTrigger }\r\n"
+    }
+  ],
+  "title": "Steps",
+  "categories": [
+    "layout"
+  ],
+  "docs": "# Steps\n\nMulti-step flow with progress indicator and navigation\n\n## Install\n\n```bash\nnpx denseui@latest add steps\n```\n\nnpm dependencies: `@ark-ui/react`, `lucide-react`\n\nAlso installs: `button`\n\n## Usage\n\n```tsx\nimport { Steps, StepsList, StepsItem, StepsContent, StepsCompletedContent, StepsPrevTrigger, StepsNextTrigger } from \"@/components/ui/steps\"\n```\n\n## Example\n\n```tsx\nimport {\r\n  Steps,\r\n  StepsCompletedContent,\r\n  StepsContent,\r\n  StepsItem,\r\n  StepsList,\r\n  StepsNextTrigger,\r\n  StepsPrevTrigger,\r\n} from '@/components/ui/steps'\r\n\r\nconst steps = [\r\n  { title: 'Account', description: 'Email & password', body: 'Create your account with a work email.' },\r\n  { title: 'Workspace', description: 'Name & URL', body: 'Pick a name and a URL for your workspace.' },\r\n  { title: 'Invite', description: 'Add teammates', body: 'Invite teammates by email, or skip for now.' },\r\n]\r\n\r\nexport default function StepsDemo() {\r\n  return (\r\n    <Steps count={steps.length} defaultStep={1} className=\"w-[520px]\">\r\n      <StepsList>\r\n        {steps.map((step, index) => (\r\n          <StepsItem key={step.title} index={index} title={step.title} description={step.description} />\r\n        ))}\r\n      </StepsList>\r\n      <div className=\"rounded-lg border border-border bg-card px-4 py-3\">\r\n        {steps.map((step, index) => (\r\n          <StepsContent key={step.title} index={index}>\r\n            {step.body}\r\n          </StepsContent>\r\n        ))}\r\n        <StepsCompletedContent>🎉 You're all set.</StepsCompletedContent>\r\n      </div>\r\n      <div className=\"flex justify-end gap-1.5\">\r\n        <StepsPrevTrigger>Back</StepsPrevTrigger>\r\n        <StepsNextTrigger>Continue</StepsNextTrigger>\r\n      </div>\r\n    </Steps>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Steps",
+      "StepsList",
+      "StepsItem",
+      "StepsContent",
+      "StepsCompletedContent",
+      "StepsPrevTrigger",
+      "StepsNextTrigger"
+    ]
+  }
+}

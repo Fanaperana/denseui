@@ -1,0 +1,38 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form",
+  "type": "registry:ui",
+  "description": "react-hook-form bindings with accessible labels, descriptions and error messages",
+  "dependencies": [
+    "react-hook-form",
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "label"
+  ],
+  "files": [
+    {
+      "path": "components/ui/form.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { ark } from '@ark-ui/react/factory'\r\nimport {\r\n  Controller,\r\n  FormProvider,\r\n  useFormContext,\r\n  useFormState,\r\n  type ControllerProps,\r\n  type FieldPath,\r\n  type FieldValues,\r\n} from 'react-hook-form'\r\nimport { Label } from '@/components/ui/label'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst Form = FormProvider\r\n\r\nconst FormFieldContext = React.createContext<{ name: string } | null>(null)\r\nconst FormItemContext = React.createContext<{ id: string } | null>(null)\r\n\r\nfunction FormField<\r\n  TFieldValues extends FieldValues = FieldValues,\r\n  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,\r\n>(props: ControllerProps<TFieldValues, TName>) {\r\n  return (\r\n    <FormFieldContext.Provider value={{ name: props.name }}>\r\n      <Controller {...props} />\r\n    </FormFieldContext.Provider>\r\n  )\r\n}\r\n\r\nfunction useFormField() {\r\n  const field = React.useContext(FormFieldContext)\r\n  const item = React.useContext(FormItemContext)\r\n  const { getFieldState } = useFormContext()\r\n  if (!field || !item) throw new Error('useFormField must be used within <FormField> and <FormItem>')\r\n  const formState = useFormState({ name: field.name })\r\n  const fieldState = getFieldState(field.name, formState)\r\n\r\n  return {\r\n    name: field.name,\r\n    formItemId: `${item.id}-item`,\r\n    formDescriptionId: `${item.id}-description`,\r\n    formMessageId: `${item.id}-message`,\r\n    ...fieldState,\r\n  }\r\n}\r\n\r\nfunction FormItem({ className, ...props }: React.ComponentProps<'div'>) {\r\n  const id = React.useId()\r\n  return (\r\n    <FormItemContext.Provider value={{ id }}>\r\n      <div data-slot=\"form-item\" className={cn('flex flex-col gap-1', className)} {...props} />\r\n    </FormItemContext.Provider>\r\n  )\r\n}\r\n\r\nfunction FormLabel({ className, ...props }: React.ComponentProps<typeof Label>) {\r\n  const { error, formItemId } = useFormField()\r\n  return (\r\n    <Label\r\n      data-slot=\"form-label\"\r\n      data-error={!!error}\r\n      htmlFor={formItemId}\r\n      className={cn('data-[error=true]:text-destructive', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\n/** Passes id and aria attributes to its single child control. */\r\nfunction FormControl(props: Omit<React.ComponentProps<typeof ark.div>, 'asChild'>) {\r\n  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()\r\n  return (\r\n    <ark.div\r\n      data-slot=\"form-control\"\r\n      asChild\r\n      id={formItemId}\r\n      aria-describedby={error ? `${formDescriptionId} ${formMessageId}` : formDescriptionId}\r\n      aria-invalid={!!error}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction FormDescription({ className, ...props }: React.ComponentProps<'p'>) {\r\n  const { formDescriptionId } = useFormField()\r\n  return (\r\n    <p\r\n      data-slot=\"form-description\"\r\n      id={formDescriptionId}\r\n      className={cn('text-xs text-subtle-foreground', className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nfunction FormMessage({ className, children, ...props }: React.ComponentProps<'p'>) {\r\n  const { error, formMessageId } = useFormField()\r\n  const body = error ? String(error.message ?? '') : children\r\n  if (!body) return null\r\n  return (\r\n    <p\r\n      data-slot=\"form-message\"\r\n      id={formMessageId}\r\n      role=\"alert\"\r\n      className={cn('text-xs text-destructive', className)}\r\n      {...props}\r\n    >\r\n      {body}\r\n    </p>\r\n  )\r\n}\r\n\r\nexport { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, useFormField }\r\n"
+    }
+  ],
+  "title": "Form",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Form\n\nreact-hook-form bindings with accessible labels, descriptions and error messages\n\n## Install\n\n```bash\nnpx denseui@latest add form\n```\n\nnpm dependencies: `react-hook-form`, `@ark-ui/react`\n\nAlso installs: `label`\n\n## Usage\n\n```tsx\nimport { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, useFormField } from \"@/components/ui/form\"\n```\n\n## Example\n\n```tsx\nimport { useForm } from 'react-hook-form'\r\nimport { Button } from '@/components/ui/button'\r\nimport { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'\r\nimport { Input } from '@/components/ui/input'\r\nimport { Switch } from '@/components/ui/switch'\r\nimport { toaster } from '@/components/ui/toast'\r\n\r\ntype Values = { username: string; email: string; marketing: boolean }\r\n\r\nexport default function FormDemo() {\r\n  const form = useForm<Values>({ defaultValues: { username: '', email: '', marketing: false }, mode: 'onTouched' })\r\n\r\n  return (\r\n    <Form {...form}>\r\n      <form\r\n        className=\"flex w-80 flex-col gap-3\"\r\n        onSubmit={form.handleSubmit((values) => toaster.success({ title: 'Saved', description: JSON.stringify(values) }))}\r\n      >\r\n        <FormField\r\n          control={form.control}\r\n          name=\"username\"\r\n          rules={{ required: 'Username is required.', minLength: { value: 3, message: 'At least 3 characters.' } }}\r\n          render={({ field }) => (\r\n            <FormItem>\r\n              <FormLabel>Username</FormLabel>\r\n              <FormControl>\r\n                <Input placeholder=\"janedoe\" {...field} />\r\n              </FormControl>\r\n              <FormDescription>Your public display name.</FormDescription>\r\n              <FormMessage />\r\n            </FormItem>\r\n          )}\r\n        />\r\n        <FormField\r\n          control={form.control}\r\n          name=\"email\"\r\n          rules={{ required: 'Email is required.', pattern: { value: /^\\S+@\\S+\\.\\S+$/, message: 'Enter a valid email.' } }}\r\n          render={({ field }) => (\r\n            <FormItem>\r\n              <FormLabel>Email</FormLabel>\r\n              <FormControl>\r\n                <Input type=\"email\" placeholder=\"jane@example.com\" {...field} />\r\n              </FormControl>\r\n              <FormMessage />\r\n            </FormItem>\r\n          )}\r\n        />\r\n        <FormField\r\n          control={form.control}\r\n          name=\"marketing\"\r\n          render={({ field }) => (\r\n            <FormItem className=\"flex-row items-center justify-between rounded-md border border-border px-3 py-2\">\r\n              <div className=\"flex flex-col gap-0.5\">\r\n                <FormLabel>Product updates</FormLabel>\r\n                <FormDescription>One email a month, no spam.</FormDescription>\r\n              </div>\r\n              <FormControl>\r\n                <Switch checked={field.value} onCheckedChange={(e) => field.onChange(e.checked)} />\r\n              </FormControl>\r\n            </FormItem>\r\n          )}\r\n        />\r\n        <Button type=\"submit\" className=\"self-end\">\r\n          Save\r\n        </Button>\r\n      </form>\r\n    </Form>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Form",
+      "FormField",
+      "FormItem",
+      "FormLabel",
+      "FormControl",
+      "FormDescription",
+      "FormMessage",
+      "useFormField"
+    ]
+  }
+}

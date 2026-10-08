@@ -17,20 +17,29 @@ Read the design guidelines before generating UI. An MCP server is available: `np
 - [Input](react/input.md): Compact text input
 - [Input Group](react/input-group.md): Input with icons, text or buttons attached
 - [Input OTP](react/input-otp.md): One-time password input
+- [Password Input](react/password-input.md): Password field with show/hide toggle
+- [Number Input](react/number-input.md): Numeric input with steppers, min/max and formatting
 - [Textarea](react/textarea.md): Auto-growing textarea
 - [Label](react/label.md): Muted form label
 - [Field](react/field.md): Form field layout with label, description and error
+- [Form](react/form.md): react-hook-form bindings with accessible labels, descriptions and error messages
 - [Checkbox](react/checkbox.md): 14px checkbox with indeterminate state
 - [Radio Group](react/radio-group.md): Radio group
 - [Switch](react/switch.md): Small toggle switch
 - [Select](react/select.md): Custom select with groups and check indicator
 - [Native Select](react/native-select.md): Styled native select element
 - [Combobox](react/combobox.md): Searchable input with a list of suggestions
+- [Tags Input](react/tags-input.md): Multi-value tag input with stable per-tag colors
 - [Slider](react/slider.md): Range slider with one or more thumbs
+- [Rating](react/rating.md): Star rating input
 - [Toggle](react/toggle.md): Two-state button
 - [Toggle Group](react/toggle-group.md): Set of toggles, single or multiple selection
+- [Segmented Control](react/segmented-control.md): Single-choice segmented switcher with a sliding indicator
 - [Calendar](react/calendar.md): Inline date grid with day, month and year views
 - [Date Picker](react/date-picker.md): Date input with a calendar popover
+- [Color Picker](react/color-picker.md): Color input with saturation area, hue/alpha sliders, eyedropper and presets
+- [File Upload](react/file-upload.md): Drag-and-drop dropzone with file list and image previews
+- [Editable](react/editable.md): Click-to-edit inline text, like a page title
 
 ## Overlays
 
@@ -50,27 +59,34 @@ Read the design guidelines before generating UI. An MCP server is available: `np
 ## Layout
 
 - [Sidebar](react/sidebar.md): Collapsible app sidebar with groups, menus and sub-menus
+- [Tree View](react/tree-view.md): Nested page tree with expand/collapse, indent guides and hover actions
 - [Navigation Menu](react/navigation-menu.md): Site navigation with dropdown panels
 - [Breadcrumb](react/breadcrumb.md): Path to the current page in a hierarchy
 - [Tabs](react/tabs.md): Underlined tabs
+- [Steps](react/steps.md): Multi-step flow with progress indicator and navigation
 - [Accordion](react/accordion.md): Vertically stacked headings that reveal sections of content
 - [Collapsible](react/collapsible.md): Expands and collapses a panel
 - [Resizable](react/resizable.md): Resizable panel groups
 - [Scroll Area](react/scroll-area.md): Custom overlay scrollbars
 - [Card](react/card.md): Container with header, content and footer
 - [Item](react/item.md): Flexible row with media, content and actions
+- [Property](react/property.md): Label/value property rows for record details
+- [Block](react/block.md): Content block with hover gutter: add button and drag/menu grip
 - [Separator](react/separator.md): Hairline divider
 - [Aspect Ratio](react/aspect-ratio.md): Keeps content at a fixed ratio
 - [Pagination](react/pagination.md): Page navigation with ellipsis
+- [Typography](react/typography.md): Headings, paragraphs, lead, blockquote, lists and inline code
 
 ## Data
 
 - [Data Table](react/data-table.md): Full-featured table: search, faceted filters, sorting, column visibility, selection and pagination
 - [Table](react/table.md): Dense data table with 28px rows
+- [Chart](react/chart.md): Recharts wrapper with themed tooltip, legend and per-series colors
 - [Badge](react/badge.md): Colored tag using the 10-color palette
 - [Kbd](react/kbd.md): Keyboard shortcut hint
 - [Avatar](react/avatar.md): 20px avatar with fallback
 - [Alert](react/alert.md): Callout for important information, with info, success, warning and destructive variants
+- [Callout](react/callout.md): Highlighted note with an emoji or icon
 - [Empty](react/empty.md): Empty state with icon, title and actions
 - [Progress](react/progress.md): Thin progress bar
 - [Spinner](react/spinner.md): Loading spinner

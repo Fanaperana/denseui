@@ -1,10 +1,13 @@
 import { Switch as ArkSwitch } from '@ark-ui/react/switch'
 import { cn } from '@/lib/utils'
 
-function Switch({ className, children, ...props }: ArkSwitch.RootProps) {
+/** `id` targets the hidden input, so `<Label htmlFor={id}>` works. */
+function Switch({ className, children, id, ids, ...props }: ArkSwitch.RootProps) {
   return (
     <ArkSwitch.Root
       data-slot="switch"
+      id={id}
+      ids={id ? { hiddenInput: id, ...ids } : ids}
       className={cn(
         'inline-flex cursor-default select-none items-center gap-1.5 text-sm data-disabled:opacity-50',
         className,

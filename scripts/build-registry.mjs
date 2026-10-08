@@ -1,5 +1,5 @@
 // Builds registry/<framework>/*.json (+ tokens.css, llms.txt) and bundles a copy into the CLI package.
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 
@@ -10,12 +10,14 @@ const playgroundPublic = path.join(root, 'apps/playground/public')
 const demosDir = path.join(root, 'apps/playground/src/demos')
 const frameworks = ['react']
 const tokenFiles = ['theme.css', 'palette.css', 'base.css']
+// Set when publishing to a URL so registryDependencies resolve with the shadcn CLI too.
+const publicUrl = process.env.DENSEUI_REGISTRY_URL?.replace(/\/$/, '')
 
 const categories = {
-  inputs: ['button', 'button-group', 'input', 'input-group', 'input-otp', 'textarea', 'label', 'field', 'checkbox', 'radio-group', 'switch', 'select', 'native-select', 'combobox', 'slider', 'toggle', 'toggle-group', 'calendar', 'date-picker'],
+  inputs: ['button', 'button-group', 'input', 'input-group', 'input-otp', 'password-input', 'number-input', 'textarea', 'label', 'field', 'form', 'checkbox', 'radio-group', 'switch', 'select', 'native-select', 'combobox', 'tags-input', 'slider', 'rating', 'toggle', 'toggle-group', 'segmented-control', 'calendar', 'date-picker', 'color-picker', 'file-upload', 'editable'],
   overlays: ['dialog', 'alert-dialog', 'sheet', 'drawer', 'popover', 'hover-card', 'tooltip', 'dropdown-menu', 'context-menu', 'menubar', 'command', 'toast'],
-  layout: ['sidebar', 'navigation-menu', 'breadcrumb', 'tabs', 'accordion', 'collapsible', 'resizable', 'scroll-area', 'card', 'item', 'separator', 'aspect-ratio', 'pagination'],
-  data: ['data-table', 'table', 'badge', 'kbd', 'avatar', 'alert', 'empty', 'progress', 'spinner', 'skeleton', 'carousel'],
+  layout: ['sidebar', 'tree-view', 'navigation-menu', 'breadcrumb', 'tabs', 'steps', 'accordion', 'collapsible', 'resizable', 'scroll-area', 'card', 'item', 'property', 'block', 'separator', 'aspect-ratio', 'pagination', 'typography'],
+  data: ['data-table', 'table', 'chart', 'badge', 'kbd', 'avatar', 'alert', 'callout', 'empty', 'progress', 'spinner', 'skeleton', 'carousel'],
   lib: ['utils'],
 }
 const categoryOf = (name) => Object.keys(categories).filter((c) => categories[c].includes(name))
@@ -35,7 +37,7 @@ function exportsOf(source) {
   return [...new Set(names)]
 }
 
-function docsFor(item, exports, example) {
+function docsFor(item, exports, example, extraExamples) {
   const lines = [`# ${toTitle(item.name)}`, '', item.description ?? '', '', '## Install', '', '```bash', `npx denseui@latest add ${item.name}`, '```']
   const deps = item.dependencies ?? []
   const uses = (item.registryDependencies ?? []).filter((d) => d !== 'utils')
@@ -45,6 +47,7 @@ function docsFor(item, exports, example) {
     lines.push('', '## Usage', '', '```tsx', `import { ${exports.join(', ')} } from "@/components/ui/${item.name}"`, '```')
   }
   if (example) lines.push('', '## Example', '', '```tsx', example.trim(), '```')
+  for (const extra of extraExamples) lines.push('', `## Example: ${extra.title}`, '', '```tsx', extra.code.trim(), '```')
   return lines.join('\n') + '\n'
 }
 
@@ -57,6 +60,7 @@ async function buildFramework(framework) {
 
   const index = []
   const full = []
+  const demoFiles = await readdir(demosDir)
   for (const item of manifest.items) {
     for (const dep of item.registryDependencies ?? []) {
       if (!names.has(dep)) throw new Error(`${framework}/${item.name}: unknown registry dependency "${dep}"`)
@@ -69,11 +73,23 @@ async function buildFramework(framework) {
     )
     const demoPath = path.join(demosDir, `${item.name}.tsx`)
     const example = existsSync(demoPath) ? await readFile(demoPath, 'utf8') : undefined
+    const extraExamples = await Promise.all(
+      demoFiles
+        .filter((f) => f.startsWith(`${item.name}.`) && f !== `${item.name}.tsx`)
+        .map(async (f) => ({
+          title: toTitle(f.slice(item.name.length + 1, -'.tsx'.length)),
+          code: await readFile(path.join(demosDir, f), 'utf8'),
+        })),
+    )
     const exports = files.flatMap((f) => exportsOf(f.content))
-    const docs = docsFor(item, exports, example)
+    const docs = docsFor(item, exports, example, extraExamples)
+    const registryDependencies = publicUrl
+      ? item.registryDependencies?.map((dep) => `${publicUrl}/${framework}/${dep}.json`)
+      : item.registryDependencies
     const built = {
       $schema: 'https://ui.shadcn.com/schema/registry-item.json',
       ...item,
+      ...(registryDependencies ? { registryDependencies } : {}),
       title: toTitle(item.name),
       categories: categoryOf(item.name),
       docs,

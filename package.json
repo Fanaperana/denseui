@@ -7,10 +7,14 @@
     "registry:build": "node scripts/build-registry.mjs",
     "build": "pnpm registry:build && pnpm -r build",
     "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter denseui test",
+    "test:e2e": "playwright test",
     "lint": "oxlint"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@types/node": "^24.13.3",
+    "axe-core": "^4.14.0",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2"
   }

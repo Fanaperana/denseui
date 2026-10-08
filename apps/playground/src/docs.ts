@@ -1,22 +1,26 @@
 import type { ComponentType } from 'react'
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import {
   AlignLeftIcon,
   AppWindowIcon,
   AsteriskIcon,
   BellIcon,
+  BlocksIcon,
   BoldIcon,
   BookOpenIcon,
   BotIcon,
   BoxIcon,
   CalendarDaysIcon,
   CalendarIcon,
+  ChartColumnIcon,
   ChevronsDownUpIcon,
   ChevronsRightIcon,
   ChevronsUpDownIcon,
   CircleDotIcon,
   CircleUserIcon,
+  ClipboardCheckIcon,
   ClipboardListIcon,
+  Columns2Icon,
   Columns3Icon,
   CommandIcon,
   CompassIcon,
@@ -25,14 +29,21 @@ import {
   DownloadIcon,
   EllipsisIcon,
   FoldVerticalIcon,
+  FolderTreeIcon,
   GalleryHorizontalIcon,
   GaugeIcon,
   GripVerticalIcon,
   GroupIcon,
+  HashIcon,
+  HeadingIcon,
   InboxIcon,
+  KeyRoundIcon,
   KeyboardIcon,
+  LayoutListIcon,
   LayoutTemplateIcon,
+  LightbulbIcon,
   ListIcon,
+  ListOrderedIcon,
   LoaderCircleIcon,
   MenuIcon,
   MessageCircleIcon,
@@ -46,6 +57,8 @@ import {
   PanelRightIcon,
   PanelsTopLeftIcon,
   PanelTopIcon,
+  PencilLineIcon,
+  PipetteIcon,
   RatioIcon,
   Rows3Icon,
   ScrollIcon,
@@ -55,17 +68,27 @@ import {
   SquareCheckIcon,
   SquareChevronDownIcon,
   SquareIcon,
+  StarIcon,
   TableIcon,
   TablePropertiesIcon,
   TagIcon,
+  TagsIcon,
   TerminalIcon,
   TextCursorInputIcon,
   ToggleRightIcon,
   TriangleAlertIcon,
   TypeIcon,
+  UploadIcon,
   type LucideIcon,
 } from 'lucide-react'
 import registry from '../../../packages/react/registry.json'
+
+export interface DocExample {
+  slug: string
+  title: string
+  Demo: ComponentType
+  source: string
+}
 
 export interface DocItem {
   name: string
@@ -76,6 +99,7 @@ export interface DocItem {
   registryDependencies: string[]
   Demo?: ComponentType
   demoSource?: string
+  examples: DocExample[]
 }
 
 const icons: Record<string, LucideIcon> = {
@@ -134,10 +158,28 @@ const icons: Record<string, LucideIcon> = {
   toggle: BoldIcon,
   'toggle-group': Columns3Icon,
   tooltip: MessageCircleIcon,
+  chart: ChartColumnIcon,
+  form: ClipboardCheckIcon,
+  typography: HeadingIcon,
+  'tree-view': FolderTreeIcon,
+  editable: PencilLineIcon,
+  property: LayoutListIcon,
+  'tags-input': TagsIcon,
+  callout: LightbulbIcon,
+  block: BlocksIcon,
+  'color-picker': PipetteIcon,
+  'file-upload': UploadIcon,
+  'number-input': HashIcon,
+  'segmented-control': Columns2Icon,
+  rating: StarIcon,
+  steps: ListOrderedIcon,
+  'password-input': KeyRoundIcon,
 }
 
-const demos = import.meta.glob<{ default: ComponentType }>('./demos/*.tsx', { eager: true })
+// Demos are code-split: each loads when its page opens. Sources are small text, so they stay eager.
+const demoModules = import.meta.glob<{ default: ComponentType }>('./demos/*.tsx')
 const demoSources = import.meta.glob<string>('./demos/*.tsx', { eager: true, query: '?raw', import: 'default' })
+const lazyDemos = new Map(Object.entries(demoModules).map(([path, load]) => [path, lazy(load)]))
 const componentSources = import.meta.glob<string>('../../../packages/react/src/components/ui/*.tsx', {
   query: '?raw',
   import: 'default',
@@ -150,6 +192,16 @@ export function loadComponentSource(name: string): Promise<string> | undefined {
 const toTitle = (name: string) =>
   name.replace(/(^|-)(\w)/g, (_, sep: string, c: string) => (sep ? ' ' : '') + c.toUpperCase()).replace('Otp', 'OTP')
 
+function examplesFor(name: string): DocExample[] {
+  const prefix = `./demos/${name}.`
+  return Object.keys(demoModules)
+    .filter((path) => path.startsWith(prefix) && path !== `${prefix}tsx`)
+    .map((path) => {
+      const slug = path.slice(prefix.length, -'.tsx'.length)
+      return { slug, title: toTitle(slug), Demo: lazyDemos.get(path)!, source: demoSources[path] ?? '' }
+    })
+}
+
 export const components: DocItem[] = registry.items
   .filter((item) => item.type === 'registry:ui')
   .map((item) => ({
@@ -159,8 +211,9 @@ export const components: DocItem[] = registry.items
     icon: icons[item.name] ?? ComponentIcon,
     dependencies: item.dependencies ?? [],
     registryDependencies: (item.registryDependencies ?? []).filter((d) => d !== 'utils'),
-    Demo: demos[`./demos/${item.name}.tsx`]?.default,
+    Demo: lazyDemos.get(`./demos/${item.name}.tsx`),
     demoSource: demoSources[`./demos/${item.name}.tsx`],
+    examples: examplesFor(item.name),
   }))
   .sort((a, b) => a.title.localeCompare(b.title))
 

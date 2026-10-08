@@ -20,6 +20,7 @@ export interface AddOptions {
   overwrite?: boolean
   yes?: boolean
   registry?: string
+  skipInstall?: boolean
 }
 
 const packageName = (spec: string) => spec.replace(/(?<=.)@.*$/, '')
@@ -64,7 +65,13 @@ export async function add(opts: AddOptions) {
   }
 
   const pkg = await readPackageJson(opts.cwd)
+  const missing = [...deps].filter((d) => !hasDependency(pkg, packageName(d)))
+  const missingDev = [...devDeps].filter((d) => !hasDependency(pkg, packageName(d)))
+  if (opts.skipInstall) {
+    if (missing.length || missingDev.length) log.warn(`Skipped installing: ${[...missing, ...missingDev].join(' ')}`)
+    return
+  }
   const pm = detectPackageManager(opts.cwd)
-  installPackages(opts.cwd, pm, [...deps].filter((d) => !hasDependency(pkg, packageName(d))))
-  installPackages(opts.cwd, pm, [...devDeps].filter((d) => !hasDependency(pkg, packageName(d))), true)
+  installPackages(opts.cwd, pm, missing)
+  installPackages(opts.cwd, pm, missingDev, true)
 }

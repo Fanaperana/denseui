@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from 'react'
-import { MoonIcon, SunIcon } from 'lucide-react'
+import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Toaster } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 import { components, examples, guides, useRoute, type Route } from './docs'
@@ -56,7 +57,7 @@ function NavHeading({ children }: { children: ReactNode }) {
   )
 }
 
-function Sidebar({ route }: { route: Route }) {
+function DocsNav({ route }: { route: Route }) {
   const [query, setQuery] = useState('')
   const filtered = useMemo(
     () => components.filter((c) => c.title.toLowerCase().includes(query.trim().toLowerCase())),
@@ -64,17 +65,18 @@ function Sidebar({ route }: { route: Route }) {
   )
 
   return (
-    <aside className="sticky top-11 flex h-[calc(100svh-2.75rem)] w-56 shrink-0 flex-col max-md:hidden">
+    <>
       <div className="px-3 pt-4 pb-2">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Filter components…"
+          aria-label="Filter components"
           variant="ghost"
           className="bg-accent"
         />
       </div>
-      <nav className="flex flex-1 flex-col gap-px overflow-y-auto px-3 pb-6">
+      <nav aria-label="Documentation" className="flex flex-1 flex-col gap-px overflow-y-auto px-3 pb-6">
         {!query && (
           <>
             <NavHeading>Getting started</NavHeading>
@@ -102,14 +104,41 @@ function Sidebar({ route }: { route: Route }) {
             key={item.name}
             href={`#/components/${item.name}`}
             icon={item.icon}
-            active={route.page === 'component' && route.item === item}
+            active={route.page === 'component' && route.item.name === item.name}
           >
             {item.title}
           </NavLink>
         ))}
         {filtered.length === 0 && <div className="px-2 text-sm text-subtle-foreground">No results.</div>}
       </nav>
+    </>
+  )
+}
+
+function Sidebar({ route }: { route: Route }) {
+  return (
+    <aside className="sticky top-11 flex h-[calc(100svh-2.75rem)] w-56 shrink-0 flex-col max-md:hidden">
+      <DocsNav route={route} />
     </aside>
+  )
+}
+
+function MobileNav({ route }: { route: Route }) {
+  const [open, setOpen] = useState(false)
+  useEffect(() => setOpen(false), [route])
+
+  return (
+    <Sheet open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" aria-label="Open navigation" className="md:hidden">
+          <MenuIcon />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-72 gap-0 bg-muted px-0 py-0">
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <DocsNav route={route} />
+      </SheetContent>
+    </Sheet>
   )
 }
 
@@ -119,7 +148,8 @@ function Header({ route }: { route: Route }) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-11 max-w-screen-2xl items-center gap-4 px-4">
+      <div className="mx-auto flex h-11 max-w-screen-2xl items-center gap-4 px-4 max-md:gap-2 max-md:px-2">
+        <MobileNav route={route} />
         <a href="#/" className="flex items-center gap-2 text-sm font-semibold tracking-tight">
           <span className="grid size-5 grid-cols-2 gap-px rounded-sm bg-primary p-1">
             <span className="rounded-[1px] bg-primary-foreground" />
@@ -179,7 +209,7 @@ export default function App() {
           ) : route.page === 'component' ? (
             <ComponentPage key={route.item.name} item={route.item} />
           ) : (
-            <div className="mx-auto max-w-3xl px-8 py-8">
+            <div className="mx-auto max-w-3xl px-8 py-8 max-md:px-4 max-md:py-6">
               {route.slug === 'installation' ? (
                 <InstallationPage />
               ) : route.slug === 'theming' ? (

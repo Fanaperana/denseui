@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 function ItemGroup({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div role="list" data-slot="item-group" className={cn('flex flex-col gap-px', className)} {...props} />
+  return <div data-slot="item-group" className={cn('flex flex-col gap-px', className)} {...props} />
 }
 
 const itemVariants = cva(

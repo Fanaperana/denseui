@@ -449,6 +449,132 @@
         "separator"
       ],
       "files": [{ "path": "components/ui/data-table.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "description": "Recharts wrapper with themed tooltip, legend and per-series colors",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "description": "react-hook-form bindings with accessible labels, descriptions and error messages",
+      "dependencies": ["react-hook-form", "@ark-ui/react"],
+      "registryDependencies": ["utils", "label"],
+      "files": [{ "path": "components/ui/form.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "typography",
+      "type": "registry:ui",
+      "description": "Headings, paragraphs, lead, blockquote, lists and inline code",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/typography.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tree-view",
+      "type": "registry:ui",
+      "description": "Nested page tree with expand/collapse, indent guides and hover actions",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/tree-view.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "editable",
+      "type": "registry:ui",
+      "description": "Click-to-edit inline text, like a page title",
+      "dependencies": ["@ark-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/editable.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "property",
+      "type": "registry:ui",
+      "description": "Label/value property rows for record details",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/property.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tags-input",
+      "type": "registry:ui",
+      "description": "Multi-value tag input with stable per-tag colors",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/tags-input.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "callout",
+      "type": "registry:ui",
+      "description": "Highlighted note with an emoji or icon",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/callout.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "block",
+      "type": "registry:ui",
+      "description": "Content block with hover gutter: add button and drag/menu grip",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "dropdown-menu"],
+      "files": [{ "path": "components/ui/block.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "description": "Color input with saturation area, hue/alpha sliders, eyedropper and presets",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/color-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "description": "Drag-and-drop dropzone with file list and image previews",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/file-upload.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "description": "Numeric input with steppers, min/max and formatting",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils", "input"],
+      "files": [{ "path": "components/ui/number-input.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "description": "Single-choice segmented switcher with a sliding indicator",
+      "dependencies": ["@ark-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/segmented-control.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "description": "Star rating input",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "components/ui/rating.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "steps",
+      "type": "registry:ui",
+      "description": "Multi-step flow with progress indicator and navigation",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "components/ui/steps.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "password-input",
+      "type": "registry:ui",
+      "description": "Password field with show/hide toggle",
+      "dependencies": ["@ark-ui/react", "lucide-react"],
+      "registryDependencies": ["utils", "input"],
+      "files": [{ "path": "components/ui/password-input.tsx", "type": "registry:ui" }]
     }
   ]
 }

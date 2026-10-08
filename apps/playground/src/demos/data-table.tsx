@@ -88,15 +88,17 @@ export default function DataTableDemo() {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Task" />,
         cell: (info) => <span className="font-mono text-xs text-muted-foreground">{info.getValue()}</span>,
         enableHiding: false,
+        size: 104,
       }),
       helper.accessor('title', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
         cell: ({ row }) => (
-          <div className="flex max-w-80 items-center gap-1.5">
+          <div className="flex min-w-0 items-center gap-1.5">
             <Badge color={labelColor[row.original.label]}>{row.original.label}</Badge>
             <span className="truncate font-medium">{row.original.title}</span>
           </div>
         ),
+        size: 320,
       }),
       helper.accessor('status', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
@@ -110,6 +112,7 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 130,
       }),
       helper.accessor('priority', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Priority" />,
@@ -123,14 +126,18 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 110,
       }),
       helper.accessor('estimate', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Points" className="ml-auto" />,
         cell: (info) => <div className="text-right tabular-nums">{info.getValue()}</div>,
         enableGlobalFilter: false,
+        size: 90,
       }),
       helper.display({
         id: 'actions',
+        size: 44,
+        enableResizing: false,
         cell: ({ row }) => (
           <DropdownMenu positioning={{ placement: 'bottom-end' }}>
             <DropdownMenuTrigger asChild>
@@ -169,6 +176,7 @@ export default function DataTableDemo() {
       className="w-full"
       columns={columns}
       data={tasks}
+      columnSizing
       getRowId={(task) => task.id}
       searchPlaceholder="Search tasks…"
       filters={filters}

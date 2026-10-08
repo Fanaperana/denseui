@@ -1233,5 +1233,334 @@
       "dataTableFeatures",
       "selectColumn"
     ]
+  },
+  {
+    "name": "chart",
+    "type": "registry:ui",
+    "description": "Recharts wrapper with themed tooltip, legend and per-series colors",
+    "dependencies": [
+      "recharts"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Chart",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "ChartContainer",
+      "ChartTooltip",
+      "ChartTooltipContent",
+      "ChartLegend",
+      "ChartLegendContent",
+      "useChart"
+    ]
+  },
+  {
+    "name": "form",
+    "type": "registry:ui",
+    "description": "react-hook-form bindings with accessible labels, descriptions and error messages",
+    "dependencies": [
+      "react-hook-form",
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "label"
+    ],
+    "title": "Form",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Form",
+      "FormField",
+      "FormItem",
+      "FormLabel",
+      "FormControl",
+      "FormDescription",
+      "FormMessage",
+      "useFormField"
+    ]
+  },
+  {
+    "name": "typography",
+    "type": "registry:ui",
+    "description": "Headings, paragraphs, lead, blockquote, lists and inline code",
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Typography",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "TypographyBlockquote",
+      "TypographyH1",
+      "TypographyH2",
+      "TypographyH3",
+      "TypographyH4",
+      "TypographyInlineCode",
+      "TypographyLead",
+      "TypographyList",
+      "TypographyMuted",
+      "TypographyP"
+    ]
+  },
+  {
+    "name": "tree-view",
+    "type": "registry:ui",
+    "description": "Nested page tree with expand/collapse, indent guides and hover actions",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Tree View",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "TreeView"
+    ]
+  },
+  {
+    "name": "editable",
+    "type": "registry:ui",
+    "description": "Click-to-edit inline text, like a page title",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Editable",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Editable"
+    ]
+  },
+  {
+    "name": "property",
+    "type": "registry:ui",
+    "description": "Label/value property rows for record details",
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Property",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "PropertyList",
+      "Property",
+      "PropertyEmpty"
+    ]
+  },
+  {
+    "name": "tags-input",
+    "type": "registry:ui",
+    "description": "Multi-value tag input with stable per-tag colors",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Tags Input",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "TagsInput",
+      "tagColor"
+    ]
+  },
+  {
+    "name": "callout",
+    "type": "registry:ui",
+    "description": "Highlighted note with an emoji or icon",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Callout",
+    "categories": [
+      "data"
+    ],
+    "exports": [
+      "Callout",
+      "calloutVariants"
+    ]
+  },
+  {
+    "name": "block",
+    "type": "registry:ui",
+    "description": "Content block with hover gutter: add button and drag/menu grip",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "dropdown-menu"
+    ],
+    "title": "Block",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Block"
+    ]
+  },
+  {
+    "name": "color-picker",
+    "type": "registry:ui",
+    "description": "Color input with saturation area, hue/alpha sliders, eyedropper and presets",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Color Picker",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "ColorPicker",
+      "parseColor"
+    ]
+  },
+  {
+    "name": "file-upload",
+    "type": "registry:ui",
+    "description": "Drag-and-drop dropzone with file list and image previews",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "File Upload",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "FileUpload"
+    ]
+  },
+  {
+    "name": "number-input",
+    "type": "registry:ui",
+    "description": "Numeric input with steppers, min/max and formatting",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "input"
+    ],
+    "title": "Number Input",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "NumberInput"
+    ]
+  },
+  {
+    "name": "segmented-control",
+    "type": "registry:ui",
+    "description": "Single-choice segmented switcher with a sliding indicator",
+    "dependencies": [
+      "@ark-ui/react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Segmented Control",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "SegmentedControl",
+      "SegmentedControlItem"
+    ]
+  },
+  {
+    "name": "rating",
+    "type": "registry:ui",
+    "description": "Star rating input",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils"
+    ],
+    "title": "Rating",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "Rating"
+    ]
+  },
+  {
+    "name": "steps",
+    "type": "registry:ui",
+    "description": "Multi-step flow with progress indicator and navigation",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "button"
+    ],
+    "title": "Steps",
+    "categories": [
+      "layout"
+    ],
+    "exports": [
+      "Steps",
+      "StepsList",
+      "StepsItem",
+      "StepsContent",
+      "StepsCompletedContent",
+      "StepsPrevTrigger",
+      "StepsNextTrigger"
+    ]
+  },
+  {
+    "name": "password-input",
+    "type": "registry:ui",
+    "description": "Password field with show/hide toggle",
+    "dependencies": [
+      "@ark-ui/react",
+      "lucide-react"
+    ],
+    "registryDependencies": [
+      "utils",
+      "input"
+    ],
+    "title": "Password Input",
+    "categories": [
+      "inputs"
+    ],
+    "exports": [
+      "PasswordInput"
+    ]
   }
 ]

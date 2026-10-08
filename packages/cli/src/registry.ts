@@ -88,6 +88,14 @@ export async function fetchItem(source: string, framework: string, name: string)
   return data
 }
 
+/** Registry dependencies may be plain names or shadcn-style URLs ending in `<name>.json`. */
+export function dependencyName(dep: string) {
+  if (!isUrl(dep)) return dep
+  const match = /\/([a-z0-9][a-z0-9-]*)\.json(?:[?#].*)?$/.exec(dep)
+  if (!match) throw new Error(`Unsupported registry dependency URL: ${dep}`)
+  return match[1]!
+}
+
 /** Returns items with their registry dependencies first, deduplicated. */
 export async function resolveTree(source: string, framework: string, names: string[]): Promise<RegistryItem[]> {
   const resolved = new Map<string, RegistryItem>()
@@ -97,7 +105,7 @@ export async function resolveTree(source: string, framework: string, names: stri
     if (resolved.has(name) || visiting.has(name)) return
     visiting.add(name)
     const item = await fetchItem(source, framework, name)
-    for (const dep of item.registryDependencies ?? []) await visit(dep)
+    for (const dep of item.registryDependencies ?? []) await visit(dependencyName(dep))
     resolved.set(name, item)
   }
 

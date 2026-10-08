@@ -32,10 +32,11 @@ function CommandInput({ className, ...props }: Listbox.InputProps) {
   )
 }
 
-function CommandList({ className, ...props }: Listbox.ContentProps) {
+function CommandList({ className, 'aria-label': ariaLabel = 'Results', ...props }: Listbox.ContentProps) {
   return (
     <Listbox.Content
       data-slot="command-list"
+      aria-label={ariaLabel}
       className={cn('max-h-72 scroll-py-1 overflow-y-auto p-1 outline-none', className)}
       {...props}
     />

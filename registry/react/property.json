@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "property",
+  "type": "registry:ui",
+  "description": "Label/value property rows for record details",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/property.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction PropertyList({ className, ...props }: React.ComponentProps<'div'>) {\r\n  return <div data-slot=\"property-list\" className={cn('flex w-full flex-col', className)} {...props} />\r\n}\r\n\r\ntype PropertyProps = React.ComponentProps<'div'> & {\r\n  label: React.ReactNode\r\n  icon?: React.ReactNode\r\n}\r\n\r\nfunction Property({ label, icon, className, children, ...props }: PropertyProps) {\r\n  return (\r\n    <div data-slot=\"property\" className={cn('flex min-h-7 items-start', className)} {...props}>\r\n      <div\r\n        data-slot=\"property-label\"\r\n        className=\"flex w-36 shrink-0 items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-muted-foreground [&_svg]:size-3.5 [&_svg]:shrink-0\"\r\n      >\r\n        {icon}\r\n        <span className=\"truncate\">{label}</span>\r\n      </div>\r\n      <div\r\n        data-slot=\"property-value\"\r\n        className=\"flex min-h-7 min-w-0 flex-1 flex-wrap items-center gap-1 rounded-sm px-2 py-1 text-sm transition-colors duration-75 hover:bg-accent has-[[data-slot=editable]]:p-0.5\"\r\n      >\r\n        {children}\r\n      </div>\r\n    </div>\r\n  )\r\n}\r\n\r\nfunction PropertyEmpty({ className, children = 'Empty', ...props }: React.ComponentProps<'span'>) {\r\n  return <span data-slot=\"property-empty\" className={cn('text-subtle-foreground', className)} {...props}>{children}</span>\r\n}\r\n\r\nexport { PropertyList, Property, PropertyEmpty, type PropertyProps }\r\n"
+    }
+  ],
+  "title": "Property",
+  "categories": [
+    "layout"
+  ],
+  "docs": "# Property\n\nLabel/value property rows for record details\n\n## Install\n\n```bash\nnpx denseui@latest add property\n```\n\n## Usage\n\n```tsx\nimport { PropertyList, Property, PropertyEmpty } from \"@/components/ui/property\"\n```\n\n## Example\n\n```tsx\nimport { CalendarIcon, CircleDotIcon, LinkIcon, TagIcon, UserIcon } from 'lucide-react'\r\nimport { Avatar, AvatarFallback } from '@/components/ui/avatar'\r\nimport { Badge } from '@/components/ui/badge'\r\nimport { Editable } from '@/components/ui/editable'\r\nimport { Property, PropertyEmpty, PropertyList } from '@/components/ui/property'\r\n\r\nexport default function PropertyDemo() {\r\n  return (\r\n    <PropertyList className=\"w-[420px]\">\r\n      <Property icon={<CircleDotIcon />} label=\"Status\">\r\n        <Badge color=\"blue\">In progress</Badge>\r\n      </Property>\r\n      <Property icon={<UserIcon />} label=\"Assignee\">\r\n        <Avatar>\r\n          <AvatarFallback>JD</AvatarFallback>\r\n        </Avatar>\r\n        Jane Doe\r\n      </Property>\r\n      <Property icon={<CalendarIcon />} label=\"Due date\">\r\n        October 24, 2026\r\n      </Property>\r\n      <Property icon={<TagIcon />} label=\"Tags\">\r\n        <Badge color=\"purple\">design</Badge>\r\n        <Badge color=\"green\">v2</Badge>\r\n      </Property>\r\n      <Property icon={<LinkIcon />} label=\"URL\">\r\n        <Editable placeholder=\"Empty\" />\r\n      </Property>\r\n      <Property icon={<CalendarIcon />} label=\"Completed\">\r\n        <PropertyEmpty />\r\n      </Property>\r\n    </PropertyList>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "PropertyList",
+      "Property",
+      "PropertyEmpty"
+    ]
+  }
+}

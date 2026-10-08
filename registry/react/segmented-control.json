@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "segmented-control",
+  "type": "registry:ui",
+  "description": "Single-choice segmented switcher with a sliding indicator",
+  "dependencies": [
+    "@ark-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/segmented-control.tsx",
+      "type": "registry:ui",
+      "content": "import { SegmentGroup } from '@ark-ui/react/segment-group'\r\nimport { cn } from '@/lib/utils'\r\n\r\nfunction SegmentedControl({ className, children, ...props }: SegmentGroup.RootProps) {\r\n  return (\r\n    <SegmentGroup.Root\r\n      data-slot=\"segmented-control\"\r\n      className={cn(\r\n        'relative inline-flex w-fit items-center gap-px rounded-md bg-muted p-0.5 ring-1 ring-border ring-inset data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch',\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <SegmentGroup.Indicator className=\"absolute top-(--top) left-(--left) h-(--height) w-(--width) rounded-sm bg-background shadow-[0_0_0_1px_var(--border),0_1px_2px_rgba(0,0,0,0.06)] transition-[left,top,width,height] duration-150 ease-out\" />\r\n      {children}\r\n    </SegmentGroup.Root>\r\n  )\r\n}\r\n\r\nfunction SegmentedControlItem({ className, children, ...props }: SegmentGroup.ItemProps) {\r\n  return (\r\n    <SegmentGroup.Item\r\n      data-slot=\"segmented-control-item\"\r\n      className={cn(\r\n        \"relative z-10 inline-flex cursor-default items-center justify-center gap-1.5 rounded-sm px-2.5 py-1 text-sm text-muted-foreground transition-colors duration-75 select-none hover:text-foreground data-disabled:pointer-events-none data-disabled:opacity-40 data-[state=checked]:font-medium data-[state=checked]:text-foreground data-focus-visible:ring-2 data-focus-visible:ring-ring [&_svg:not([class*='size-'])]:size-3.5\",\r\n        className,\r\n      )}\r\n      {...props}\r\n    >\r\n      <SegmentGroup.ItemText className=\"inline-flex items-center gap-1.5\">{children}</SegmentGroup.ItemText>\r\n      <SegmentGroup.ItemControl />\r\n      <SegmentGroup.ItemHiddenInput />\r\n    </SegmentGroup.Item>\r\n  )\r\n}\r\n\r\nexport { SegmentedControl, SegmentedControlItem }\r\n"
+    }
+  ],
+  "title": "Segmented Control",
+  "categories": [
+    "inputs"
+  ],
+  "docs": "# Segmented Control\n\nSingle-choice segmented switcher with a sliding indicator\n\n## Install\n\n```bash\nnpx denseui@latest add segmented-control\n```\n\nnpm dependencies: `@ark-ui/react`\n\n## Usage\n\n```tsx\nimport { SegmentedControl, SegmentedControlItem } from \"@/components/ui/segmented-control\"\n```\n\n## Example\n\n```tsx\nimport { CalendarIcon, KanbanIcon, ListIcon, TableIcon } from 'lucide-react'\r\nimport { SegmentedControl, SegmentedControlItem } from '@/components/ui/segmented-control'\r\n\r\nexport default function SegmentedControlDemo() {\r\n  return (\r\n    <div className=\"flex flex-col items-center gap-3\">\r\n      <SegmentedControl defaultValue=\"board\">\r\n        <SegmentedControlItem value=\"table\">\r\n          <TableIcon /> Table\r\n        </SegmentedControlItem>\r\n        <SegmentedControlItem value=\"board\">\r\n          <KanbanIcon /> Board\r\n        </SegmentedControlItem>\r\n        <SegmentedControlItem value=\"list\">\r\n          <ListIcon /> List\r\n        </SegmentedControlItem>\r\n        <SegmentedControlItem value=\"calendar\">\r\n          <CalendarIcon /> Calendar\r\n        </SegmentedControlItem>\r\n      </SegmentedControl>\r\n      <SegmentedControl defaultValue=\"month\">\r\n        <SegmentedControlItem value=\"day\">Day</SegmentedControlItem>\r\n        <SegmentedControlItem value=\"week\">Week</SegmentedControlItem>\r\n        <SegmentedControlItem value=\"month\">Month</SegmentedControlItem>\r\n      </SegmentedControl>\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "SegmentedControl",
+      "SegmentedControlItem"
+    ]
+  }
+}

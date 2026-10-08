@@ -111,15 +111,17 @@ export default function DataTableDemo() {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Task" />,
         cell: (info) => <span className="font-mono text-xs text-muted-foreground">{info.getValue()}</span>,
         enableHiding: false,
+        size: 104,
       }),
       helper.accessor('title', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
         cell: ({ row }) => (
-          <div className="flex max-w-80 items-center gap-1.5">
+          <div className="flex min-w-0 items-center gap-1.5">
             <Badge color={labelColor[row.original.label]}>{row.original.label}</Badge>
             <span className="truncate font-medium">{row.original.title}</span>
           </div>
         ),
+        size: 320,
       }),
       helper.accessor('status', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
@@ -133,6 +135,7 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 130,
       }),
       helper.accessor('priority', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Priority" />,
@@ -146,14 +149,18 @@ export default function DataTableDemo() {
           ) : null
         },
         filterFn: 'arrIncludesSome',
+        size: 110,
       }),
       helper.accessor('estimate', {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Points" className="ml-auto" />,
         cell: (info) => <div className="text-right tabular-nums">{info.getValue()}</div>,
         enableGlobalFilter: false,
+        size: 90,
       }),
       helper.display({
         id: 'actions',
+        size: 44,
+        enableResizing: false,
         cell: ({ row }) => (
           <DropdownMenu positioning={{ placement: 'bottom-end' }}>
             <DropdownMenuTrigger asChild>
@@ -192,6 +199,7 @@ export default function DataTableDemo() {
       className="w-full"
       columns={columns}
       data={tasks}
+      columnSizing
       getRowId={(task) => task.id}
       searchPlaceholder="Search tasks…"
       filters={filters}
@@ -214,6 +222,107 @@ export default function DataTableDemo() {
 }
 ```
 
+## Example: Server
+
+```tsx
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
+import {
+  DataTable,
+  DataTableColumnHeader,
+  createDataTableColumnHelper,
+  type DataTableQuery,
+} from '@/components/ui/data-table'
+
+type Order = { id: string; customer: string; status: 'paid' | 'pending' | 'refunded'; total: number }
+
+const statusColor = { paid: 'green', pending: 'yellow', refunded: 'gray' } as const
+const customers = ['Acme Inc.', 'Globex', 'Initech', 'Umbrella', 'Hooli', 'Soylent', 'Stark Ind.', 'Wayne Ent.']
+
+// A fake API: in your app, replace with fetch(`/api/orders?${params}`).
+const allOrders: Order[] = Array.from({ length: 1240 }, (_, i) => ({
+  id: `ORD-${10000 + i}`,
+  customer: customers[(i * 7) % customers.length]!,
+  status: (['paid', 'paid', 'pending', 'refunded'] as const)[(i * 3) % 4]!,
+  total: Math.round(((i * 7919) % 50000) / 10) / 10 + 4.99,
+}))
+
+function fetchOrders(query: DataTableQuery): Promise<{ rows: Order[]; total: number }> {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      let rows = allOrders
+      if (query.search) {
+        const q = query.search.toLowerCase()
+        rows = rows.filter((o) => o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q))
+      }
+      for (const { id, desc } of [...query.sorting].reverse()) {
+        rows = [...rows].sort((a, b) => {
+          const x = a[id as keyof Order]
+          const y = b[id as keyof Order]
+          return (x < y ? -1 : x > y ? 1 : 0) * (desc ? -1 : 1)
+        })
+      }
+      const start = query.pageIndex * query.pageSize
+      resolve({ rows: rows.slice(start, start + query.pageSize), total: rows.length })
+    }, 350),
+  )
+}
+
+const helper = createDataTableColumnHelper<Order>()
+
+export default function DataTableServerDemo() {
+  const [data, setData] = useState<Order[]>([])
+  const [rowCount, setRowCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const latest = useRef(0)
+
+  const onQueryChange = useCallback(async (query: DataTableQuery) => {
+    const request = ++latest.current
+    setLoading(true)
+    const result = await fetchOrders(query)
+    if (request !== latest.current) return
+    setData(result.rows)
+    setRowCount(result.total)
+    setLoading(false)
+  }, [])
+
+  useEffect(() => () => void (latest.current = -1), [])
+
+  const columns = useMemo(
+    () => [
+      helper.accessor('id', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Order" />,
+        cell: (info) => <span className="font-mono text-xs">{info.getValue()}</span>,
+      }),
+      helper.accessor('customer', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
+      }),
+      helper.accessor('status', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        cell: (info) => <Badge color={statusColor[info.getValue()]}>{info.getValue()}</Badge>,
+      }),
+      helper.accessor('total', {
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Total" className="ml-auto" />,
+        cell: (info) => <div className="text-right tabular-nums">${info.getValue().toFixed(2)}</div>,
+      }),
+    ],
+    [],
+  )
+
+  return (
+    <DataTable
+      className="w-full"
+      columns={columns}
+      data={data}
+      getRowId={(order) => order.id}
+      searchPlaceholder="Search orders…"
+      manual={{ rowCount, onQueryChange }}
+      loading={loading}
+    />
+  )
+}
+```
+
 ## Source: components/ui/data-table.tsx
 
 ```tsx
@@ -221,6 +330,9 @@ import * as React from 'react'
 import {
   columnFacetingFeature,
   columnFilteringFeature,
+  columnPinningFeature,
+  columnResizingFeature,
+  columnSizingFeature,
   columnVisibilityFeature,
   createColumnHelper,
   createFacetedRowModel,
@@ -257,6 +369,8 @@ import {
   ChevronsRightIcon,
   ChevronsUpDownIcon,
   EyeOffIcon,
+  PinIcon,
+  PinOffIcon,
   PlusCircleIcon,
   SearchIcon,
   Settings2Icon,
@@ -302,6 +416,9 @@ const dataTableFeatures = tableFeatures({
   paginatedRowModel: createPaginatedRowModel(),
   rowSelectionFeature,
   columnVisibilityFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  columnPinningFeature,
 })
 
 type DataTableFeatures = typeof dataTableFeatures
@@ -330,9 +447,15 @@ function columnTitle<TData extends RowData>(column: Column<DataTableFeatures, TD
   return typeof header === 'string' ? header : column.id
 }
 
+const rangeAnchors = new WeakMap<object, string>()
+let shiftHeld = false
+
+/** Checkbox column. Shift-click selects every row between the last clicked row and this one. */
 function selectColumn<TData extends RowData>(): DataTableColumnDef<TData> {
   return {
     id: 'select',
+    size: 36,
+    enableResizing: false,
     header: ({ table }) => (
       <Checkbox
         aria-label="Select all rows on this page"
@@ -342,17 +465,44 @@ function selectColumn<TData extends RowData>(): DataTableColumnDef<TData> {
         onCheckedChange={(details) => table.toggleAllPageRowsSelected(details.checked === true)}
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        aria-label="Select row"
-        checked={row.getIsSelected()}
-        disabled={!row.getCanSelect()}
-        onCheckedChange={(details) => row.toggleSelected(details.checked === true)}
-      />
+    cell: ({ row, table }) => (
+      <span className="flex" onClickCapture={(event) => (shiftHeld = event.shiftKey)}>
+        <Checkbox
+          aria-label="Select row"
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onCheckedChange={(details) => {
+            const checked = details.checked === true
+            const anchor = rangeAnchors.get(table)
+            const rows = table.getPrePaginatedRowModel().rows
+            const from = rows.findIndex((r) => r.id === anchor)
+            const to = rows.findIndex((r) => r.id === row.id)
+            if (shiftHeld && from >= 0 && to >= 0 && from !== to) {
+              const ids = rows
+                .slice(Math.min(from, to), Math.max(from, to) + 1)
+                .filter((r) => r.getCanSelect())
+                .map((r) => r.id)
+              table.setRowSelection((old) => {
+                const next = { ...old }
+                for (const id of ids) {
+                  if (checked) next[id] = true
+                  else delete next[id]
+                }
+                return next
+              })
+            } else {
+              row.toggleSelected(checked)
+            }
+            rangeAnchors.set(table, row.id)
+            shiftHeld = false
+          }}
+        />
+      </span>
     ),
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
+    enablePinning: false,
   }
 }
 
@@ -371,6 +521,10 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
     return <span className={className}>{title}</span>
   }
   const sorted = column.getIsSorted()
+  const sortedColumns = column.table.getAllLeafColumns().filter((c) => c.getIsSorted())
+  const othersSorted = sortedColumns.some((c) => c.id !== column.id)
+  const sortIndex = column.getSortIndex()
+  const pinned = column.getIsPinned()
 
   return (
     <DropdownMenu positioning={{ placement: 'bottom-start' }}>
@@ -391,9 +545,12 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
           ) : (
             <ChevronsUpDownIcon className="size-3 opacity-60" />
           )}
+          {sorted && sortedColumns.length > 1 && (
+            <span className="font-mono text-[10px] text-subtle-foreground tabular-nums">{sortIndex + 1}</span>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-36">
+      <DropdownMenuContent className="min-w-40">
         {column.getCanSort() && (
           <>
             <DropdownMenuItem value="asc" onSelect={() => column.toggleSorting(false)}>
@@ -402,6 +559,16 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
             <DropdownMenuItem value="desc" onSelect={() => column.toggleSorting(true)}>
               <ArrowDownIcon /> Descending
             </DropdownMenuItem>
+            {othersSorted && !sorted && column.getCanMultiSort() && (
+              <>
+                <DropdownMenuItem value="then-asc" onSelect={() => column.toggleSorting(false, true)}>
+                  <ArrowUpIcon /> Then ascending
+                </DropdownMenuItem>
+                <DropdownMenuItem value="then-desc" onSelect={() => column.toggleSorting(true, true)}>
+                  <ArrowDownIcon /> Then descending
+                </DropdownMenuItem>
+              </>
+            )}
             {sorted && (
               <DropdownMenuItem value="clear" onSelect={() => column.clearSorting()}>
                 <XIcon /> Clear sort
@@ -409,11 +576,27 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
             )}
           </>
         )}
-        {column.getCanSort() && column.getCanHide() && <DropdownMenuSeparator />}
+        {column.getCanPin() && (
+          <>
+            <DropdownMenuSeparator />
+            {pinned ? (
+              <DropdownMenuItem value="unpin" onSelect={() => column.pin(false)}>
+                <PinOffIcon /> Unpin
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem value="pin" onSelect={() => column.pin('start')}>
+                <PinIcon /> Pin to start
+              </DropdownMenuItem>
+            )}
+          </>
+        )}
         {column.getCanHide() && (
-          <DropdownMenuItem value="hide" onSelect={() => column.toggleVisibility(false)}>
-            <EyeOffIcon /> Hide column
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem value="hide" onSelect={() => column.toggleVisibility(false)}>
+              <EyeOffIcon /> Hide column
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -712,6 +895,14 @@ function DataTablePagination<TData extends RowData>({
   )
 }
 
+type DataTableQuery = {
+  pageIndex: number
+  pageSize: number
+  sorting: { id: string; desc: boolean }[]
+  filters: { id: string; value: unknown }[]
+  search: string
+}
+
 type DataTableProps<TData extends RowData> = {
   /** Keep stable (module scope or useMemo) so row models aren't rebuilt every render. */
   columns: DataTableColumnDef<TData>[]
@@ -725,6 +916,14 @@ type DataTableProps<TData extends RowData> = {
   /** Toolbar content before the View button; receives the table for bulk actions. */
   actions?: (table: DataTableInstance<TData>) => React.ReactNode
   emptyMessage?: React.ReactNode
+  /** Fixed column widths with drag-to-resize handles and "Pin to start". Set `size` on columns. */
+  columnSizing?: boolean
+  /**
+   * Server-side mode: `data` is the current page, sorting/filtering/paging happen on your server.
+   * `onQueryChange` fires whenever the user changes page, sort, filters or search.
+   */
+  manual?: { rowCount: number; onQueryChange: (query: DataTableQuery) => void }
+  loading?: boolean
   className?: string
 }
 
@@ -738,6 +937,9 @@ function DataTable<TData extends RowData>({
   initialPageSize = pageSizeOptions[0] ?? 10,
   actions,
   emptyMessage = 'No results.',
+  columnSizing = false,
+  manual,
+  loading = false,
   className,
 }: DataTableProps<TData>) {
   const table = useTable({
@@ -747,33 +949,94 @@ function DataTable<TData extends RowData>({
     getRowId,
     globalFilterFn: 'includesString',
     initialState: { pagination: { pageIndex: 0, pageSize: initialPageSize } },
+    enableColumnResizing: columnSizing,
+    enableColumnPinning: columnSizing,
+    columnResizeMode: 'onChange',
+    manualPagination: !!manual,
+    manualSorting: !!manual,
+    manualFiltering: !!manual,
+    rowCount: manual?.rowCount,
   })
   const rows = table.getRowModel().rows
+
+  const onQueryChange = React.useRef(manual?.onQueryChange)
+  React.useLayoutEffect(() => {
+    onQueryChange.current = manual?.onQueryChange
+  })
+  const { pagination, sorting, columnFilters, globalFilter } = table.state
+  const query = JSON.stringify({
+    pageIndex: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    sorting,
+    filters: columnFilters,
+    search: (globalFilter as string | undefined) ?? '',
+  })
+  React.useEffect(() => {
+    onQueryChange.current?.(JSON.parse(query) as DataTableQuery)
+  }, [query])
+
+  const pinnedStyle = (column: Column<DataTableFeatures, TData>): React.CSSProperties | undefined =>
+    columnSizing && column.getIsPinned() === 'start'
+      ? { position: 'sticky', insetInlineStart: column.getStart('start'), zIndex: 1 }
+      : undefined
 
   return (
     <div data-slot="data-table" className={cn('flex flex-col gap-2', className)}>
       <DataTableToolbar table={table} searchPlaceholder={searchPlaceholder} filters={filters}>
         {actions?.(table)}
       </DataTableToolbar>
-      <div data-slot="data-table-container" className="overflow-hidden rounded-lg border border-border bg-background">
-        <Table>
+      <div
+        data-slot="data-table-container"
+        aria-busy={loading}
+        className="relative overflow-hidden rounded-lg border border-border bg-background"
+      >
+        {loading && (
+          <div className="absolute inset-x-0 top-0 z-10 h-0.5 animate-pulse bg-brand" role="progressbar" aria-label="Loading" />
+        )}
+        <Table
+          className={cn(columnSizing && 'table-fixed')}
+          style={columnSizing ? { width: table.getTotalSize(), minWidth: '100%' } : undefined}
+        >
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-transparent">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} colSpan={header.colSpan}>
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    data-pinned={header.column.getIsPinned() || undefined}
+                    className={cn('relative', columnSizing && 'data-pinned:bg-muted')}
+                    style={{ ...(columnSizing ? { width: header.getSize() } : undefined), ...pinnedStyle(header.column) }}
+                  >
                     {header.isPlaceholder ? null : <table.FlexRender header={header} />}
+                    {columnSizing && header.column.getCanResize() && (
+                      <div
+                        role="separator"
+                        aria-orientation="vertical"
+                        aria-label={`Resize ${header.column.id}`}
+                        data-resizing={header.column.getIsResizing() || undefined}
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        onDoubleClick={() => header.column.resetSize()}
+                        className="absolute top-1 right-0 bottom-1 w-1 cursor-col-resize touch-none rounded-full select-none hover:bg-brand/60 data-resizing:bg-brand"
+                      />
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className={cn(loading && 'opacity-60 transition-opacity')}>
             {rows.length > 0 ? (
               rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      data-pinned={cell.column.getIsPinned() || undefined}
+                      className={cn(columnSizing && 'truncate data-pinned:bg-background')}
+                      style={pinnedStyle(cell.column)}
+                    >
                       <table.FlexRender cell={cell} />
                     </TableCell>
                   ))}
@@ -785,7 +1048,7 @@ function DataTable<TData extends RowData>({
                   colSpan={table.getVisibleLeafColumns().length}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  {emptyMessage}
+                  {loading ? 'Loading…' : emptyMessage}
                 </TableCell>
               </TableRow>
             )}
@@ -812,5 +1075,6 @@ export {
   type DataTableFilter,
   type DataTableFilterOption,
   type DataTableInstance,
+  type DataTableQuery,
 }
 ```

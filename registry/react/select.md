@@ -44,7 +44,7 @@ const fruits = createListCollection({
 export default function SelectDemo() {
   return (
     <Select collection={fruits} className="w-48">
-      <SelectTrigger>
+      <SelectTrigger aria-label="Fruit">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>

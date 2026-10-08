@@ -55,7 +55,7 @@ export default function InputGroupDemo() {
         <InputGroupAddon>
           <MailIcon />
         </InputGroupAddon>
-        <InputGroupInput defaultValue="hello@denseui.dev" />
+        <InputGroupInput defaultValue="hello@denseui.dev" aria-label="Email" />
         <InputGroupAddon align="inline-end">
           <InputGroupButton aria-label="Copy">
             <CopyIcon />

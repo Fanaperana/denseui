@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block",
+  "type": "registry:ui",
+  "description": "Content block with hover gutter: add button and drag/menu grip",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "components/ui/block.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react'\r\nimport { GripVerticalIcon, PlusIcon } from 'lucide-react'\r\nimport { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'\r\nimport { cn } from '@/lib/utils'\r\n\r\nconst handleButton =\r\n  'flex h-6 w-5 items-center justify-center rounded-sm text-subtle-foreground outline-none hover:bg-accent hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5'\r\n\r\ntype BlockProps = React.ComponentProps<'div'> & {\r\n  /** Called when the \"+\" handle is clicked. */\r\n  onAdd?: () => void\r\n  /** DropdownMenu items shown when the grip handle is clicked. */\r\n  menu?: React.ReactNode\r\n  /** Props for the grip, e.g. drag listeners from your DnD library. */\r\n  handleProps?: React.ComponentProps<'button'>\r\n}\r\n\r\n/** Notion-style block: hover reveals \"+\" and a drag/menu grip in the left gutter. */\r\nfunction Block({ onAdd, menu, handleProps, className, children, ...props }: BlockProps) {\r\n  const grip = (\r\n    <button type=\"button\" aria-label=\"Drag to move, click for options\" className={cn(handleButton, 'cursor-grab')} {...handleProps}>\r\n      <GripVerticalIcon />\r\n    </button>\r\n  )\r\n\r\n  return (\r\n    <div data-slot=\"block\" className={cn('group/block relative -ml-12 flex items-start pl-12', className)} {...props}>\r\n      <div\r\n        data-slot=\"block-handle\"\r\n        className=\"absolute top-0 left-0 flex items-center gap-px pr-1 opacity-0 transition-opacity duration-100 group-hover/block:opacity-100 group-focus-within/block:opacity-100 has-[[data-state=open]]:opacity-100\"\r\n      >\r\n        {onAdd && (\r\n          <button type=\"button\" aria-label=\"Add block below\" className={handleButton} onClick={onAdd}>\r\n            <PlusIcon />\r\n          </button>\r\n        )}\r\n        {menu ? (\r\n          <DropdownMenu positioning={{ placement: 'left-start' }}>\r\n            <DropdownMenuTrigger asChild>{grip}</DropdownMenuTrigger>\r\n            <DropdownMenuContent className=\"w-48\">{menu}</DropdownMenuContent>\r\n          </DropdownMenu>\r\n        ) : (\r\n          grip\r\n        )}\r\n      </div>\r\n      <div data-slot=\"block-content\" className=\"min-w-0 flex-1\">\r\n        {children}\r\n      </div>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport { Block, type BlockProps }\r\n"
+    }
+  ],
+  "title": "Block",
+  "categories": [
+    "layout"
+  ],
+  "docs": "# Block\n\nContent block with hover gutter: add button and drag/menu grip\n\n## Install\n\n```bash\nnpx denseui@latest add block\n```\n\nnpm dependencies: `lucide-react`\n\nAlso installs: `dropdown-menu`\n\n## Usage\n\n```tsx\nimport { Block } from \"@/components/ui/block\"\n```\n\n## Example\n\n```tsx\nimport { useState } from 'react'\r\nimport { CopyIcon, Trash2Icon, TypeIcon } from 'lucide-react'\r\nimport { Block } from '@/components/ui/block'\r\nimport { DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu'\r\n\r\nexport default function BlockDemo() {\r\n  const [blocks, setBlocks] = useState([\r\n    'Hover a block to reveal its handles.',\r\n    'Click + to insert a block below.',\r\n    'Click the grip to open the block menu.',\r\n  ])\r\n\r\n  const insertAfter = (index: number) =>\r\n    setBlocks((b) => [...b.slice(0, index + 1), 'New block', ...b.slice(index + 1)])\r\n\r\n  return (\r\n    <div className=\"flex w-[420px] flex-col gap-0.5 pl-12\">\r\n      {blocks.map((text, index) => (\r\n        <Block\r\n          key={`${index}-${text}`}\r\n          onAdd={() => insertAfter(index)}\r\n          menu={\r\n            <>\r\n              <DropdownMenuItem value=\"turn-into\">\r\n                <TypeIcon /> Turn into\r\n              </DropdownMenuItem>\r\n              <DropdownMenuItem value=\"duplicate\" onSelect={() => insertAfter(index)}>\r\n                <CopyIcon /> Duplicate\r\n              </DropdownMenuItem>\r\n              <DropdownMenuSeparator />\r\n              <DropdownMenuItem\r\n                value=\"delete\"\r\n                variant=\"destructive\"\r\n                onSelect={() => setBlocks((b) => b.filter((_, i) => i !== index))}\r\n              >\r\n                <Trash2Icon /> Delete\r\n              </DropdownMenuItem>\r\n            </>\r\n          }\r\n        >\r\n          <p className=\"rounded-sm px-1 py-0.5 text-base\">{text}</p>\r\n        </Block>\r\n      ))}\r\n    </div>\r\n  )\r\n}\n```\n",
+  "meta": {
+    "exports": [
+      "Block"
+    ]
+  }
+}

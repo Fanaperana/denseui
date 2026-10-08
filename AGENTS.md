@@ -12,7 +12,7 @@ denseui is a copy-paste component registry (like shadcn/ui) for React 19 + Tailw
 | `packages/react/src/components/ui/*.tsx` | Component source. **This is the registry**; files are copied verbatim into user projects. |
 | `packages/react/registry.json` | Registry manifest: name, description, npm + registry dependencies, files. |
 | `packages/react/llm/guidelines.md` | Design rules served to LLMs (MCP `get_design_guidelines`, `llms-full.txt`). |
-| `packages/cli/src` | `denseui` CLI: `init`, `add`, `list`, `diff`, `mcp`. Zero runtime dependencies. |
+| `packages/cli/src` | `denseui` CLI: `init`, `add`, `update`, `list`, `diff`, `mcp`. Zero runtime dependencies. |
 | `apps/playground` | Docs site. `src/demos/<name>.tsx` is the live demo **and** the example shipped to LLMs. |
 | `scripts/build-registry.mjs` | Builds `registry/` (JSON, `.md` per component, `llms.txt`, `llms-full.txt`). |
 
@@ -23,6 +23,8 @@ pnpm install
 pnpm dev              # docs at http://localhost:5173
 pnpm registry:build   # run after changing components, registry.json, demos or guidelines
 pnpm typecheck        # must pass
+pnpm test             # CLI unit tests
+pnpm test:e2e         # Playwright + axe against the built docs
 pnpm --filter @denseui/playground build
 ```
 
@@ -48,5 +50,5 @@ pnpm --filter @denseui/playground build
 1. Create `packages/react/src/components/ui/<name>.tsx`.
 2. Add an entry to `packages/react/registry.json` (description is shown to users and LLMs; keep it one line).
 3. Add the category in `scripts/build-registry.mjs` (`categories`) and an icon in `apps/playground/src/docs.ts`.
-4. Add `apps/playground/src/demos/<name>.tsx` with a realistic default-export demo.
-5. Run `pnpm registry:build && pnpm typecheck`, then check light and dark mode in the docs.
+4. Add `apps/playground/src/demos/<name>.tsx` with a realistic default-export demo. Extra examples go in `demos/<name>.<example>.tsx`.
+5. Run `pnpm registry:build && pnpm typecheck && pnpm test:e2e` (every page is checked for runtime errors and axe violations), then check light and dark mode in the docs.

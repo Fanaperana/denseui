@@ -11,7 +11,7 @@ Inspired by the information density of tools like Notion and Linear: 24px contro
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Ark UI](https://img.shields.io/badge/Ark_UI-Zag.js-eb5e41?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
-![Components](https://img.shields.io/badge/components-55-111113?style=flat-square)
+![Components](https://img.shields.io/badge/components-71-111113?style=flat-square)
 
 <br />
 
@@ -41,7 +41,7 @@ denseui is built around a few strict rules:
 
 ## Features
 
-- 🧩 **55 components**: everything you'd expect from shadcn/ui, plus a full-featured Data Table
+- 🧩 **71 components**: everything you'd expect from shadcn/ui, plus a full-featured Data Table, charts, forms and Notion-style blocks
 - 🎨 **Tailwind CSS v4**: CSS-first tokens with `@theme`, no JS config
 - 🌗 **Light & dark**: a modern zinc + indigo palette with deep, true dark mode
 - ♿ **Accessible by default**: behavior powered by [Ark UI](https://ark-ui.com) / [Zag.js](https://zagjs.com) state machines
@@ -76,8 +76,9 @@ export default function App() {
 
 | Command | Description |
 | --- | --- |
-| `denseui init` | Write `denseui.css` tokens, import them in your global CSS, create `components.json`, add `cn()` |
-| `denseui add <names…>` | Copy components plus their registry and npm dependencies (`--all`, `--overwrite`, `--yes`) |
+| `denseui init` | Write `denseui.css` tokens, import them in your global CSS, create `components.json`, add `cn()`, set up the `@/*` alias and offer to install Tailwind |
+| `denseui add <names…>` | Copy components plus their registry and npm dependencies (`--all`, `--overwrite`, `--yes`, `--skip-install`) |
+| `denseui update [names…]` | Re-sync installed components that differ from the registry (after confirmation) |
 | `denseui list` | Show available components; installed ones are highlighted |
 | `denseui diff <name>` | Compare your local copy with the latest registry version |
 | `denseui mcp` | Start the MCP server (stdio) for AI assistants |
@@ -125,10 +126,14 @@ No MCP? Point the model at [`registry/llms.txt`](registry/llms.txt) or [`registr
 **Inputs**
 - Button · Button Group
 - Input · Input Group · Input OTP
-- Textarea · Label · Field
+- Password Input · Number Input
+- Textarea · Label · Field · Form
 - Checkbox · Radio Group · Switch
 - Select · Native Select · Combobox
 - Slider · Toggle · Toggle Group
+- Segmented Control · Rating
+- Tags Input · Editable
+- Color Picker · File Upload
 - Calendar · Date Picker
 
 </td><td valign="top">
@@ -150,6 +155,8 @@ No MCP? Point the model at [`registry/llms.txt`](registry/llms.txt) or [`registr
 - Resizable · Scroll Area
 - Card · Item · Separator
 - Aspect Ratio · Pagination
+- Steps · Tree View
+- Block (Notion-style gutter)
 
 </td><td valign="top">
 
@@ -158,7 +165,9 @@ No MCP? Point the model at [`registry/llms.txt`](registry/llms.txt) or [`registr
 - Table · Badge · Kbd
 - Avatar · Alert · Empty
 - Progress · Spinner · Skeleton
-- Carousel
+- Carousel · Chart
+- Property list · Callout
+- Typography
 
 </td></tr>
 </table>
@@ -167,9 +176,11 @@ No MCP? Point the model at [`registry/llms.txt`](registry/llms.txt) or [`registr
 
 A complete data grid powered by [TanStack Table v9](https://tanstack.com/table):
 
-- Global search · faceted filters with live counts · column sorting
-- Column visibility · row selection with select-all · bulk actions
-- Pagination with page-size selector · empty states · fully typed columns
+- Global search · faceted filters with live counts · multi-column sorting
+- Column visibility · resizing · pinning (sticky columns)
+- Row selection with select-all and shift-click ranges · bulk actions
+- Pagination with page-size selector · empty and loading states · fully typed columns
+- Server-side mode: `manual={{ rowCount, onQueryChange }}` hands you page, sort, filters and search
 
 ```tsx
 const helper = createDataTableColumnHelper<Task>()
@@ -223,8 +234,9 @@ denseui/
 ├── packages/
 │   ├── tokens/            # Tailwind v4 theme: colors, type scale, radius, animations
 │   ├── react/             # React component source (the registry)
-│   └── cli/               # `denseui` CLI (init / add / list / diff)
+│   └── cli/               # `denseui` CLI (init / add / update / list / diff / mcp)
 ├── registry/              # Built registry JSON (shadcn-compatible schema)
+├── e2e/                   # Playwright: every component page, axe audit, interactions
 └── scripts/
     └── build-registry.mjs
 ```
@@ -237,23 +249,27 @@ pnpm dev              # docs + playground at http://localhost:5173
 pnpm registry:build   # rebuild registry/ from packages/react
 pnpm typecheck        # all packages
 pnpm build            # registry + all packages
+pnpm test             # CLI unit tests
+pnpm test:e2e         # Playwright + axe against the built docs
 ```
 
 Adding a component:
 
 1. Create `packages/react/src/components/ui/<name>.tsx`
 2. Register it in `packages/react/registry.json`
-3. Add a demo at `apps/playground/src/demos/<name>.tsx`; it appears in the docs automatically
+3. Add a demo at `apps/playground/src/demos/<name>.tsx`; it appears in the docs automatically. Extra examples go in `demos/<name>.<example>.tsx`
+4. Run `pnpm registry:build && pnpm typecheck && pnpm test:e2e`
 
 ## Roadmap
 
-- [x] React: 55 components
-- [x] CLI with registry, diff and dependency resolution
-- [x] Docs site with live previews and ⌘K search
+- [x] React: 71 components
+- [x] CLI with registry, diff, update and dependency resolution
+- [x] Docs site with live previews, API reference and ⌘K search
 - [x] MCP server, llms.txt and AI-ready docs
+- [x] Charts and form integration
+- [x] Automated accessibility and interaction tests
 - [ ] Publish `denseui` CLI and `@denseui/tokens` to npm
 - [ ] Vue, Svelte and Solid (same tokens, same Ark UI state machines)
-- [ ] Charts and form integration
 - [ ] Hosted registry and docs
 
 ## Acknowledgements

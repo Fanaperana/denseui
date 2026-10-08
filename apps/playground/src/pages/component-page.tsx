@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, SparklesIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { CodeBlock } from '../code-block'
@@ -21,7 +22,139 @@ const sections = [
   { id: 'preview', label: 'Preview' },
   { id: 'installation', label: 'Installation' },
   { id: 'usage', label: 'Usage' },
+  { id: 'examples', label: 'Examples' },
+  { id: 'api', label: 'API Reference' },
 ]
+
+function DemoLoading() {
+  return <Spinner data-docs-loading="" />
+}
+
+type ApiRow = { name: string; renders: string; href?: string }
+type ApiVariant = { prop: string; values: string[]; defaultValue?: string }
+
+/** Derives an API table from the component source: what each export renders and its cva variants. */
+function parseApi(source: string): { rows: ApiRow[]; variants: ApiVariant[] } {
+  const arkModules = new Map<string, string>()
+  for (const m of source.matchAll(/import \{([^}]+)\} from '@ark-ui\/react\/([\w-]+)'/g)) {
+    for (const part of m[1]!.split(',')) {
+      const alias = part.trim().split(/\s+as\s+/).pop()!
+      if (alias && !alias.startsWith('type ')) arkModules.set(alias, m[2]!)
+    }
+  }
+  const rows: ApiRow[] = []
+  for (const m of source.matchAll(/^function (\w+)(?:<[^>]*>)?\(([\s\S]*?)\)\s*(?::[^{]+)?\{/gm)) {
+    const name = m[1]!
+    const params = m[2]!
+    if (!/^[A-Z]/.test(name)) continue
+    const ark = /(Ark\w+|[A-Z]\w+)\.(\w+)Props/.exec(params)
+    const html = /React\.ComponentProps<'(\w+)'>/.exec(params)
+    const factory = /typeof ark\.(\w+)/.exec(params)
+    const wraps = /React\.ComponentProps<typeof (\w+)>/.exec(params)
+    if (ark && arkModules.has(ark[1]!)) {
+      const module = arkModules.get(ark[1]!)!
+      const docSlug = module === 'progress' ? 'progress-linear' : module
+      rows.push({
+        name,
+        renders: `${ark[1]!.replace(/^Ark/, '')}.${ark[2]}`,
+        href: `https://ark-ui.com/docs/components/${docSlug}#api-reference`,
+      })
+    } else if (html) rows.push({ name, renders: `<${html[1]}>` })
+    else if (factory) rows.push({ name, renders: `<${factory[1]}> (asChild)` })
+    else if (wraps) rows.push({ name, renders: wraps[1]! })
+  }
+  const variants: ApiVariant[] = []
+  for (const block of source.matchAll(/variants:\s*\{([\s\S]*?)\n\s{4}\},?\n[\s\S]*?defaultVariants:\s*\{([^}]*)\}/g)) {
+    const defaults = Object.fromEntries([...block[2]!.matchAll(/(\w+):\s*'([\w-]+)'/g)].map((d) => [d[1], d[2]]))
+    for (const group of block[1]!.matchAll(/^\s{6}(\w+):\s*\{([\s\S]*?)^\s{6}\}/gm)) {
+      const values = [...group[2]!.matchAll(/^\s{8}'?([\w-]+)'?:/gm)].map((v) => v[1]!)
+      if (values.length) variants.push({ prop: group[1]!, values, defaultValue: defaults[group[1]!] })
+    }
+  }
+  return { rows, variants }
+}
+
+function ApiReference({ name }: { name: string }) {
+  const [api, setApi] = useState<ReturnType<typeof parseApi>>()
+
+  useEffect(() => {
+    let cancelled = false
+    loadComponentSource(name)?.then((code) => !cancelled && setApi(parseApi(code)))
+    return () => {
+      cancelled = true
+    }
+  }, [name])
+
+  if (!api || (api.rows.length === 0 && api.variants.length === 0)) return null
+
+  return (
+    <section id="api" className="flex scroll-mt-16 flex-col gap-3">
+      <h2 className="text-xl font-semibold tracking-tight">API Reference</h2>
+      <p className="text-sm text-muted-foreground">
+        Every part accepts <code className="font-mono">className</code> (merged last) and the props of what it renders.
+        Parts built on Ark UI link to the full prop reference.
+      </p>
+      {api.rows.length > 0 && (
+        <div className="overflow-hidden rounded-lg border border-border">
+          <Table>
+            <TableHeader className="bg-muted">
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Part</TableHead>
+                <TableHead>Renders / props from</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {api.rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell className="font-mono text-xs font-medium">{row.name}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">
+                    {row.href ? (
+                      <a href={row.href} target="_blank" rel="noreferrer" className="text-brand hover:underline">
+                        Ark UI {row.renders}
+                      </a>
+                    ) : (
+                      row.renders
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+      {api.variants.length > 0 && (
+        <div className="overflow-hidden rounded-lg border border-border">
+          <Table>
+            <TableHeader className="bg-muted">
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Variant prop</TableHead>
+                <TableHead>Values</TableHead>
+                <TableHead>Default</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {api.variants.map((v) => (
+                <TableRow key={v.prop}>
+                  <TableCell className="font-mono text-xs font-medium">{v.prop}</TableCell>
+                  <TableCell className="whitespace-normal">
+                    <div className="flex flex-wrap gap-1">
+                      {v.values.map((value) => (
+                        <Badge key={value} variant="outline" className="font-mono">
+                          {value}
+                        </Badge>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{v.defaultValue ?? '—'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </section>
+  )
+}
 
 function exportsOf(source: string | undefined, fallback: string) {
   const blocks = source ? [...source.matchAll(/export\s*\{([^}]+)\}/g)] : []
@@ -117,9 +250,9 @@ function ManualInstall({ item }: { item: DocItem }) {
 }
 
 export function ComponentPage({ item }: { item: DocItem }) {
-  const index = components.indexOf(item)
-  const prev = components[index - 1]
-  const next = components[index + 1]
+  const index = components.findIndex((c) => c.name === item.name)
+  const prev = index > 0 ? components[index - 1] : undefined
+  const next = index >= 0 ? components[index + 1] : undefined
   const { Demo, icon: Icon } = item
   const [usage, setUsage] = useState<string[]>([item.title.replace(/ /g, '')])
 
@@ -128,7 +261,7 @@ export function ComponentPage({ item }: { item: DocItem }) {
   }, [item])
 
   return (
-    <div className="flex gap-10 px-8 py-8">
+    <div className="flex gap-10 px-8 py-8 max-md:px-4 max-md:py-6">
       <article className="mx-auto flex w-full max-w-3xl min-w-0 flex-col gap-8">
         <header className="flex flex-col gap-3">
           <Breadcrumb>
@@ -206,7 +339,9 @@ export function ComponentPage({ item }: { item: DocItem }) {
             </TabsList>
             <TabsContent value="preview">
               <div className="flex min-h-80 items-center justify-center rounded-lg border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-10">
-                {Demo ? <Demo /> : <span className="text-sm text-muted-foreground">No demo yet.</span>}
+                <Suspense fallback={<DemoLoading />}>
+                  {Demo ? <Demo /> : <span className="text-sm text-muted-foreground">No demo yet.</span>}
+                </Suspense>
               </div>
             </TabsContent>
             <TabsContent value="code">
@@ -238,6 +373,35 @@ export function ComponentPage({ item }: { item: DocItem }) {
           />
         </section>
 
+        {item.examples.length > 0 && (
+          <section id="examples" className="flex scroll-mt-16 flex-col gap-6">
+            <h2 className="text-xl font-semibold tracking-tight">Examples</h2>
+            {item.examples.map((example) => (
+              <div key={example.slug} className="flex flex-col gap-2">
+                <h3 className="text-lg font-semibold">{example.title}</h3>
+                <Tabs defaultValue="preview">
+                  <TabsList>
+                    <TabsTrigger value="preview">Preview</TabsTrigger>
+                    <TabsTrigger value="code">Code</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="preview">
+                    <div className="flex min-h-60 items-center justify-center rounded-lg border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-10">
+                      <Suspense fallback={<DemoLoading />}>
+                        <example.Demo />
+                      </Suspense>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="code">
+                    <CodeBlock code={example.source} className="max-h-[480px] overflow-y-auto" />
+                  </TabsContent>
+                </Tabs>
+              </div>
+            ))}
+          </section>
+        )}
+
+        <ApiReference name={item.name} />
+
         <nav className="flex items-center justify-between border-t border-border pt-4">
           {prev ? (
             <Button variant="ghost" asChild>
@@ -260,16 +424,18 @@ export function ComponentPage({ item }: { item: DocItem }) {
 
       <aside className="sticky top-19 hidden h-fit w-40 shrink-0 flex-col gap-1 xl:flex">
         <div className="text-xs font-medium text-subtle-foreground">On this page</div>
-        {sections.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-left text-sm text-muted-foreground hover:text-foreground"
-          >
-            {s.label}
-          </button>
-        ))}
+        {sections
+          .filter((s) => s.id !== 'examples' || item.examples.length > 0)
+          .map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-left text-sm text-muted-foreground hover:text-foreground"
+            >
+              {s.label}
+            </button>
+          ))}
       </aside>
     </div>
   )
