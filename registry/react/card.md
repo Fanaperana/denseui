@@ -49,7 +49,7 @@ export default function CardDemo() {
           <Input id="card-name" placeholder="my-app" />
         </div>
       </CardContent>
-      <CardFooter className="justify-end">
+      <CardFooter className="ml-auto grid w-fit auto-cols-fr grid-flow-col">
         <Button variant="outline">Cancel</Button>
         <Button>Deploy</Button>
       </CardFooter>

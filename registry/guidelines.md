@@ -61,11 +61,11 @@ Dark mode is the `.dark` class on `<html>`; tokens switch automatically. Never w
 
 ### Action pairs (dialogs, sheets, drawers, cards, popovers)
 
-- Footers are a right-aligned row (`DialogFooter`, `SheetFooter`, `DrawerFooter`, `AlertDialogFooter`, `CardFooter className="justify-end"`).
+- Footers are a right-aligned row (`DialogFooter`, `SheetFooter`, `DrawerFooter`, `AlertDialogFooter`, `CardFooter className="ml-auto grid w-fit auto-cols-fr grid-flow-col"`).
 - Order: dismiss first, confirm last. `Cancel` is always `variant="outline"` and always labelled "Cancel".
 - Confirm is `default`; if it destroys data it is `destructive` (`<AlertDialogAction variant="destructive">`). Never restyle with `bg-destructive` classes.
 - A button that *opens* a destructive flow is `destructive-outline` and ends with … ("Delete page…"). Bulk delete in a toolbar is also `destructive-outline`.
-- Both buttons in a pair use the same `size`.
+- Both buttons in a pair use the same `size` and the same width; the overlay footers size every button to the widest label.
 
 ## Accessibility
 

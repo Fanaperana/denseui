@@ -37,7 +37,11 @@ function AlertDialogHeader({ className, ...props }: React.ComponentProps<'div'>)
 
 function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div data-slot="alert-dialog-footer" className={cn('flex items-center justify-end gap-1.5', className)} {...props} />
+    <div
+      data-slot="alert-dialog-footer"
+      className={cn('ml-auto grid w-fit auto-cols-fr grid-flow-col gap-1.5', className)}
+      {...props}
+    />
   )
 }
 
