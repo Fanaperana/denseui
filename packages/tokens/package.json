@@ -2,6 +2,16 @@
   "name": "@denseui/tokens",
   "version": "0.0.1",
   "description": "Ultra-dense, Notion-style design tokens for Tailwind CSS v4",
+  "license": "MIT",
+  "author": "Fanaperana",
+  "homepage": "https://github.com/Fanaperana/denseui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fanaperana/denseui.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": "https://github.com/Fanaperana/denseui/issues",
+  "keywords": ["tailwindcss", "design-tokens", "theme", "dense"],
   "type": "module",
   "files": [
     "src"

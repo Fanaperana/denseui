@@ -1,0 +1,40 @@
+name: Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a bug! Please search existing issues first.
+  - type: input
+    id: component
+    attributes:
+      label: Component or area
+      placeholder: e.g. data-table, CLI add, docs site
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: A minimal reproduction (link, code snippet or steps).
+      placeholder: |
+        1. npx denseui add ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, React, Tailwind CSS and Node versions, framework (Vite, Next.js, …).
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots

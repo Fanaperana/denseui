@@ -12,6 +12,11 @@ Inspired by the information density of tools like Notion and Linear: 24px contro
 ![Ark UI](https://img.shields.io/badge/Ark_UI-Zag.js-eb5e41?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
 ![Components](https://img.shields.io/badge/components-71-111113?style=flat-square)
+[![CI](https://img.shields.io/github/actions/workflow/status/Fanaperana/denseui/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Fanaperana/denseui/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
+![a11y](https://img.shields.io/badge/a11y-axe_tested-8b5cf6?style=flat-square)
+
+[Quick start](#quick-start) · [Components](#components) · [Use with AI](#use-with-ai-mcp--llmstxt) · [Theming](#theming) · [Contributing](#contributing)
 
 <br />
 
@@ -50,6 +55,7 @@ denseui is built around a few strict rules:
 - 🔤 **Inter-tuned metrics**: with a metric-matched fallback so text stays centered without webfonts
 - 🧭 **Framework-ready architecture**: tokens and state machines are shared, so Vue, Svelte and Solid are next
 - 🤖 **AI-native**: built-in MCP server, `llms.txt`, and machine-readable docs with examples for every component
+- ✅ **Tested**: every component page is checked in a real browser for runtime errors and axe accessibility violations
 
 ## Quick start
 
@@ -272,6 +278,18 @@ Adding a component:
 - [ ] Vue, Svelte and Solid (same tokens, same Ark UI state machines)
 - [ ] Hosted registry and docs
 
+## Contributing
+
+Contributions are welcome! Read the [contributing guide](CONTRIBUTING.md) to get set up, and please follow the [Code of Conduct](CODE_OF_CONDUCT.md). Found a security issue? See [SECURITY.md](SECURITY.md).
+
+- 🐛 [Report a bug](https://github.com/Fanaperana/denseui/issues/new?template=bug_report.yml)
+- 💡 [Request a component](https://github.com/Fanaperana/denseui/issues/new?template=feature_request.yml)
+- ⭐ Star the repo if denseui saves you pixels
+
 ## Acknowledgements
 
 denseui stands on the shoulders of [shadcn/ui](https://ui.shadcn.com) (the copy-paste model and API shape), [Ark UI](https://ark-ui.com) and [Zag.js](https://zagjs.com) (accessible behavior), [TanStack Table](https://tanstack.com/table), [Tailwind CSS](https://tailwindcss.com), [Lucide](https://lucide.dev) and [Inter](https://rsms.me/inter/).
+
+## License
+
+[MIT](LICENSE) © Fanaperana. Components you add with the CLI are yours to modify and ship.

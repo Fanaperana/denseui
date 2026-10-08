@@ -2,6 +2,8 @@
   "name": "denseui-monorepo",
   "private": true,
   "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.4.1",
   "scripts": {
     "dev": "pnpm --filter @denseui/playground dev",
     "registry:build": "node scripts/build-registry.mjs",

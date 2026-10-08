@@ -2,6 +2,16 @@
   "name": "denseui",
   "version": "0.0.1",
   "description": "Add ultra-dense, Notion-style components to your project",
+  "license": "MIT",
+  "author": "Fanaperana",
+  "homepage": "https://github.com/Fanaperana/denseui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fanaperana/denseui.git",
+    "directory": "packages/cli"
+  },
+  "bugs": "https://github.com/Fanaperana/denseui/issues",
+  "keywords": ["react", "tailwindcss", "components", "ui", "shadcn", "ark-ui", "cli", "mcp"],
   "type": "module",
   "bin": {
     "denseui": "./dist/index.js"

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "Source of the DenseUI React registry components",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit"
